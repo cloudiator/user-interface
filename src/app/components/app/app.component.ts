@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import * as api from '../../api/api';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +9,6 @@ export class AppComponent {
 
   showBurgerMenu = false;
 
-  constructor(private cloudService: api.CloudService) {
-    cloudService.findClouds().subscribe(value => console.log(value));
+  constructor() {
   }
 }

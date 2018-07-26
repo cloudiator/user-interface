@@ -7,6 +7,7 @@ import {AppStoreModule} from './app-store.module';
 import {ApiModule} from './api.module';
 import { HttpClientModule } from '@angular/common/http';
 import {Configuration, ConfigurationParameters} from './configuration';
+import { CloudOverviewComponent } from './components/clouds/cloud-overview/cloud-overview.component';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -18,7 +19,8 @@ export function apiConfigFactory(): Configuration {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CloudOverviewComponent
   ],
   imports: [
     BrowserModule,
