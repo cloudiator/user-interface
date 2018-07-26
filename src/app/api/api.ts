@@ -1,0 +1,20 @@
+export * from './cloud.service';
+import { CloudService } from './cloud.service';
+export * from './job.service';
+import { JobService } from './job.service';
+export * from './matchmaking.service';
+import { MatchmakingService } from './matchmaking.service';
+export * from './misc.service';
+import { MiscService } from './misc.service';
+export * from './monitoring.service';
+import { MonitoringService } from './monitoring.service';
+export * from './node.service';
+import { NodeService } from './node.service';
+// export * from './platform.service';
+// import { PlatformService } from './platform.service';
+export * from './queue.service';
+import { QueueService } from './queue.service';
+export * from './user.service';
+import { UserService } from './user.service';
+export const APIS = [CloudService, JobService, MatchmakingService, MiscService,
+  MonitoringService, NodeService, /* PlatformService, */ QueueService, UserService];
