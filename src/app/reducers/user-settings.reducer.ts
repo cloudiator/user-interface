@@ -12,7 +12,7 @@ export const initialState = {
 export function reducer(state = initialState, action: userSettingActions.All): State {
   switch (action.type) {
     case userSettingActions.SET_SETTINGS:
-      return {...initialState, ...state};
+      return {...state};
   }
 }
 

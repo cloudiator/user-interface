@@ -2,8 +2,6 @@
 
 // Icon font
 @import url("https://use.fontawesome.com/releases/v5.1.0/css/all.css");
-
-
 // 1. Import the initial variables
 @import "../node_modules/bulma/sass/utilities/initial-variables";
 
@@ -22,4 +20,17 @@ $secondary: #92acbe;
 
 .has-text-secondary {
   color: $secondary !important;
+}
+
+// container auto linewrap
+.is-flowing {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.is-gaping {
+  > * {
+    margin: 10px 10px;
+  }
 }
