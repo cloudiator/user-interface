@@ -2,25 +2,31 @@
 
 // Icon font
 @import url("https://use.fontawesome.com/releases/v5.1.0/css/all.css");
-// 1. Import the initial variables
+// initial variables
 @import "../node_modules/bulma/sass/utilities/initial-variables";
+//@import "../node_modules/bulma/sass/utilities/derived-variables";
+
+$family-sans-serif: "Helvetica", "Arial", sans-serif;
 
 $blue: #00447a;
 $blue-invert: #fff;
 
-$family-sans-serif: "Helvetica", "Arial", sans-serif;
+$light-blue: #92acbe;
+$light-blue-invert: #fff;
 
 $primary: $blue;
 $primary-invert: $blue-invert;
 
-$secondary: #92acbe;
+$secondary: $light-blue;
+$secondary-invert: $light-blue-invert;
 
-// 4. Import the rest of Bulma
+
+$custom-colors: ("secondary": ($secondary, $secondary-invert));
+
 @import "../node_modules/bulma/bulma";
 
-.has-text-secondary {
-  color: $secondary !important;
-}
+// custom classes
+
 
 // container auto linewrap
 .is-flowing {
