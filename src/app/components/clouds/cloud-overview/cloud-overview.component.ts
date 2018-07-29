@@ -19,7 +19,10 @@ export class CloudOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    const s0 = this.cloudDataService.findClouds().subscribe(clouds => this.clouds = clouds);
+    const s0 = this.cloudDataService.findClouds().subscribe(clouds => {
+      this.clouds = clouds;
+      console.log(clouds);
+    });
 
     this.subscriptions.push(s0);
   }
