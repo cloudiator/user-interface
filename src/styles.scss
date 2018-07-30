@@ -24,6 +24,7 @@ $secondary-invert: $light-blue-invert;
 $custom-colors: ("secondary": ($secondary, $secondary-invert));
 
 @import "../node_modules/bulma/bulma";
+@import "../node_modules/bulma-divider/dist/css/bulma-divider";
 
 // custom classes
 

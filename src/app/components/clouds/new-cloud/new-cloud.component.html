@@ -1,0 +1,111 @@
+<div class="hero">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        New Cloud
+      </h1>
+      <h2 class="subtitle">
+        Add a new Cloud Account
+      </h2>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <form>
+
+      <!-- Endpoint -->
+      <div class="field">
+        <label class="label">Endpoint</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="https://endpoint.example.com" required>
+        </div>
+      </div>
+
+      <!-- API name-->
+      <div class="field">
+        <label class="label">API name</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="e.g. openstack-nova" required>
+        </div>
+      </div>
+
+      <!-- Credentials -->
+      <div class="field">
+        <label class="label">Credentials</label>
+        <div class="field is-horizontal">
+          <div class="field-body">
+            <div class="field">
+              <div class="control is-expanded">
+                <input #tenant class="input" type="text" placeholder="tenant" required>
+              </div>
+            </div>
+            <div class="field">
+              <div class="control is-expanded">
+                <input #user class="input" type="text" placeholder="user" required>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <span #secret class="control">
+      <input class="input" type="text" placeholder="secret" required>
+    </span>
+      </div>
+
+      <!-- Visibility -->
+      <div class="field">
+        <label class="label">Visibility</label>
+        <div class="control">
+          <label class="radio">
+            <input type="radio" name="question">
+            Public
+          </label>
+          <label class="radio">
+            <input type="radio" name="question">
+            Private
+          </label>
+        </div>
+      </div>
+
+      <!-- Node group -->
+      <div class="field">
+        <label class="label">Node group</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="e.g. cloudiator">
+        </div>
+      </div>
+
+      <!-- Configuration -->
+      <div class="field">
+        <label class="label">Configuration</label>
+        <div *ngFor="let p of properties" class="field is-horizontal">
+          <div class="field-body">
+            <div class="field">
+              <div class="control is-expanded">
+                <input class="input" type="text" placeholder="key" value="{{p.key}}">
+              </div>
+            </div>
+            <div class="field">
+              <div class="control is-expanded">
+                <input class="input" type="text" placeholder="value" value="{{p.key}}">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-link">Submit</button>
+        </div>
+        <div class="control">
+          <button class="button is-text">Cancel</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</section>
