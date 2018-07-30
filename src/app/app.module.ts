@@ -8,6 +8,7 @@ import {ApiModule} from './api.module';
 import { HttpClientModule } from '@angular/common/http';
 import {Configuration, ConfigurationParameters} from './configuration';
 import { CloudOverviewComponent } from './components/clouds/cloud-overview/cloud-overview.component';
+import { NewCloudComponent } from './components/clouds/new-cloud/new-cloud.component';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -20,7 +21,8 @@ export function apiConfigFactory(): Configuration {
 @NgModule({
   declarations: [
     AppComponent,
-    CloudOverviewComponent
+    CloudOverviewComponent,
+    NewCloudComponent
   ],
   imports: [
     BrowserModule,

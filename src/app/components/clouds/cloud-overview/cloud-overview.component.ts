@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CloudDataService} from '../../../services/cloud-data.service';
-import {Cloud} from '../../..';
+import {Cloud, CloudType} from '../../..';
 import {Subscription} from 'rxjs';
 
 @Component({
