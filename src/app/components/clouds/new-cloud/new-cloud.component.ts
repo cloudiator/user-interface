@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {NewCloud} from '../../..';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import {Router} from '@angular/router';
+import {DialogService} from '../../../services/dialog.service';
+import {ConfirmNewCloudDialogComponent} from '../../../dialogs/confirm-new-cloud-dialog/confirm-new-cloud-dialog.component';
 
 /**
  * A Form to add a new Cloud.
@@ -66,6 +68,7 @@ export class NewCloudComponent implements OnInit {
   }
 
   constructor(private cloudDataService: CloudDataService,
+              private dialogService: DialogService,
               private router: Router) {
   }
 
@@ -84,8 +87,15 @@ export class NewCloudComponent implements OnInit {
    * then submits the new cloud and afterwards navigates back to the cloud overview.
    */
   public onSubmit() {
-    this.cloud.cloudConfiguration.properties = this.cloud.cloudConfiguration.properties.filter(p => p.key !== '');
-    this.cloudDataService.addCloud(this.cloud).subscribe(() => this.router.navigateByUrl('/clouds'));
+
+    const dialogRef = this.dialogService.open(ConfirmNewCloudDialogComponent);
+
+    dialogRef.afterClosed().subscribe(value => {
+      if (value) {
+        this.cloud.cloudConfiguration.properties = this.cloud.cloudConfiguration.properties.filter(p => p.key !== '');
+        this.cloudDataService.addCloud(this.cloud).subscribe(() => this.router.navigateByUrl('/clouds'));
+      }
+    });
   }
 
 }

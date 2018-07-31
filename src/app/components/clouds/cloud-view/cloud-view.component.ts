@@ -1,9 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CloudDataService} from '../../../services/cloud-data.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {map} from 'rxjs/operators';
 import {Cloud} from '../../..';
 import {Subscription} from 'rxjs';
+import {DialogService} from '../../../services/dialog.service';
+import {DeleteCloudDialogComponent} from '../../../dialogs/delete-cloud-dialog/delete-cloud-dialog.component';
 
 /**
  * Represents the View of a Single Cloud
@@ -21,7 +23,9 @@ export class CloudViewComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   constructor(private cloudDataService: CloudDataService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private dialogService: DialogService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -39,9 +43,17 @@ export class CloudViewComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Triggers a delete request of this cloud.
+   * Triggers confirmation dialog and sends a cloud delete request if accepted.
    */
   public onDelete() {
-    this.cloudDataService.deleteCloud(this.cloud.id);
+
+    const dialogRef = this.dialogService.open(DeleteCloudDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+      this.cloudDataService.deleteCloud(this.cloud.id);
+      this.router.navigateByUrl('/clouds');
+      }
+    });
   }
 }
