@@ -5,6 +5,10 @@ import {map} from 'rxjs/operators';
 import {Cloud} from '../../..';
 import {Subscription} from 'rxjs';
 
+/**
+ * Represents the View of a Single Cloud
+ */
+
 @Component({
   selector: 'app-cloud-view',
   templateUrl: './cloud-view.component.html',
@@ -21,7 +25,7 @@ export class CloudViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
+    // finds the corresponding cloud to the id that was given with this route
     this.route.paramMap
       .pipe(map(paramsMap => paramsMap.get('id')))
       .subscribe(id => this.subscriptions
@@ -34,6 +38,9 @@ export class CloudViewComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
+  /**
+   * Triggers a delete request of this cloud.
+   */
   public onDelete() {
     this.cloudDataService.deleteCloud(this.cloud.id);
   }
