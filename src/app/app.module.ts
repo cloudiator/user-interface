@@ -12,6 +12,10 @@ import { NewCloudComponent } from './components/clouds/new-cloud/new-cloud.compo
 import {FormsModule} from '@angular/forms';
 import { CloudViewComponent } from './components/clouds/cloud-view/cloud-view.component';
 import { CloudCardComponent } from './components/clouds/cloud-card/cloud-card.component';
+import {DialogService} from './services/dialog.service';
+import { DeleteCloudDialogComponent } from './dialogs/delete-cloud-dialog/delete-cloud-dialog.component';
+import {Overlay, OverlayModule, OverlayRef} from '@angular/cdk/overlay';
+import { ConfirmNewCloudDialogComponent } from './dialogs/confirm-new-cloud-dialog/confirm-new-cloud-dialog.component';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -27,7 +31,9 @@ export function apiConfigFactory(): Configuration {
     CloudOverviewComponent,
     NewCloudComponent,
     CloudViewComponent,
-    CloudCardComponent
+    CloudCardComponent,
+    DeleteCloudDialogComponent,
+    ConfirmNewCloudDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -35,9 +41,17 @@ export function apiConfigFactory(): Configuration {
     AppStoreModule,
     ApiModule.forRoot(apiConfigFactory),
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    OverlayModule
   ],
-  providers: [],
+  providers: [
+    Overlay,
+    DialogService
+  ],
+  entryComponents: [
+    DeleteCloudDialogComponent,
+    ConfirmNewCloudDialogComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
