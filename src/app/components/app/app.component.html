@@ -1,7 +1,7 @@
 <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
 
   <div class="navbar-brand">
-    <a class="navbar-item">
+    <a class="navbar-item" routerLink="/" routerLinkActive="active">
       <img src="../../assets/logo_sm.png">
       <p class="is-size-4 has-text-secondary">Cloudiator</p>
     </a>
@@ -17,8 +17,9 @@
 
   <div id="navbar-burger-menu" class="navbar-menu" [class.is-active]="showBurgerMenu">
 
+    <!-- navbar entries -->
     <div class="navbar-start">
-      <a class="navbar-item">
+      <a class="navbar-item" routerLink="/clouds" routerLinkActive="active">
         Clouds
       </a>
     </div>

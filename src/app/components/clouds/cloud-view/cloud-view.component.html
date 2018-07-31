@@ -1,0 +1,23 @@
+<div class="level is-mobile">
+  <div class="level-left">
+    <div class="hero" *ngIf="cloud">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+            {{cloud.api.providerName}}
+          </h1>
+          <h2 class="subtitle">
+            {{cloud.credential.user}}
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="level-right">
+    <div class="delete has-background-danger is-large level-item" (click)="onDelete()"></div>
+  </div>
+</div>
+
+<section class="section">
+</section>

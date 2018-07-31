@@ -9,6 +9,9 @@ import { HttpClientModule } from '@angular/common/http';
 import {Configuration, ConfigurationParameters} from './configuration';
 import { CloudOverviewComponent } from './components/clouds/cloud-overview/cloud-overview.component';
 import { NewCloudComponent } from './components/clouds/new-cloud/new-cloud.component';
+import {FormsModule} from '@angular/forms';
+import { CloudViewComponent } from './components/clouds/cloud-view/cloud-view.component';
+import { CloudCardComponent } from './components/clouds/cloud-card/cloud-card.component';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -22,14 +25,17 @@ export function apiConfigFactory(): Configuration {
   declarations: [
     AppComponent,
     CloudOverviewComponent,
-    NewCloudComponent
+    NewCloudComponent,
+    CloudViewComponent,
+    CloudCardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AppStoreModule,
     ApiModule.forRoot(apiConfigFactory),
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

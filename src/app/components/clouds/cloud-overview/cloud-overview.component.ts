@@ -21,7 +21,6 @@ export class CloudOverviewComponent implements OnInit, OnDestroy {
 
     const s0 = this.cloudDataService.findClouds().subscribe(clouds => {
       this.clouds = clouds;
-      console.log(clouds);
     });
 
     this.subscriptions.push(s0);

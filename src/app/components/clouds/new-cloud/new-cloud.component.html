@@ -5,7 +5,7 @@
         New Cloud
       </h1>
       <h2 class="subtitle">
-        Add a new Cloud Account
+        Add a new Cloud Service Account
       </h2>
     </div>
   </div>
@@ -13,13 +13,14 @@
 
 <section class="section">
   <div class="container">
-    <form>
+    <form (ngSubmit)="onSubmit()" #cloudForm="ngForm">
 
       <!-- Endpoint -->
       <div class="field">
         <label class="label">Endpoint</label>
         <div class="control">
-          <input class="input" type="text" placeholder="https://endpoint.example.com" required>
+          <input class="input" type="text" placeholder="https://endpoint.example.com" required
+                 [(ngModel)]="cloud.endpoint" name="endpoint">
         </div>
       </div>
 
@@ -27,7 +28,8 @@
       <div class="field">
         <label class="label">API name</label>
         <div class="control">
-          <input class="input" type="text" placeholder="e.g. openstack-nova" required>
+          <input class="input" type="text" placeholder="e.g. openstack-nova" required
+                 [(ngModel)]="cloud.api.providerName" name="api">
         </div>
       </div>
 
@@ -38,19 +40,20 @@
           <div class="field-body">
             <div class="field">
               <div class="control is-expanded">
-                <input #tenant class="input" type="text" placeholder="tenant" required>
+                <input class="input" type="text" placeholder="tenant" required [(ngModel)]="tenant" name="tenant">
               </div>
             </div>
             <div class="field">
               <div class="control is-expanded">
-                <input #user class="input" type="text" placeholder="user" required>
+                <input class="input" type="text" placeholder="user" required [(ngModel)]="user" name="user">
               </div>
             </div>
           </div>
         </div>
 
         <span #secret class="control">
-      <input class="input" type="text" placeholder="secret" required>
+      <input class="input" type="password" placeholder="secret" required [(ngModel)]="cloud.credential.secret"
+             name="secret">
     </span>
       </div>
 
@@ -59,12 +62,12 @@
         <label class="label">Visibility</label>
         <div class="control">
           <label class="radio">
-            <input type="radio" name="question">
-            Public
+            <input type="radio" value="PRIVATE" [(ngModel)]="cloud.cloudType" name="visibility" checked="checked">
+            Private
           </label>
           <label class="radio">
-            <input type="radio" name="question">
-            Private
+            <input type="radio" value="PUBLIC" [(ngModel)]="cloud.cloudType" name="visibility">
+            Public
           </label>
         </div>
       </div>
@@ -73,36 +76,45 @@
       <div class="field">
         <label class="label">Node group</label>
         <div class="control">
-          <input class="input" type="text" placeholder="e.g. cloudiator">
+          <input class="input" type="text" placeholder="e.g. cloudiator" required
+                 [(ngModel)]="cloud.cloudConfiguration.nodeGroup" name="nodeGroup">
         </div>
       </div>
 
       <!-- Configuration -->
       <div class="field">
         <label class="label">Configuration</label>
-        <div *ngFor="let p of properties" class="field is-horizontal">
+        <div *ngFor="let p of cloud.cloudConfiguration.properties" class="field is-horizontal">
           <div class="field-body">
             <div class="field">
               <div class="control is-expanded">
-                <input class="input" type="text" placeholder="key" value="{{p.key}}">
+                <input class="input" type="text" placeholder="key" [(ngModel)]="p.key" [ngModelOptions]="{standalone: true}">
               </div>
             </div>
             <div class="field">
               <div class="control is-expanded">
-                <input class="input" type="text" placeholder="value" value="{{p.key}}">
+                <input class="input" type="text" placeholder="value" [(ngModel)]="p.value" [ngModelOptions]="{standalone: true}">
               </div>
             </div>
           </div>
+          <div class="is-divider is-hidden-tablet"></div>
+        </div>
+        <div class="container has-text-centered">
+          <button type="button" class="button" (click)="addProperty()">
+            <span class="icon">
+              <i class="fas fa-plus fa-lg"></i>
+            </span>
+          </button>
         </div>
       </div>
 
       <!-- Buttons -->
       <div class="field is-grouped">
         <div class="control">
-          <button class="button is-link">Submit</button>
+          <button type="submit" class="button is-primary" [disabled]="!cloudForm.form.valid">Submit</button>
         </div>
         <div class="control">
-          <button class="button is-text">Cancel</button>
+          <a class="button is-text" routerLink="/clouds" routerLinkActive="active">Cancel</a>
         </div>
       </div>
 
