@@ -3,6 +3,10 @@ import {CloudDataService} from '../../../services/cloud-data.service';
 import {Cloud, CloudType} from '../../..';
 import {Subscription} from 'rxjs';
 
+/**
+ * Overview of all clouds given as a set of horizontally flowing cards.
+ */
+
 @Component({
   selector: 'app-cloud-overview',
   templateUrl: './cloud-overview.component.html',
