@@ -9,6 +9,8 @@ before_script:
 - npm install -g @angular/cli
 script:
 - ng build --prod
+after_success:
+- ci/publish_docker.sh
 env:
   global:
   - COMMIT=${TRAVIS_COMMIT::8}
