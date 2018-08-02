@@ -16,11 +16,12 @@ import {DialogService} from './services/dialog.service';
 import { DeleteCloudDialogComponent } from './dialogs/delete-cloud-dialog/delete-cloud-dialog.component';
 import {Overlay, OverlayModule, OverlayRef} from '@angular/cdk/overlay';
 import { ConfirmNewCloudDialogComponent } from './dialogs/confirm-new-cloud-dialog/confirm-new-cloud-dialog.component';
+import { environment } from '../environments/environment';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
-    apiKeys: { 'X-API-Key' : 'CloudiatorUI2018'},
-    basePath: 'http://134.60.64.119:9000',
+    apiKeys: { 'X-API-Key' : environment.apiKey},
+    basePath: environment.backendUrl,
   };
   return new Configuration(params);
 }
