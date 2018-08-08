@@ -61,12 +61,15 @@
       <div class="field">
         <label class="label">Visibility</label>
         <div class="control">
-          <label class="radio">
-            <input type="radio" value="PRIVATE" [(ngModel)]="cloud.cloudType" name="visibility">
+          <input id="private" type="radio" class="is-checkradio is-primary" value="PRIVATE" [(ngModel)]="cloud.cloudType"
+                 name="visibility">
+          <label for="private">
             Private
           </label>
-          <label class="radio">
-            <input type="radio" value="PUBLIC" [(ngModel)]="cloud.cloudType" name="visibility">
+
+          <input id="public" type="radio" class="is-checkradio  is-primary" value="PUBLIC" [(ngModel)]="cloud.cloudType"
+                 name="visibility">
+          <label for="public">
             Public
           </label>
         </div>
@@ -88,12 +91,14 @@
           <div class="field-body">
             <div class="field">
               <div class="control is-expanded">
-                <input class="input" type="text" placeholder="key" [(ngModel)]="p.key" [ngModelOptions]="{standalone: true}">
+                <input class="input" type="text" placeholder="key" [(ngModel)]="p.key"
+                       [ngModelOptions]="{standalone: true}">
               </div>
             </div>
             <div class="field">
               <div class="control is-expanded">
-                <input class="input" type="text" placeholder="value" [(ngModel)]="p.value" [ngModelOptions]="{standalone: true}">
+                <input class="input" type="text" placeholder="value" [(ngModel)]="p.value"
+                       [ngModelOptions]="{standalone: true}">
               </div>
             </div>
           </div>
