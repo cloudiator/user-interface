@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfirmNewCloudDialogComponent } from './confirm-new-cloud-dialog.component';
+import {DialogRef} from '../../model/dialogRef';
+import {DIALOG_DATA} from '../../services/dialog.service';
 
 describe('ConfirmNewCloudDialogComponent', () => {
   let component: ConfirmNewCloudDialogComponent;
@@ -8,7 +10,11 @@ describe('ConfirmNewCloudDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ConfirmNewCloudDialogComponent ]
+      declarations: [ ConfirmNewCloudDialogComponent ],
+      providers: [
+        {provide: DialogRef, useVale: {}},
+        { provide: DIALOG_DATA, useValue: {}}
+      ]
     })
     .compileComponents();
   }));
