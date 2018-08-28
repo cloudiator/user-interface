@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {APP_BOOTSTRAP_LISTENER, ComponentRef, NgModule} from '@angular/core';
 
 import { AppComponent } from './components/app/app.component';
 import {AppRoutingModule} from './app-routing.module';
@@ -20,8 +20,8 @@ import { environment } from '../environments/environment';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
-    apiKeys: { 'X-API-Key' : environment.apiKey},
-    basePath: environment.backendUrl,
+    apiKeys: { 'X-API-Key' : environment.xApiKey},
+    basePath: environment.apiPath,
   };
   return new Configuration(params);
 }

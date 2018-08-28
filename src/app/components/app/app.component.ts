@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {RuntimeConfigService} from '../../services/runtime-config.service';
 
 /**
  * Entry point of this app, everything is shown in this Container.
@@ -14,6 +15,7 @@ export class AppComponent {
 
   showBurgerMenu = false;
 
-  constructor() {
+  constructor(private runtimeConfigService: RuntimeConfigService) {
+    runtimeConfigService.getRuntimeConfig().subscribe(value => console.log(value));
   }
 }
