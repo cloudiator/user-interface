@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Cloud, CloudService, NewCloud} from '..';
-import {config, Observable} from 'rxjs';
+import {Cloud, CloudService, NewCloud} from 'cloudiator-rest-api';
+import {Observable} from 'rxjs';
 import * as fromRoot from '../reducers';
 import * as cloudActions from '../actions/cloud-data.actions';
 import {Store} from '@ngrx/store';
@@ -20,10 +20,11 @@ export class CloudDataService {
   constructor(private cloudApiService: CloudService,
               private runtimeConfigService: RuntimeConfigService,
               private store: Store<fromRoot.State>) {
+
     store.select(fromRoot.getRuntimeConfig).subscribe(config => {
-      cloudApiService.configuration
-      cloudApiService.configuration
-    })
+      cloudApiService.configuration.apiKeys['X-API-Key'] = config.xApiKey;
+      cloudApiService.basePath = config.apiPath;
+    });
   }
 
   /**
@@ -61,10 +62,9 @@ export class CloudDataService {
 
   /**
    * Fetches all clouds from the Server and saves them in the Redux store.
+   * before sending the request, the config file must be loaded to grant the correct api url
    */
   private fetch() {
-
-
 
     this.runtimeConfigService.awaitConfigLoad().then(() => {
       this.cloudApiService.findClouds().toPromise()

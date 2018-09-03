@@ -6,7 +6,8 @@ import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {RuntimeConfig} from '../model/RuntimeConfig';
 import {SetRuntimeConfigAction} from '../actions/runtime-config.actions';
-import {Configuration} from '../configuration';
+import {Configuration} from 'cloudiator-rest-api';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,12 @@ export class RuntimeConfigService {
   constructor(private http: HttpClient,
               private store: Store<fromRoot.State>,
               @Optional() private configuration: Configuration) {
-    this.fetchConfig();
+
+    if (environment.useRuntimeConfig) {
+      this.fetchConfig();
+    } else {
+      this.store.dispatch(new SetRuntimeConfigAction(<RuntimeConfig>{apiPath: environment.apiPath, xApiKey: environment.xApiKey}));
+    }
   }
 
   private fetchConfig() {
@@ -32,7 +38,7 @@ export class RuntimeConfigService {
           console.log('resolved');
           resolve(true);
         }
-          });
+      });
     });
   }
 

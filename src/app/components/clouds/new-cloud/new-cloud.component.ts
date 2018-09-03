@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NewCloud} from '../../..';
+import {NewCloud} from 'cloudiator-rest-api';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import {Router} from '@angular/router';
 import {DialogService} from '../../../services/dialog.service';

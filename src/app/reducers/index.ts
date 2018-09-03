@@ -1,7 +1,7 @@
 import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/store';
 
 import * as fromUserSettings from './user-settings.reducer';
-import * as fromCloudData from './Cloud-data.reducer';
+import * as fromCloudData from './cloud-data.reducer';
 import * as fromRuntimeConfig from './runtime-config.reducer';
 
 /* State */

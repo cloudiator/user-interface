@@ -1,5 +1,5 @@
 import * as cloudActions from '../actions/cloud-data.actions';
-import {Cloud} from '..';
+import {Cloud} from 'cloudiator-rest-api';
 
 
 export interface State {

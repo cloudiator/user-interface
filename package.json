@@ -27,6 +27,7 @@
     "@angular/router": "^6.0.3",
     "@ngrx/store": "^6.0.1",
     "bulma-divider": "^2.0.1",
+    "cloudiator-rest-api": "0.0.2-SNAPSHOT.201809030857",
     "core-js": "^2.5.4",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26"
