@@ -21,7 +21,6 @@ export function reducer(state = initialState, action: userSettingActions.All): S
     case userSettingActions.SET_X_API_KEY:
       return {runtimeConfig: {xApiKey: action.xApiKey, ...state.runtimeConfig}, ...state};
     case userSettingActions.SET_RUNTIME_CONFIG:
-      console.log({...state, runtimeConfig: action.config, isFetched: true});
       return {...state, runtimeConfig: action.config, isFetched: true};
     default:
       return state;

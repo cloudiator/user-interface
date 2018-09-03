@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   useRuntimeConfig: false,
+  href: '/',
   xApiKey: 'CloudiatorUI2018',
   apiPath: 'http://134.60.64.119:9005'
 };

@@ -11,6 +11,7 @@ module.exports = function (config) {
       require('karma-jasmine-html-reporter'),
       require('karma-teamcity-reporter'),
       require('karma-coverage-istanbul-reporter'),
+      require('karma-phantomjs-launcher'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
     client: {
@@ -26,7 +27,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ['Chrome', 'PhantomJS'],
     singleRun: false
   });
 };

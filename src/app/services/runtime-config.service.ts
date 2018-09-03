@@ -26,8 +26,10 @@ export class RuntimeConfigService {
   }
 
   private fetchConfig() {
-    this.http.get<RuntimeConfig>('/assets/appConfig.json').toPromise().then(value => {
+    this.http.get<RuntimeConfig>(`${environment.href}assets/appConfig.json`).toPromise().then(value => {
       this.store.dispatch(new SetRuntimeConfigAction(<RuntimeConfig>value));
+    }).catch(() => {
+      this.store.dispatch(new SetRuntimeConfigAction(<RuntimeConfig>{apiPath: environment.apiPath, xApiKey: environment.xApiKey}));
     });
   }
 
@@ -35,7 +37,6 @@ export class RuntimeConfigService {
     return new Promise(resolve => {
       const obs = this.store.select(fromRoot.getRuntimeConfig).subscribe(value => {
         if (value.apiPath !== '' && value.xApiKey !== '') {
-          console.log('resolved');
           resolve(true);
         }
       });
