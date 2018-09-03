@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RuntimeConfigService} from '../../services/runtime-config.service';
 
 /**
@@ -11,11 +11,12 @@ import {RuntimeConfigService} from '../../services/runtime-config.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   showBurgerMenu = false;
 
-  constructor(private runtimeConfigService: RuntimeConfigService) {
-    runtimeConfigService.getRuntimeConfig().subscribe(value => console.log(value));
+  constructor() {
   }
+
+  ngOnInit() {}
 }

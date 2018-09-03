@@ -1,4 +1,4 @@
-import {ActionReducerMap, createSelector} from '@ngrx/store';
+import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/store';
 
 import * as fromUserSettings from './user-settings.reducer';
 import * as fromCloudData from './Cloud-data.reducer';
@@ -39,7 +39,9 @@ export const getClouds = createSelector(cloudDataState, fromCloudData.getClouds)
 export const getUserSettings = createSelector(userSettingsState, fromUserSettings.getUserSettings);
 
 /* Runtime Config */
+
 export const getApiPath = createSelector(runtimeConfigState, fromRuntimeConfig.getApiPath);
 export const getXApiKey = createSelector(runtimeConfigState, fromRuntimeConfig.getXApiKey);
 export const getRuntimeConfig = createSelector(runtimeConfigState, fromRuntimeConfig.getRuntimeConfig);
+export const getRuntimeConfigIsFetched = createSelector(runtimeConfigState, fromRuntimeConfig.isFetched);
 
