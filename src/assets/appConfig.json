@@ -1,4 +1,3 @@
 {
-  "apiPath": "${API_URL}",
-  "xApiKey": "${X_API_KEY}"
+  "apiPath": "${API_URL}"
 }

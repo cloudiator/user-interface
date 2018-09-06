@@ -2,6 +2,6 @@ export const environment = {
   production: true,
   useRuntimeConfig: true,
   href: '/',
-  xApiKey: '',
+  xApiKey: 'CloudiatorUI2018',
   apiPath: ''
 };
