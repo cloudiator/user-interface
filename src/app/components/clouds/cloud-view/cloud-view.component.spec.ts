@@ -5,14 +5,10 @@ import {RouterTestingModule} from '@angular/router/testing';
 import * as fromRoot from '../../../reducers';
 import {combineReducers, StoreModule} from '@ngrx/store';
 import {CloudDataService} from '../../../services/cloud-data.service';
-import {Cloud, CloudService} from '../../../index';
 import {Overlay} from '@angular/cdk/overlay';
 import {ActivatedRoute, convertToParamMap} from '@angular/router';
 import {Observable, observable} from 'rxjs';
-import {CloudCredential} from '../../../model/cloudCredential';
-import {CloudConfiguration} from '../../../model/cloudConfiguration';
-import {Api} from '../../../model/api';
-import {CloudType} from '../../../model/cloudType';
+import {Api, CloudCredential, CloudType} from 'cloudiator-rest-api';
 
 describe('CloudViewComponent', () => {
   let component: CloudViewComponent;

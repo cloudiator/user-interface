@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Cloud} from '../../..';
+import {Cloud} from 'cloudiator-rest-api';
 
 /**
  * A card that represents a single cloud in the CloudOverviewComponent.

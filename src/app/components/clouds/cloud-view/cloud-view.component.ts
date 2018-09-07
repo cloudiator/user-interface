@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Cloud} from '../../..';
+import {Cloud} from 'cloudiator-rest-api';
 import {Subscription} from 'rxjs';
 import {DialogService} from '../../../services/dialog.service';
 import {DeleteCloudDialogComponent} from '../../../dialogs/delete-cloud-dialog/delete-cloud-dialog.component';

@@ -4,8 +4,10 @@
 
 export const environment = {
   production: false,
-  apiKey: 'CloudiatorUI2018',
-  backendUrl: 'http://134.60.64.119:9000'
+  useRuntimeConfig: false,
+  href: '/',
+  xApiKey: 'CloudiatorUI2018',
+  apiPath: 'http://134.60.64.119:9005'
 };
 
 /*

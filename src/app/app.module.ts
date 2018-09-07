@@ -1,27 +1,28 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-import { AppComponent } from './components/app/app.component';
+import {AppComponent} from './components/app/app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {AppStoreModule} from './app-store.module';
-import {ApiModule} from './api.module';
-import { HttpClientModule } from '@angular/common/http';
-import {Configuration, ConfigurationParameters} from './configuration';
-import { CloudOverviewComponent } from './components/clouds/cloud-overview/cloud-overview.component';
-import { NewCloudComponent } from './components/clouds/new-cloud/new-cloud.component';
+import {ApiModule, Configuration, ConfigurationParameters} from 'cloudiator-rest-api';
+import {HttpClientModule} from '@angular/common/http';
+import {CloudOverviewComponent} from './components/clouds/cloud-overview/cloud-overview.component';
+import {NewCloudComponent} from './components/clouds/new-cloud/new-cloud.component';
 import {FormsModule} from '@angular/forms';
-import { CloudViewComponent } from './components/clouds/cloud-view/cloud-view.component';
-import { CloudCardComponent } from './components/clouds/cloud-card/cloud-card.component';
+import {CloudViewComponent} from './components/clouds/cloud-view/cloud-view.component';
+import {CloudCardComponent} from './components/clouds/cloud-card/cloud-card.component';
 import {DialogService} from './services/dialog.service';
-import { DeleteCloudDialogComponent } from './dialogs/delete-cloud-dialog/delete-cloud-dialog.component';
-import {Overlay, OverlayModule, OverlayRef} from '@angular/cdk/overlay';
-import { ConfirmNewCloudDialogComponent } from './dialogs/confirm-new-cloud-dialog/confirm-new-cloud-dialog.component';
-import { environment } from '../environments/environment';
+import {DeleteCloudDialogComponent} from './dialogs/delete-cloud-dialog/delete-cloud-dialog.component';
+import {Overlay, OverlayModule} from '@angular/cdk/overlay';
+import {ConfirmNewCloudDialogComponent} from './dialogs/confirm-new-cloud-dialog/confirm-new-cloud-dialog.component';
+import {environment} from '../environments/environment';
+import {CloudDataService} from './services/cloud-data.service';
+import {RuntimeConfigService} from './services/runtime-config.service';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
-    apiKeys: { 'X-API-Key' : environment.apiKey},
-    basePath: environment.backendUrl,
+    apiKeys: {'X-API-Key': environment.xApiKey},
+    basePath: environment.apiPath,
   };
   return new Configuration(params);
 }
@@ -47,7 +48,9 @@ export function apiConfigFactory(): Configuration {
   ],
   providers: [
     Overlay,
-    DialogService
+    DialogService,
+    CloudDataService,
+    RuntimeConfigService
   ],
   entryComponents: [
     DeleteCloudDialogComponent,
@@ -55,4 +58,5 @@ export function apiConfigFactory(): Configuration {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

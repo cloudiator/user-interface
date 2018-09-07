@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {Cloud} from '..';
+import {Cloud} from 'cloudiator-rest-api';
 
 export const SET_CLOUDS = '[Clouddata] set settings';
 
