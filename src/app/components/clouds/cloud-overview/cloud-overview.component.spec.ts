@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { CloudOverviewComponent } from './cloud-overview.component';
+import {CloudOverviewComponent} from './cloud-overview.component';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import {CloudCardComponent} from '../cloud-card/cloud-card.component';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -30,10 +30,10 @@ describe('CloudOverviewComponent', () => {
         RouterTestingModule,
       ],
       providers: [
-        { provide: CloudDataService, useValue: mockCloudDataService}
+        {provide: CloudDataService, useValue: mockCloudDataService}
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

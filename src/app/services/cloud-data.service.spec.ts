@@ -1,10 +1,12 @@
-import {TestBed, inject} from '@angular/core/testing';
+import {TestBed, inject, async} from '@angular/core/testing';
 
 import {CloudDataService} from './cloud-data.service';
 import {CloudService} from 'cloudiator-rest-api';
 import {HttpClientModule} from '@angular/common/http';
 import {combineReducers, StoreModule} from '@ngrx/store';
 import * as fromRoot from '../reducers';
+import {Observable} from 'rxjs';
+import * as testData from '../../../testing/test-data';
 
 describe('CloudDataService', () => {
 

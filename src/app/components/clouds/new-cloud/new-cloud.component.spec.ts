@@ -1,15 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { NewCloudComponent } from './new-cloud.component';
+import {NewCloudComponent} from './new-cloud.component';
 import {FormsModule} from '@angular/forms';
 import {Overlay} from '@angular/cdk/overlay';
 import {HttpClient, HttpHandler} from '@angular/common/http';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import * as fromRoot from '../../../reducers';
 import {combineReducers, StoreModule} from '@ngrx/store';
-import {apiConfigFactory} from '../../../app.module';
 import {RouterTestingModule} from '@angular/router/testing';
-import { ApiModule } from 'cloudiator-rest-api';
+import {ApiModule,} from 'cloudiator-rest-api';
+import {apiConfigFactory} from '../../../app.module';
 
 describe('NewCloudComponent', () => {
   let component: NewCloudComponent;
@@ -17,7 +17,7 @@ describe('NewCloudComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NewCloudComponent ],
+      declarations: [NewCloudComponent],
       imports: [
         StoreModule.forRoot({
           ...fromRoot.reducers,
@@ -34,7 +34,7 @@ describe('NewCloudComponent', () => {
         HttpHandler
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

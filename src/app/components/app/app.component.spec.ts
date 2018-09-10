@@ -1,6 +1,5 @@
 import {TestBed, async} from '@angular/core/testing';
 import {AppComponent} from './app.component';
-import {RouterModule} from '@angular/router';
 import {AppRoutingModule} from '../../app-routing.module';
 import {CloudViewComponent} from '../clouds/cloud-view/cloud-view.component';
 import {NewCloudComponent} from '../clouds/new-cloud/new-cloud.component';
