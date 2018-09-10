@@ -1,11 +1,14 @@
 import {Injectable} from '@angular/core';
-import {Cloud, CloudService, NewCloud} from '..';
+import {Cloud, CloudService, NewCloud} from 'cloudiator-rest-api';
 import {Observable} from 'rxjs';
 import * as fromRoot from '../reducers';
 import * as cloudActions from '../actions/cloud-data.actions';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 import {map} from 'rxjs/operators';
 import {HttpResponse} from '@angular/common/http';
+import {RuntimeConfigService} from './runtime-config.service';
+import {ToastService} from './toast.service';
+import {ToastType} from '../model/toast';
 
 /**
  * Local layer between the cloud swagger service and Components, handles the redux store management of clouds.
@@ -17,7 +20,13 @@ import {HttpResponse} from '@angular/common/http';
 export class CloudDataService {
 
   constructor(private cloudApiService: CloudService,
-              private store: Store<fromRoot.State>) {
+              private runtimeConfigService: RuntimeConfigService,
+              private store: Store<fromRoot.State>,
+              private toastService: ToastService) {
+
+    store.pipe(select(fromRoot.getRuntimeConfig)).subscribe(config => {
+      cloudApiService.basePath = config.apiPath;
+    });
   }
 
   /**
@@ -33,7 +42,7 @@ export class CloudDataService {
    */
   public findClouds(): Observable<Cloud[]> {
     this.fetch();
-    return this.store.select(fromRoot.getClouds);
+    return this.store.pipe(select(fromRoot.getClouds));
   }
 
   /**
@@ -42,7 +51,7 @@ export class CloudDataService {
    */
   public findCloud(id: string): Observable<Cloud> {
     this.fetch();
-    return this.store.select(fromRoot.getClouds).pipe(map(cloud => cloud.find(c => c.id === id)));
+    return this.store.pipe(select(fromRoot.getClouds), map(cloud => cloud.find(c => c.id === id)));
   }
 
   /**
@@ -50,19 +59,25 @@ export class CloudDataService {
    * @param id {string} id of cloud to be deleted
    */
   public deleteCloud(id: string) {
-    this.cloudApiService.deleteCloud(id);
+    this.cloudApiService.deleteCloud(id).subscribe();
   }
 
   /**
    * Fetches all clouds from the Server and saves them in the Redux store.
+   * before sending the request, the config file must be loaded to grant the correct api url
    */
   private fetch() {
-    this.cloudApiService.findClouds().toPromise()
-      .then(clouds => {
-        this.store.dispatch(new cloudActions.SetCloudsAction(clouds));
-      })
-      .catch(() => {
-        throw new Error('could not fetch Clouds');
-      });
+
+    this.runtimeConfigService.awaitConfigLoad().then(() => {
+      this.cloudApiService.findClouds().toPromise()
+        .then(clouds => {
+          this.store.dispatch(new cloudActions.SetCloudsAction(clouds));
+        })
+        .catch(() => {
+
+          console.error('could not fetch clouds');
+          this.toastService.show({text: 'could not fetch clouds', type: ToastType.DANGER}, false);
+        });
+    });
   }
 }

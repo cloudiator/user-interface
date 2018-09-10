@@ -1,7 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CloudDataService} from '../../../services/cloud-data.service';
-import {Cloud, CloudType} from '../../..';
+import {Cloud, CloudType} from 'cloudiator-rest-api';
 import {Subscription} from 'rxjs';
+import {Store} from '@ngrx/store';
+import * as fromRoot from '../../../reducers';
+import {filter} from 'rxjs/operators';
 
 /**
  * Overview of all clouds given as a set of horizontally flowing cards.

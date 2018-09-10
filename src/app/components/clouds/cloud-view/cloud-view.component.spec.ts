@@ -7,10 +7,8 @@ import {combineReducers, StoreModule} from '@ngrx/store';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import {Overlay} from '@angular/cdk/overlay';
 import {ActivatedRoute, convertToParamMap} from '@angular/router';
-import {Observable} from 'rxjs';
-import {CloudCredential} from '../../..';
-import {Api} from '../../..';
-import {CloudType} from '../../..';
+import {Observable, observable} from 'rxjs';
+import {Api, CloudCredential, CloudType} from 'cloudiator-rest-api';
 
 describe('CloudViewComponent', () => {
   let component: CloudViewComponent;

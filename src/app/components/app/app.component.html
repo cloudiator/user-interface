@@ -1,13 +1,14 @@
-<nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+<nav class="navbar is-fixed-top has-shadow" role="navigation" aria-label="main navigation"
+     [class.has-low-opacity]="!showBurgerMenu">
 
   <div class="navbar-brand">
     <a class="navbar-item" routerLink="/" routerLinkActive="active">
-      <img src="../../assets/logo_sm.png">
+      <img src="assets/logo_sm.png">
       <p class="is-size-4 has-text-secondary">Cloudiator</p>
     </a>
 
 
-    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar-menu"
+    <a role="button" class="navbar-burger " aria-label="menu" aria-expanded="false" data-target="navbar-menu"
        [class.is-active]="showBurgerMenu" (click)="showBurgerMenu= !showBurgerMenu">
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>

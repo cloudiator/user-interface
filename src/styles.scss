@@ -20,11 +20,13 @@ $primary-invert: $blue-invert;
 $secondary: $light-blue;
 $secondary-invert: $light-blue-invert;
 
+$navbar-dropdown-background-color: $secondary;
 
 $custom-colors: ("secondary": ($secondary, $secondary-invert));
 
 @import "../node_modules/bulma/bulma";
 @import "../node_modules/bulma-divider/dist/css/bulma-divider";
+@import "../node_modules/bulma-checkradio/dist/css/bulma-checkradio";
 
 // custom classes
 
