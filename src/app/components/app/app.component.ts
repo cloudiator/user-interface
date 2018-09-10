@@ -1,5 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {RuntimeConfigService} from '../../services/runtime-config.service';
+import {ToastService} from '../../services/toast.service';
+import {Toast, ToastType} from '../../model/toast';
+import {text} from '@angular/core/src/render3/instructions';
+import {DialogService} from '../../services/dialog.service';
+import {ConfirmNewCloudDialogComponent} from '../../dialogs/confirm-new-cloud-dialog/confirm-new-cloud-dialog.component';
 
 /**
  * Entry point of this app, everything is shown in this Container.
@@ -15,8 +20,18 @@ export class AppComponent implements OnInit {
 
   showBurgerMenu = false;
 
-  constructor() {
+  constructor(private toastService: ToastService,
+              private dialogService: DialogService) {
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
+
+  showToast() {
+    this.toastService.show({text: 'test toast', type: ToastType.WARNING}, false);
+  }
+
+  showDialog() {
+    this.dialogService.open(ConfirmNewCloudDialogComponent);
+  }
 }

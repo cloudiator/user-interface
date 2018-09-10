@@ -4,6 +4,8 @@ import {CloudDataService} from '../../../services/cloud-data.service';
 import {Router} from '@angular/router';
 import {DialogService} from '../../../services/dialog.service';
 import {ConfirmNewCloudDialogComponent} from '../../../dialogs/confirm-new-cloud-dialog/confirm-new-cloud-dialog.component';
+import {ToastService} from '../../../services/toast.service';
+import {ToastType} from '../../../model/toast';
 
 /**
  * A Form to add a new Cloud.
@@ -39,7 +41,8 @@ export class NewCloudComponent implements OnInit {
 
   constructor(private cloudDataService: CloudDataService,
               private dialogService: DialogService,
-              private router: Router) {
+              private router: Router,
+              private toastService: ToastService) {
   }
 
   ngOnInit() {
@@ -64,9 +67,14 @@ export class NewCloudComponent implements OnInit {
       if (value) {
         this.cloud.cloudConfiguration.properties = this.cloud.cloudConfiguration.properties.filter(p => p.key !== '');
         this.cloudDataService.addCloud(this.cloud).toPromise()
-          .then(() => this.router.navigateByUrl('/clouds'))
-          // ToDo: toast service
-          .catch(() => console.error('could not add cloud'));
+          .then(() => {
+            this.router.navigateByUrl('/clouds');
+            this.toastService.show({text: 'successfully added Cloud', type: ToastType.SUCCESS}, true);
+          })
+          .catch(() => {
+            console.error('could not add cloud');
+            this.toastService.show({text: 'could not add Cloud', type: ToastType.DANGER});
+          });
       }
     });
   }

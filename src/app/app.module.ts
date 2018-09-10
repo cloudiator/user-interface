@@ -18,6 +18,8 @@ import {ConfirmNewCloudDialogComponent} from './dialogs/confirm-new-cloud-dialog
 import {environment} from '../environments/environment';
 import {CloudDataService} from './services/cloud-data.service';
 import {RuntimeConfigService} from './services/runtime-config.service';
+import { ToastComponent } from './dialogs/toast/toast.component';
+import {ToastService} from './services/toast.service';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -35,7 +37,8 @@ export function apiConfigFactory(): Configuration {
     CloudViewComponent,
     CloudCardComponent,
     DeleteCloudDialogComponent,
-    ConfirmNewCloudDialogComponent
+    ConfirmNewCloudDialogComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,
@@ -50,11 +53,13 @@ export function apiConfigFactory(): Configuration {
     Overlay,
     DialogService,
     CloudDataService,
-    RuntimeConfigService
+    RuntimeConfigService,
+    ToastService
   ],
   entryComponents: [
+    ToastComponent,
     DeleteCloudDialogComponent,
-    ConfirmNewCloudDialogComponent
+    ConfirmNewCloudDialogComponent,
   ],
   bootstrap: [AppComponent]
 })

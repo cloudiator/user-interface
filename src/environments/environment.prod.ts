@@ -3,5 +3,6 @@ export const environment = {
   useRuntimeConfig: true,
   href: '/',
   xApiKey: 'CloudiatorUI2018',
-  apiPath: ''
+  apiPath: '',
+  notificationDuration: 10000
 };

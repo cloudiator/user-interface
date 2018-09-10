@@ -3,5 +3,6 @@ export const environment = {
   useRuntimeConfig: true,
   href: '/ui/',
   apiKey: '',
-  backendUrl: ''
+  backendUrl: '',
+  notificationDuration: 10000
 };
