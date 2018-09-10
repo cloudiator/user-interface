@@ -20,6 +20,7 @@ import {CloudDataService} from './services/cloud-data.service';
 import {RuntimeConfigService} from './services/runtime-config.service';
 import { ToastComponent } from './dialogs/toast/toast.component';
 import {ToastService} from './services/toast.service';
+import { HardwareOverviewComponent } from './components/hardware/hardware-overview/hardware-overview.component';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -38,7 +39,8 @@ export function apiConfigFactory(): Configuration {
     CloudCardComponent,
     DeleteCloudDialogComponent,
     ConfirmNewCloudDialogComponent,
-    ToastComponent
+    ToastComponent,
+    HardwareOverviewComponent
   ],
   imports: [
     BrowserModule,

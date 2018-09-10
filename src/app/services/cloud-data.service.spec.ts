@@ -6,7 +6,6 @@ import {HttpClientModule} from '@angular/common/http';
 import {combineReducers, StoreModule} from '@ngrx/store';
 import * as fromRoot from '../reducers';
 import {DialogService} from './dialog.service';
-import {OverlayModule} from '@angular/cdk/typings/overlay';
 import {ToastService} from './toast.service';
 import {Injector} from '@angular/core';
 import {Overlay} from '@angular/cdk/overlay';
