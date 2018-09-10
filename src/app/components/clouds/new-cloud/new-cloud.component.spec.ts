@@ -3,13 +3,15 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NewCloudComponent } from './new-cloud.component';
 import {FormsModule} from '@angular/forms';
 import {Overlay} from '@angular/cdk/overlay';
-import {HttpClient, HttpHandler} from '@angular/common/http';
+import {HttpClient, HttpClientModule, HttpHandler} from '@angular/common/http';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import * as fromRoot from '../../../reducers';
 import {combineReducers, StoreModule} from '@ngrx/store';
 import {apiConfigFactory} from '../../../app.module';
 import {RouterTestingModule} from '@angular/router/testing';
 import { ApiModule } from 'cloudiator-rest-api';
+import {DialogService} from '../../../services/dialog.service';
+import {ToastService} from '../../../services/toast.service';
 
 describe('NewCloudComponent', () => {
   let component: NewCloudComponent;
@@ -25,13 +27,14 @@ describe('NewCloudComponent', () => {
         }),
         ApiModule.forRoot(apiConfigFactory),
         RouterTestingModule,
-        FormsModule
+        FormsModule,
+        HttpClientModule
       ],
       providers: [
-        {provide: Overlay, useValue: null},
+        ToastService,
+        DialogService,
+        Overlay,
         CloudDataService,
-        HttpClient,
-        HttpHandler
       ]
     })
     .compileComponents();
