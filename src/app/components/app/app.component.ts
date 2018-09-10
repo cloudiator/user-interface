@@ -26,12 +26,4 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  showToast() {
-    this.toastService.show({text: 'test toast', type: ToastType.WARNING}, false);
-  }
-
-  showDialog() {
-    this.dialogService.open(ConfirmNewCloudDialogComponent);
-  }
 }
