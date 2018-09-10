@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import * as fromRoot from '../reducers';
 import * as runtimeConfigActions from '../actions/runtime-config.actions';
 import {Observable} from 'rxjs';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 import {RuntimeConfig} from '../model/RuntimeConfig';
 import {SetRuntimeConfigAction} from '../actions/runtime-config.actions';
 import {Configuration} from 'cloudiator-rest-api';
@@ -35,7 +35,7 @@ export class RuntimeConfigService {
 
   public awaitConfigLoad(): Promise<any> {
     return new Promise(resolve => {
-      const obs = this.store.select(fromRoot.getRuntimeConfig).subscribe(value => {
+      const obs = this.store.pipe(select(fromRoot.getRuntimeConfig)).subscribe(value => {
         if (value.apiPath !== '' && value.xApiKey !== '') {
           resolve(true);
         }
@@ -44,14 +44,14 @@ export class RuntimeConfigService {
   }
 
   getApiPath(): Observable<String> {
-    return this.store.select(fromRoot.getApiPath);
+    return this.store.pipe(select(fromRoot.getApiPath));
   }
 
   getXApiKey(): Observable<String> {
-    return this.store.select(fromRoot.getXApiKey);
+    return this.store.pipe(select(fromRoot.getXApiKey));
   }
 
   getRuntimeConfig(): Observable<RuntimeConfig> {
-    return this.store.select(fromRoot.getRuntimeConfig);
+    return this.store.pipe(select(fromRoot.getRuntimeConfig));
   }
 }

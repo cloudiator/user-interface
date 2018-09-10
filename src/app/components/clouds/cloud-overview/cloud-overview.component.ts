@@ -21,19 +21,13 @@ export class CloudOverviewComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private cloudDataService: CloudDataService,
-              private store: Store<fromRoot.State>) {
+  constructor(private cloudDataService: CloudDataService) {
   }
 
   ngOnInit() {
 
-    const s0 = this.store.select(fromRoot.getRuntimeConfigIsFetched).subscribe(fetched => {
-      if (fetched) {
-        this.subscriptions.push(this.cloudDataService.findClouds().subscribe(clouds => {
-            this.clouds = clouds;
-          })
-        );
-      }
+    const s0 = this.cloudDataService.findClouds().subscribe(clouds => {
+      this.clouds = clouds;
     });
 
     this.subscriptions.push(s0);

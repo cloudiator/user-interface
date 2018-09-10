@@ -20,8 +20,7 @@ export class AppComponent implements OnInit {
 
   showBurgerMenu = false;
 
-  constructor(private toastService: ToastService,
-              private dialogService: DialogService) {
+  constructor() {
   }
 
   ngOnInit() {
