@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import * as fromRoot from '../reducers';
 import * as cloudActions from '../actions/cloud-data.actions';
 import {select, Store} from '@ngrx/store';
-import {map} from 'rxjs/operators';
+import {filter, map, reduce} from 'rxjs/operators';
 import {HttpResponse} from '@angular/common/http';
 import {RuntimeConfigService} from './runtime-config.service';
 import {ToastService} from './toast.service';
@@ -43,7 +43,7 @@ export class CloudDataService {
    * Returns an Observable with all Clouds.
    */
   public findClouds(): Observable<Cloud[]> {
-    this.fetch();
+    this.fetchClouds();
     return this.store.pipe(select(fromRoot.getClouds));
   }
 
@@ -52,7 +52,7 @@ export class CloudDataService {
    * @param id {string} id to be searched for
    */
   public findCloud(id: string): Observable<Cloud> {
-    this.fetch();
+    this.fetchClouds();
     return this.store.pipe(select(fromRoot.getClouds), map(cloud => cloud.find(c => c.id === id)));
   }
 
@@ -69,15 +69,27 @@ export class CloudDataService {
 
   /* HARDWARE */
 
-  public findHardware(): Observable<Hardware[]> {
-    this.fetch();
+  public findHardware(id?: string): Observable<Hardware[]> {
+    this.fetchHardware();
+
+    if (id) {
+      return this.store.pipe(
+        select(fromRoot.getHardware),
+        map(hardware => hardware.filter(hw => hw.id.includes(id))));
+    }
     return this.store.pipe(select(fromRoot.getHardware));
   }
 
   /* IMAGES */
 
-  public findImages(): Observable<Image[]> {
-    this.fetch();
+  public findImages(id?: string): Observable<Image[]> {
+    this.fetchImages();
+
+    if (id) {
+      return this.store.pipe(
+        select(fromRoot.getImages),
+        map(images => images.filter(image => image.id.includes(id))));
+    }
     return this.store.pipe(select(fromRoot.getImages));
   }
 
@@ -85,7 +97,7 @@ export class CloudDataService {
    * Fetches all clouds from the Server and saves them in the Redux store.
    * before sending the request, the config file must be loaded to grant the correct api url
    */
-  private fetch() {
+  private fetchClouds() {
 
     this.runtimeConfigService.awaitConfigLoad().then(() => {
 
@@ -95,12 +107,15 @@ export class CloudDataService {
           this.store.dispatch(new cloudActions.SetCloudsAction(clouds));
         })
         .catch(() => {
-
           console.error('could not fetch clouds');
           this.toastService.show({text: 'could not fetch clouds', type: ToastType.DANGER}, false);
         });
+    });
+  }
 
-      // ToDo: seperate api requests to clearly handle notifications
+  private fetchHardware() {
+    this.runtimeConfigService.awaitConfigLoad().then(() => {
+      // ToDo: seperate api requests to clearly handle notifications;
       // fetch Hardware
       this.cloudApiService.findHardware().toPromise()
         .then(hardware => {
@@ -110,7 +125,11 @@ export class CloudDataService {
           console.error('could not fetch Hardware');
           this.toastService.show({text: 'could not fetch Hardware', type: ToastType.DANGER}, false);
         });
+    });
+  }
 
+  private fetchImages() {
+    this.runtimeConfigService.awaitConfigLoad().then(() => {
       // fetch Images
       this.cloudApiService.findImages().toPromise()
         .then(images => {
