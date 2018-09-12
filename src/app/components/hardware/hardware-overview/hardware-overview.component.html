@@ -11,8 +11,8 @@
   <div class="container is-center">
 
     <!-- Search bar -->
-    <p class="control has-icons-left">
-      <input class="input" type="search" placeholder="Search"  [formControl]="searchFormControl">
+    <p class="control has-icons-left" style="max-width: 400px">
+      <input class="input" type="search" placeholder="Search" [formControl]="searchFormControl">
       <span class="icon is-left">
         <i class="fas fa-search"></i>
       </span>
@@ -22,25 +22,45 @@
 
       <!-- Name Definition -->
       <ng-container cdkColumnDef="name">
-        <th cdk-header-cell *cdkHeaderCellDef> Name</th>
+        <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable" (click)="adjustSort('name')">
+          Name
+          <span [class.is-opaque]="sortKey.value !== 'name'">
+           <i class="fas fa-arrow-{{ sortDirection.value === 'asc' ? 'up' : 'down' }}"></i>
+          </span>
+        </th>
         <td cdk-cell *cdkCellDef="let row"> {{row.name}}</td>
       </ng-container>
 
       <!-- Ram Definition -->
       <ng-container cdkColumnDef="ram">
-        <th cdk-header-cell *cdkHeaderCellDef> Ram</th>
+        <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable" (click)="adjustSort('ram')">
+          Ram
+          <span [class.is-opaque]="sortKey.value !== 'ram'">
+           <i class="fas fa-arrow-{{ sortDirection.value === 'asc' ? 'up' : 'down' }}"></i>
+          </span>
+        </th>
         <td cdk-cell *cdkCellDef="let row"> {{row.ram}}</td>
       </ng-container>
 
       <!-- Cores Definition -->
       <ng-container cdkColumnDef="cores">
-        <th cdk-header-cell *cdkHeaderCellDef> Cores</th>
+        <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable" (click)="adjustSort('cores')">
+          Cores
+          <span [class.is-opaque]="sortKey.value !== 'cores'">
+           <i class="fas fa-arrow-{{ sortDirection.value === 'asc' ? 'up' : 'down' }}"></i>
+          </span>
+        </th>
         <td cdk-cell *cdkCellDef="let row"> {{row.cores}}</td>
       </ng-container>
 
       <!-- Disk Definition -->
       <ng-container cdkColumnDef="disk">
-        <th cdk-header-cell *cdkHeaderCellDef> Disk</th>
+        <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable" (click)="adjustSort('disk')">
+          Disk
+          <span [class.is-opaque]="sortKey.value !== 'disk'">
+           <i class="fas fa-arrow-{{ sortDirection.value === 'asc' ? 'up' : 'down' }}"></i>
+          </span>
+        </th>
         <td cdk-cell *cdkCellDef="let row"> {{row.disk}}</td>
       </ng-container>
 

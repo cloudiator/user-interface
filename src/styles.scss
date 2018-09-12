@@ -43,3 +43,7 @@ $custom-colors: ("secondary": ($secondary, $secondary-invert));
     margin: 10px 10px;
   }
 }
+
+.is-opaque {
+  opacity: 0;
+}
