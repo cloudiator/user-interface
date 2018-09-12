@@ -22,6 +22,7 @@ import { ToastComponent } from './dialogs/toast/toast.component';
 import {ToastService} from './services/toast.service';
 import { HardwareOverviewComponent } from './components/hardware/hardware-overview/hardware-overview.component';
 import {CdkHeaderRow, CdkHeaderRowDef, CdkTable, CdkTableModule} from '@angular/cdk/table';
+import { ImagesOverviewComponent } from './components/images/images-overview/images-overview.component';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -42,6 +43,7 @@ export function apiConfigFactory(): Configuration {
     ConfirmNewCloudDialogComponent,
     ToastComponent,
     HardwareOverviewComponent,
+    ImagesOverviewComponent,
   ],
   imports: [
     BrowserModule,

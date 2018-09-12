@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Cloud, CloudService, Hardware, NewCloud} from 'cloudiator-rest-api';
+import {Cloud, CloudService, Hardware, Image, NewCloud} from 'cloudiator-rest-api';
 import {Observable} from 'rxjs';
 import * as fromRoot from '../reducers';
 import * as cloudActions from '../actions/cloud-data.actions';
@@ -28,6 +28,8 @@ export class CloudDataService {
       cloudApiService.basePath = config.apiPath;
     });
   }
+
+  /* CLOUDS */
 
   /**
    * Sends a new addCloud request with the given cloud.
@@ -65,9 +67,18 @@ export class CloudDataService {
     });
   }
 
+  /* HARDWARE */
+
   public findHardware(): Observable<Hardware[]> {
     this.fetch();
     return this.store.pipe(select(fromRoot.getHardware));
+  }
+
+  /* IMAGES */
+
+  public findImages(): Observable<Image[]> {
+    this.fetch();
+    return this.store.pipe(select(fromRoot.getImages));
   }
 
   /**
@@ -99,6 +110,16 @@ export class CloudDataService {
           console.error('could not fetch Hardware');
           this.toastService.show({text: 'could not fetch Hardware', type: ToastType.DANGER}, false);
         });
+
+      // fetch Images
+      this.cloudApiService.findImages().toPromise()
+        .then(images => {
+          this.store.dispatch(new cloudActions.SetImagesAction(images));
+        })
+        .catch(() => {
+          console.error('could not fetch Images');
+          this.toastService.show({text: 'could not fetch Images', type: ToastType.DANGER}, false);
+        });
     });
   }
 
@@ -121,7 +142,35 @@ export class CloudDataService {
         case 'disk':
           return (curr: Hardware) => this.compareNumbers(curr.disk, operator, term);
         default:
-          return () => false;
+          // default case is used when no operator is found in the search term
+          return (curr: Hardware) => {
+            return curr.name.toLowerCase().includes(term.toLowerCase()) ||
+              curr.cores.toString().toLowerCase().includes(term.toLowerCase()) ||
+              curr.ram.toString().toLowerCase().includes(term.toLowerCase()) ||
+              curr.disk.toString().toLowerCase().includes(term.toLowerCase());
+          };
+      }
+    };
+
+    return this.filter(hardwareArray, searchTerm, filterField);
+  }
+
+  /**
+   * Finds all Objects of the Images array that satisfy the search term.
+   * @param {Image[]} hardwareArray Array to be filtered.
+   * @param {string} searchTerm term to filter after.
+   * @returns {Image[]} filtered Image array.
+   */
+  public filterImages(hardwareArray: Image[], searchTerm: string): Image[] {
+
+    const filterField = (field: string, operator: string, term: string): (curr: Image) => boolean => {
+      switch (field.toLowerCase()) {
+        case 'name':
+          return (curr: Image) => operator === '=' && curr.name.toLowerCase() === term.toLowerCase();
+        default:
+          return (curr: Image) => {
+            return curr.name.toLowerCase().includes(term.toLowerCase());
+          };
       }
     };
 
@@ -157,6 +206,8 @@ export class CloudDataService {
   private filters(objArray: any[], searchTerm: string,
                   filterFn: (field: string, operator: string, term: string) => (any) => boolean): any[] {
 
+    let filter: (any) => boolean;
+
     const fn = (operator: string): any[] => {
       const terms = searchTerm.split(operator, 2);
 
@@ -164,7 +215,7 @@ export class CloudDataService {
         return objArray;
       }
 
-      const filter = filterFn(terms[0], operator, terms[1]);
+      filter = filterFn(terms[0], operator, terms[1]);
       return objArray.filter(obj => !filter(obj));
     };
 
@@ -189,11 +240,8 @@ export class CloudDataService {
       return fn('=');
     }
 
-    return objArray
-      .filter(obj => !Object.values(obj)
-        .reduce((prev, curr) => {
-          return prev || curr.toString().toLowerCase().includes(searchTerm.toLowerCase());
-        }, false));
+    filter = filterFn('', '', searchTerm);
+    return objArray.filter(obj => !filter(obj));
   }
 
   /**
