@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Cloud} from 'cloudiator-rest-api';
-import {Subscription} from 'rxjs';
+import {Cloud, Hardware, Image} from 'cloudiator-rest-api';
+import {BehaviorSubject, Subscription} from 'rxjs';
 import {DialogService} from '../../../services/dialog.service';
 import {DeleteCloudDialogComponent} from '../../../dialogs/delete-cloud-dialog/delete-cloud-dialog.component';
 import {map} from 'rxjs/operators';
@@ -17,6 +17,9 @@ import {map} from 'rxjs/operators';
   styleUrls: ['./cloud-view.component.scss']
 })
 export class CloudViewComponent implements OnInit, OnDestroy {
+
+  hardwareDataSource: BehaviorSubject<Hardware[]>;
+  imagesDataSource: BehaviorSubject<Image[]>;
 
   public cloud: Cloud;
 
@@ -34,7 +37,18 @@ export class CloudViewComponent implements OnInit, OnDestroy {
       .pipe(map(paramsMap => paramsMap.get('id')))
       .subscribe(id => this.subscriptions
         .push(this.cloudDataService.findCloud(id)
-          .subscribe(cloud => this.cloud = cloud)))
+          .subscribe(cloud => {
+            this.cloud = cloud;
+            if (cloud) {
+              // find hardware and image information
+              this.subscriptions.push(
+                this.cloudDataService.findHardware(cloud.id).subscribe(hardware =>
+                  this.hardwareDataSource = new BehaviorSubject<Hardware[]>(hardware)),
+                this.cloudDataService.findImages(cloud.id).subscribe(images =>
+                  this.imagesDataSource = new BehaviorSubject<Image[]>(images))
+              );
+            }
+          })))
       .unsubscribe();
   }
 
@@ -51,8 +65,8 @@ export class CloudViewComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-      this.cloudDataService.deleteCloud(this.cloud.id);
-      this.router.navigateByUrl('/clouds');
+        this.cloudDataService.deleteCloud(this.cloud.id);
+        this.router.navigateByUrl('/clouds');
       }
     });
   }

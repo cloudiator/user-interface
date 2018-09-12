@@ -1,26 +1,32 @@
 import {TestBed, async} from '@angular/core/testing';
 import {AppComponent} from './app.component';
-import {RouterModule} from '@angular/router';
 import {AppRoutingModule} from '../../app-routing.module';
 import {CloudViewComponent} from '../clouds/cloud-view/cloud-view.component';
 import {NewCloudComponent} from '../clouds/new-cloud/new-cloud.component';
 import {CloudOverviewComponent} from '../clouds/cloud-overview/cloud-overview.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CloudCardComponent} from '../clouds/cloud-card/cloud-card.component';
+import {HardwareOverviewComponent} from '../hardware/hardware-overview/hardware-overview.component';
+import {CdkTableModule} from '@angular/cdk/table';
+import {ImagesOverviewComponent} from '../images/images-overview/images-overview.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        AppRoutingModule,
-        FormsModule
-      ],
       declarations: [
         AppComponent,
         CloudViewComponent,
         NewCloudComponent,
         CloudOverviewComponent,
-        CloudCardComponent
+        CloudCardComponent,
+        HardwareOverviewComponent,
+        ImagesOverviewComponent
+      ],
+      imports: [
+        AppRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        CdkTableModule
       ],
       providers: []
     }).compileComponents();

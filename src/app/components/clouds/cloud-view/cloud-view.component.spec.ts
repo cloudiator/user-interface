@@ -9,6 +9,7 @@ import {Overlay} from '@angular/cdk/overlay';
 import {ActivatedRoute, convertToParamMap} from '@angular/router';
 import {Observable, observable} from 'rxjs';
 import {Api, CloudCredential, CloudType} from 'cloudiator-rest-api';
+import {CdkTableModule} from '@angular/cdk/table';
 
 describe('CloudViewComponent', () => {
   let component: CloudViewComponent;
@@ -37,6 +38,7 @@ describe('CloudViewComponent', () => {
           'feature': combineReducers(fromRoot.reducers)
         }),
         RouterTestingModule,
+        CdkTableModule
       ],
       providers: [
         {
