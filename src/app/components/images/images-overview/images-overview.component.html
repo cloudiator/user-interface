@@ -1,0 +1,39 @@
+<div class="hero">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">Images</h1>
+    </div>
+  </div>
+</div>
+
+
+<section class="section">
+  <div class="container is-center">
+
+    <!-- Search bar -->
+    <p class="control has-icons-left" style="max-width: 400px">
+      <input class="input" type="search" placeholder="Search" [formControl]="searchFormControl">
+      <span class="icon is-left">
+        <i class="fas fa-search"></i>
+      </span>
+    </p>
+
+    <table cdk-table class="table card is-fullwidth is-striped is-hoverable" [dataSource]="dataSource.value">
+
+      <!-- Name Definition -->
+      <ng-container cdkColumnDef="name">
+        <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable" (click)="adjustSort('name')">
+          Name
+          <span [class.is-opaque]="sortKey.value !== 'name'">
+           <i class="fas fa-arrow-{{ sortDirection.value === 'asc' ? 'up' : 'down' }}"></i>
+          </span>
+        </th>
+        <td cdk-cell *cdkCellDef="let row"> {{row.name}}</td>
+      </ng-container>
+
+      <!-- Header and Row Declarations -->
+      <tr cdk-header-row *cdkHeaderRowDef="['name']"></tr>
+      <tr cdk-row *cdkRowDef="let row; columns: ['name']"  [routerLink]="['/cloud', cloudDataService.findCloudId(row.id)]"></tr>
+    </table>
+  </div>
+</section>

@@ -8,7 +8,7 @@ import {ApiModule, Configuration, ConfigurationParameters} from 'cloudiator-rest
 import {HttpClientModule} from '@angular/common/http';
 import {CloudOverviewComponent} from './components/clouds/cloud-overview/cloud-overview.component';
 import {NewCloudComponent} from './components/clouds/new-cloud/new-cloud.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CloudViewComponent} from './components/clouds/cloud-view/cloud-view.component';
 import {CloudCardComponent} from './components/clouds/cloud-card/cloud-card.component';
 import {DialogService} from './services/dialog.service';
@@ -20,6 +20,9 @@ import {CloudDataService} from './services/cloud-data.service';
 import {RuntimeConfigService} from './services/runtime-config.service';
 import { ToastComponent } from './dialogs/toast/toast.component';
 import {ToastService} from './services/toast.service';
+import { HardwareOverviewComponent } from './components/hardware/hardware-overview/hardware-overview.component';
+import {CdkHeaderRow, CdkHeaderRowDef, CdkTable, CdkTableModule} from '@angular/cdk/table';
+import { ImagesOverviewComponent } from './components/images/images-overview/images-overview.component';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -38,7 +41,9 @@ export function apiConfigFactory(): Configuration {
     CloudCardComponent,
     DeleteCloudDialogComponent,
     ConfirmNewCloudDialogComponent,
-    ToastComponent
+    ToastComponent,
+    HardwareOverviewComponent,
+    ImagesOverviewComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,7 +52,9 @@ export function apiConfigFactory(): Configuration {
     ApiModule.forRoot(apiConfigFactory),
     HttpClientModule,
     FormsModule,
-    OverlayModule
+    ReactiveFormsModule,
+    OverlayModule,
+    CdkTableModule
   ],
   providers: [
     Overlay,

@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {CloudCardComponent} from './cloud-card.component';
-import {Router} from '@angular/router';
+import { CloudCardComponent } from './cloud-card.component';
+import {Router, RouterModule} from '@angular/router';
 
 describe('CloudCardComponent', () => {
   let component: CloudCardComponent;
@@ -11,8 +11,10 @@ describe('CloudCardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CloudCardComponent],
-      imports: [],
+      declarations: [ CloudCardComponent ],
+      imports: [
+        RouterModule
+      ],
       providers: [
         {provide: Router, useValue: router}
       ]
