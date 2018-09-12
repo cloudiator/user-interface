@@ -4,7 +4,7 @@ import {HardwareOverviewComponent} from './hardware-overview.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CdkTableModule} from '@angular/cdk/table';
 import {CloudDataService} from '../../../services/cloud-data.service';
-import {CloudService} from 'cloudiator-rest-api';
+import {ApiModule, CloudService} from 'cloudiator-rest-api';
 import {HttpClientModule} from '@angular/common/http';
 import {combineReducers, StoreModule} from '@ngrx/store';
 import * as fromRoot from '../../../reducers';
@@ -12,6 +12,7 @@ import {DialogService} from '../../../services/dialog.service';
 import {ToastService} from '../../../services/toast.service';
 import {Overlay} from '@angular/cdk/overlay';
 import {Injector} from '@angular/core';
+import {apiConfigFactory} from '../../../app.module';
 
 describe('HardwareOverviewComponent', () => {
   let component: HardwareOverviewComponent;
@@ -28,11 +29,11 @@ describe('HardwareOverviewComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         CdkTableModule,
-        HttpClientModule
+        HttpClientModule,
+        ApiModule.forRoot(apiConfigFactory)
       ],
       providers: [
         CloudDataService,
-        CloudService,
         DialogService,
         ToastService,
         Overlay,

@@ -8,6 +8,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CloudCardComponent} from '../clouds/cloud-card/cloud-card.component';
 import {HardwareOverviewComponent} from '../hardware/hardware-overview/hardware-overview.component';
 import {CdkTableModule} from '@angular/cdk/table';
+import {ImagesOverviewComponent} from '../images/images-overview/images-overview.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -18,7 +19,8 @@ describe('AppComponent', () => {
         NewCloudComponent,
         CloudOverviewComponent,
         CloudCardComponent,
-        HardwareOverviewComponent
+        HardwareOverviewComponent,
+        ImagesOverviewComponent
       ],
       imports: [
         AppRoutingModule,

@@ -1,6 +1,18 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ImagesOverviewComponent } from './images-overview.component';
+import {ImagesOverviewComponent} from './images-overview.component';
+import {ApiModule, CloudService} from 'cloudiator-rest-api';
+import {combineReducers, StoreModule} from '@ngrx/store';
+import {HttpClientModule} from '@angular/common/http';
+import {ToastService} from '../../../services/toast.service';
+import {CdkTableModule} from '@angular/cdk/table';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {Injector} from '@angular/core';
+import {DialogService} from '../../../services/dialog.service';
+import {Overlay} from '@angular/cdk/overlay';
+import {CloudDataService} from '../../../services/cloud-data.service';
+import * as fromRoot from '../../../reducers';
+import {apiConfigFactory} from '../../../app.module';
 
 describe('ImagesOverviewComponent', () => {
   let component: ImagesOverviewComponent;
@@ -8,9 +20,27 @@ describe('ImagesOverviewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ImagesOverviewComponent ]
+      declarations: [ImagesOverviewComponent],
+      imports: [
+        StoreModule.forRoot({
+          ...fromRoot.reducers,
+          'feature': combineReducers(fromRoot.reducers)
+        }),
+        FormsModule,
+        ReactiveFormsModule,
+        CdkTableModule,
+        HttpClientModule,
+        ApiModule.forRoot(apiConfigFactory)
+      ],
+      providers: [
+        CloudDataService,
+        DialogService,
+        ToastService,
+        Overlay,
+        Injector
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
