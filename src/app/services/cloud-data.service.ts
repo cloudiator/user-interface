@@ -143,6 +143,16 @@ export class CloudDataService {
   }
 
   /**
+   * Returns the cloud id of the given ID.
+   * @param {string} id
+   * @returns {string}
+   */
+  public findCloudId(id: string): string {
+    // ToDo: unsafe, not sure if cloud id always ends with ~.
+    return id.split('~')[0];
+  }
+
+  /**
    * Finds all Objects of the Hardware array that satisfy the search term.
    * @param {Hardware[]} hardwareArray Array to be filtered.
    * @param {string} searchTerm term to filter after.

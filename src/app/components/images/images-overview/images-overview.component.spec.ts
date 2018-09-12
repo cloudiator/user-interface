@@ -13,10 +13,13 @@ import {Overlay} from '@angular/cdk/overlay';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import * as fromRoot from '../../../reducers';
 import {apiConfigFactory} from '../../../app.module';
+import {Router, RouterModule} from '@angular/router';
 
 describe('ImagesOverviewComponent', () => {
   let component: ImagesOverviewComponent;
   let fixture: ComponentFixture<ImagesOverviewComponent>;
+
+  const router = jasmine.createSpyObj('Router', ['navigate']);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -30,9 +33,11 @@ describe('ImagesOverviewComponent', () => {
         ReactiveFormsModule,
         CdkTableModule,
         HttpClientModule,
-        ApiModule.forRoot(apiConfigFactory)
+        ApiModule.forRoot(apiConfigFactory),
+        RouterModule
       ],
       providers: [
+        { provide: Router, useValue: router },
         CloudDataService,
         DialogService,
         ToastService,

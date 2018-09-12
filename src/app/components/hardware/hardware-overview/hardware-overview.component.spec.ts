@@ -13,10 +13,13 @@ import {ToastService} from '../../../services/toast.service';
 import {Overlay} from '@angular/cdk/overlay';
 import {Injector} from '@angular/core';
 import {apiConfigFactory} from '../../../app.module';
+import {Router, RouterModule} from '@angular/router';
 
 describe('HardwareOverviewComponent', () => {
   let component: HardwareOverviewComponent;
   let fixture: ComponentFixture<HardwareOverviewComponent>;
+
+  const router = jasmine.createSpyObj('Router', ['navigate']);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -30,9 +33,11 @@ describe('HardwareOverviewComponent', () => {
         ReactiveFormsModule,
         CdkTableModule,
         HttpClientModule,
-        ApiModule.forRoot(apiConfigFactory)
+        ApiModule.forRoot(apiConfigFactory),
+        RouterModule
       ],
       providers: [
+        { provide: Router, useValue: router },
         CloudDataService,
         DialogService,
         ToastService,

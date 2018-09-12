@@ -33,7 +33,7 @@
 
       <!-- Header and Row Declarations -->
       <tr cdk-header-row *cdkHeaderRowDef="['name']"></tr>
-      <tr cdk-row *cdkRowDef="let row; columns: ['name']"></tr>
+      <tr cdk-row *cdkRowDef="let row; columns: ['name']"  [routerLink]="['/cloud', cloudDataService.findCloudId(row.id)]"></tr>
     </table>
   </div>
 </section>

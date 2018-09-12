@@ -18,7 +18,7 @@ export class HardwareOverviewComponent implements OnInit {
   sortKey = new BehaviorSubject<string>('');
   sortDirection = new BehaviorSubject<string>('');
 
-  constructor(private cloudDataService: CloudDataService) {
+  constructor(public cloudDataService: CloudDataService) {
   }
 
   ngOnInit() {
