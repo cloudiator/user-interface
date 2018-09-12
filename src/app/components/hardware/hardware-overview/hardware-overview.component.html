@@ -1,3 +1,52 @@
-<p>
-  hardware-overview works!
-</p>
+<div class="hero">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">Hardware</h1>
+    </div>
+  </div>
+</div>
+
+
+<section class="section">
+  <div class="container is-center">
+
+    <!-- Search bar -->
+    <p class="control has-icons-left">
+      <input class="input" type="search" placeholder="Search"  [formControl]="searchFormControl">
+      <span class="icon is-left">
+        <i class="fas fa-search"></i>
+      </span>
+    </p>
+
+    <table cdk-table class="table is-fullwidth is-striped is-hoverable" [dataSource]="dataSource.value">
+
+      <!-- Name Definition -->
+      <ng-container cdkColumnDef="name">
+        <th cdk-header-cell *cdkHeaderCellDef> Name</th>
+        <td cdk-cell *cdkCellDef="let row"> {{row.name}}</td>
+      </ng-container>
+
+      <!-- Ram Definition -->
+      <ng-container cdkColumnDef="ram">
+        <th cdk-header-cell *cdkHeaderCellDef> Ram</th>
+        <td cdk-cell *cdkCellDef="let row"> {{row.ram}}</td>
+      </ng-container>
+
+      <!-- Cores Definition -->
+      <ng-container cdkColumnDef="cores">
+        <th cdk-header-cell *cdkHeaderCellDef> Cores</th>
+        <td cdk-cell *cdkCellDef="let row"> {{row.cores}}</td>
+      </ng-container>
+
+      <!-- Disk Definition -->
+      <ng-container cdkColumnDef="disk">
+        <th cdk-header-cell *cdkHeaderCellDef> Disk</th>
+        <td cdk-cell *cdkCellDef="let row"> {{row.disk}}</td>
+      </ng-container>
+
+      <!-- Header and Row Declarations -->
+      <tr cdk-header-row *cdkHeaderRowDef="['name', 'cores', 'ram', 'disk']"></tr>
+      <tr cdk-row *cdkRowDef="let row; columns: ['name', 'cores', 'ram', 'disk']"></tr>
+    </table>
+  </div>
+</section>

@@ -1,7 +1,8 @@
 import {Action} from '@ngrx/store';
-import {Cloud} from 'cloudiator-rest-api';
+import {Cloud, Hardware} from 'cloudiator-rest-api';
 
-export const SET_CLOUDS = '[Clouddata] set settings';
+export const SET_CLOUDS = '[Clouddata] set Cloud';
+export const SET_HARDWARE = '[Clouddata] set Hardware';
 
 export class SetCloudsAction implements Action {
   readonly type = SET_CLOUDS;
@@ -9,6 +10,12 @@ export class SetCloudsAction implements Action {
   constructor(public clouds: Cloud[]) {
   }
 }
+export class SetHardwareAction implements Action {
+  readonly type = SET_HARDWARE;
+
+  constructor(public hardware: Hardware[]) {
+  }
+}
 
 
-export type All = SetCloudsAction;
+export type All = SetCloudsAction | SetHardwareAction;
