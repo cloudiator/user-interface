@@ -216,6 +216,9 @@ export class CloudDataService {
    */
   private filter(objArray: any[], searchTerm: string,
                  filterFn: (field: string, operator: string, term: string) => (any) => boolean): any[] {
+    if (!objArray) {
+      return null;
+    }
 
     const terms = searchTerm.split(' ');
 
@@ -283,15 +286,15 @@ export class CloudDataService {
   private compareNumbers(field: number, operator: string, term: string): boolean {
     switch (operator) {
       case '=':
-        return field === Number.parseInt(term);
+        return field === Number.parseFloat(term);
       case '>':
-        return field > Number.parseInt(term);
+        return field > Number.parseFloat(term);
       case '>=':
-        return field >= Number.parseInt(term);
+        return field >= Number.parseFloat(term);
       case '<':
-        return field < Number.parseInt(term);
+        return field < Number.parseFloat(term);
       case '<=':
-        return field <= Number.parseInt(term);
+        return field <= Number.parseFloat(term);
       default:
         return false;
     }
