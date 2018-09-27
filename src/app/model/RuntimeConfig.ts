@@ -3,5 +3,11 @@
  */
 export interface RuntimeConfig {
   apiPath: string;
+  authMode: AuthMode;
   xApiKey: string;
+}
+
+export enum AuthMode {
+  SINGLE = 'SINGLE',
+  STANDARD  = 'STANDARD'
 }

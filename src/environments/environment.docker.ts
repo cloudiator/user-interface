@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   useRuntimeConfig: true,
-  href: '/ui/',
+  href: '/',
   apiKey: '',
   backendUrl: '',
   notificationDuration: 10000

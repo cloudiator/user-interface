@@ -2,12 +2,15 @@
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import {AuthMode} from '../app/model/RuntimeConfig';
+
 export const environment = {
   production: false,
   useRuntimeConfig: false,
   href: '/',
-  xApiKey: 'CloudiatorUI2018',
   apiPath: 'http://134.60.64.119:9000',
+  authMode: AuthMode.SINGLE,
+  xApiKey: 'CloudiatorUI2018',
   notificationDuration: 10000
 };
 

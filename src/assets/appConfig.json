@@ -1,3 +1,5 @@
 {
-  "apiPath": "${API_URL}"
+  "apiPath": "${API_URL}",
+  "authMode": "${AUTH_MODE}",
+  "xApiKey": "${AUTH_TOKEN}"
 }

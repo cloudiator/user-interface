@@ -1,5 +1,5 @@
 import * as userSettingActions from '../actions/runtime-config.actions';
-import {RuntimeConfig} from '../model/RuntimeConfig';
+import {AuthMode, RuntimeConfig} from '../model/RuntimeConfig';
 
 export interface State {
   runtimeConfig: RuntimeConfig;
@@ -9,6 +9,7 @@ export interface State {
 export const initialState = {
   runtimeConfig: <RuntimeConfig>{
     apiPath: '',
+    authMode: AuthMode.SINGLE,
     xApiKey: ''
   },
   isFetched: false
@@ -18,6 +19,8 @@ export function reducer(state = initialState, action: userSettingActions.All): S
   switch (action.type) {
     case userSettingActions.SET_API_PATH:
       return {runtimeConfig: {apiPath: action.apiPath, ...state.runtimeConfig}, ...state};
+    case userSettingActions.SET_AUTH_MODE:
+      return {runtimeConfig: {apiPath: action.authMode, ...state.runtimeConfig}, ...state};
     case userSettingActions.SET_X_API_KEY:
       return {runtimeConfig: {xApiKey: action.xApiKey, ...state.runtimeConfig}, ...state};
     case userSettingActions.SET_RUNTIME_CONFIG:
@@ -29,5 +32,6 @@ export function reducer(state = initialState, action: userSettingActions.All): S
 
 export const getApiPath = (state: State): string => state.runtimeConfig.apiPath;
 export const getXApiKey = (state: State): string => state.runtimeConfig.xApiKey;
+export const getAuthMode = (state: State): AuthMode => state.runtimeConfig.authMode;
 export const getRuntimeConfig = (state: State): RuntimeConfig => state.runtimeConfig;
 export const isFetched = (state: State): boolean => state.isFetched;

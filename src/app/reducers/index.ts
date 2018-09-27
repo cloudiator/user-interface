@@ -43,6 +43,7 @@ export const getUserSettings = createSelector(userSettingsState, fromUserSetting
 /* Runtime Config */
 
 export const getApiPath = createSelector(runtimeConfigState, fromRuntimeConfig.getApiPath);
+export const getAuthMode = createSelector(runtimeConfigState, fromRuntimeConfig.getAuthMode);
 export const getXApiKey = createSelector(runtimeConfigState, fromRuntimeConfig.getXApiKey);
 export const getRuntimeConfig = createSelector(runtimeConfigState, fromRuntimeConfig.getRuntimeConfig);
 export const getRuntimeConfigIsFetched = createSelector(runtimeConfigState, fromRuntimeConfig.isFetched);
