@@ -9,6 +9,7 @@ import {HttpResponse} from '@angular/common/http';
 import {RuntimeConfigService} from './runtime-config.service';
 import {ToastService} from './toast.service';
 import {ToastType} from '../model/toast';
+import {environment} from '../../environments/environment';
 
 /**
  * Local layer between the cloud swagger service and Components, handles the redux store management of clouds.
@@ -26,6 +27,7 @@ export class CloudDataService {
 
     store.pipe(select(fromRoot.getRuntimeConfig)).subscribe(config => {
       cloudApiService.basePath = config.apiPath;
+      cloudApiService.configuration.apiKeys['X-API-Key'] = config.xApiKey;
     });
   }
 
