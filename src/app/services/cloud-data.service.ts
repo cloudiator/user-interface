@@ -1,15 +1,14 @@
 import {Injectable} from '@angular/core';
-import {Cloud, CloudService, Hardware, Image, NewCloud} from 'cloudiator-rest-api';
+import {Cloud, CloudService, Hardware, Image, NewCloud, Location} from 'cloudiator-rest-api';
 import {Observable} from 'rxjs';
 import * as fromRoot from '../reducers';
 import * as cloudActions from '../actions/cloud-data.actions';
 import {select, Store} from '@ngrx/store';
-import {filter, map, reduce} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {HttpResponse} from '@angular/common/http';
 import {RuntimeConfigService} from './runtime-config.service';
 import {ToastService} from './toast.service';
 import {ToastType} from '../model/toast';
-import {environment} from '../../environments/environment';
 
 /**
  * Local layer between the cloud swagger service and Components, handles the redux store management of clouds.
@@ -97,6 +96,17 @@ export class CloudDataService {
     return this.store.pipe(select(fromRoot.getImages));
   }
 
+  public findLocations(id?: string): Observable<Location[]> {
+    this.fetchLocations();
+
+    if (id) {
+      return this.store.pipe(
+        select(fromRoot.getLocations),
+        map(locations => locations.filter(location => location.id.includes(id))));
+    }
+    return this.store.pipe(select(fromRoot.getLocations));
+  }
+
   /**
    * Fetches all clouds from the Server and saves them in the Redux store.
    * before sending the request, the config file must be loaded to grant the correct api url
@@ -138,6 +148,20 @@ export class CloudDataService {
       this.cloudApiService.findImages().toPromise()
         .then(images => {
           this.store.dispatch(new cloudActions.SetImagesAction(images));
+        })
+        .catch(() => {
+          console.error('could not fetch Images');
+          this.toastService.show({text: 'could not fetch Images', type: ToastType.DANGER}, false);
+        });
+    });
+  }
+
+  private fetchLocations() {
+    this.runtimeConfigService.awaitConfigLoad().then(() => {
+      // fetch Images
+      this.cloudApiService.findLocations().toPromise()
+        .then(locations => {
+          this.store.dispatch(new cloudActions.SetLocationsAction(locations));
         })
         .catch(() => {
           console.error('could not fetch Images');
@@ -190,16 +214,22 @@ export class CloudDataService {
 
   /**
    * Finds all Objects of the Images array that satisfy the search term.
-   * @param {Image[]} hardwareArray Array to be filtered.
+   * @param {Image[]} imagesArray Array to be filtered.
    * @param {string} searchTerm term to filter after.
    * @returns {Image[]} filtered Image array.
    */
-  public filterImages(hardwareArray: Image[], searchTerm: string): Image[] {
+  public filterImages(imagesArray: Image[], searchTerm: string): Image[] {
 
     const filterField = (field: string, operator: string, term: string): (curr: Image) => boolean => {
       switch (field.toLowerCase()) {
         case 'name':
           return (curr: Image) => operator === '=' && curr.name.toLowerCase() === term.toLowerCase();
+        case 'os':
+          return (curr: Image) =>
+            curr.operatingSystem &&
+            curr.operatingSystem.operatingSystemFamily &&
+            operator === '=' &&
+            curr.operatingSystem.operatingSystemFamily.toLowerCase() === term.toLowerCase();
         default:
           return (curr: Image) => {
             return curr.name.toLowerCase().includes(term.toLowerCase());
@@ -207,7 +237,35 @@ export class CloudDataService {
       }
     };
 
-    return this.filter(hardwareArray, searchTerm, filterField);
+    return this.filter(imagesArray, searchTerm, filterField);
+  }
+
+  /**
+   * Finds all Objects of the Locations array that satisfy the search term.
+   * @param {Location[]} locationsArray Array to be filtered.
+   * @param {string} searchTerm term to filter after.
+   * @returns {Location[]} filtered Image array.
+   */
+  public filterLocations(locationsArray: Location[], searchTerm: string): Location[] {
+
+    const filterField = (field: string, operator: string, term: string): (curr: Location) => boolean => {
+      switch (field.toLowerCase()) {
+        case 'name':
+          return (curr: Location) => operator === '=' && curr.name.toLowerCase() === term.toLowerCase();
+        case 'country':
+          return (curr: Location) =>
+            curr.geoLocation &&
+            curr.geoLocation.country &&
+            operator === '=' &&
+            curr.geoLocation.country.toLowerCase() === term.toLowerCase();
+        default:
+          return (curr: Location) => {
+            return curr.name.toLowerCase().includes(term.toLowerCase());
+          };
+      }
+    };
+
+    return this.filter(locationsArray, searchTerm, filterField);
   }
 
   /**
@@ -242,7 +300,6 @@ export class CloudDataService {
   private filters(objArray: any[], searchTerm: string,
                   filterFn: (field: string, operator: string, term: string) => (any) => boolean): any[] {
 
-    let filter: (any) => boolean;
 
     const fn = (operator: string): any[] => {
       const terms = searchTerm.split(operator, 2);
@@ -251,7 +308,7 @@ export class CloudDataService {
         return objArray;
       }
 
-      filter = filterFn(terms[0], operator, terms[1]);
+      const filter = filterFn(terms[0], operator, terms[1]);
       return objArray.filter(obj => !filter(obj));
     };
 
@@ -276,12 +333,14 @@ export class CloudDataService {
       return fn('=');
     }
 
-    filter = filterFn('', '', searchTerm);
-    return objArray.filter(obj => !filter(obj));
+    {
+      const filter = filterFn('', '', searchTerm);
+      return objArray.filter(obj => !filter(obj));
+    }
   }
 
   /**
-   * SUupport function that checks if a number compared to a string satisfies the given operator.
+   * Support function that checks if a number compared to a string satisfies the given operator.
    * @param {number} field
    * @param {string} operator
    * @param {string} term

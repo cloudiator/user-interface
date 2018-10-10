@@ -1,7 +1,7 @@
 <div class="hero">
   <div class="hero-body">
     <div class="container">
-      <h1 class="title">Images</h1>
+      <h1 class="title">Locations</h1>
     </div>
   </div>
 </div>
@@ -31,20 +31,21 @@
         <td cdk-cell *cdkCellDef="let row"> {{row.name}}</td>
       </ng-container>
 
-      <!-- OS Definition -->
-      <ng-container cdkColumnDef="os">
-        <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable" (click)="adjustSort('os')">
-          OS
-          <span [class.is-opaque]="sortKey.value !== 'os'">
+      <!-- country Definition -->
+      <ng-container cdkColumnDef="country">
+        <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable" (click)="adjustSort('country')">
+          Country
+          <span [class.is-opaque]="sortKey.value !== 'Country'">
            <i class="fas fa-arrow-{{ sortDirection.value === 'asc' ? 'up' : 'down' }}"></i>
           </span>
         </th>
-        <td cdk-cell *cdkCellDef="let row"> {{row.operatingSystem.operatingSystemFamily}}</td>
+        <td cdk-cell *cdkCellDef="let row"> {{row.geolocation ? row.geolocation : ''}}</td>
       </ng-container>
 
       <!-- Header and Row Declarations -->
-      <tr cdk-header-row *cdkHeaderRowDef="['name', 'os']"></tr>
-      <tr cdk-row *cdkRowDef="let row; columns: ['name', 'os']"  [routerLink]="['/cloud', cloudDataService.findCloudId(row.id)]"></tr>
+      <tr cdk-header-row *cdkHeaderRowDef="['name', 'country']"></tr>
+      <tr cdk-row *cdkRowDef="let row; columns: ['name', 'country']"
+          [routerLink]="['/cloud', cloudDataService.findCloudId(row.id)]"></tr>
     </table>
   </div>
 </section>

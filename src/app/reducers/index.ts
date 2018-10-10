@@ -36,6 +36,7 @@ export const runtimeConfigState = (state: State): fromRuntimeConfig.State => sta
 export const getClouds = createSelector(cloudDataState, fromCloudData.getClouds);
 export const getHardware = createSelector(cloudDataState, fromCloudData.getHardware);
 export const getImages = createSelector(cloudDataState, fromCloudData.getImages);
+export const getLocations = createSelector(cloudDataState, fromCloudData.getLocations);
 
 /* User Settings */
 export const getUserSettings = createSelector(userSettingsState, fromUserSettings.getUserSettings);

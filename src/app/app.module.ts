@@ -23,6 +23,7 @@ import {ToastService} from './services/toast.service';
 import {HardwareOverviewComponent} from './components/hardware/hardware-overview/hardware-overview.component';
 import {CdkTableModule} from '@angular/cdk/table';
 import {ImagesOverviewComponent} from './components/images/images-overview/images-overview.component';
+import { LocationsOverviewComponent } from './components/locations/locations-overview/locations-overview.component';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -44,6 +45,7 @@ export function apiConfigFactory(): Configuration {
     ToastComponent,
     HardwareOverviewComponent,
     ImagesOverviewComponent,
+    LocationsOverviewComponent,
   ],
   imports: [
     BrowserModule,
