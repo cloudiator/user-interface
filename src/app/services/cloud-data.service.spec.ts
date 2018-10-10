@@ -1,4 +1,4 @@
-import {TestBed, inject} from '@angular/core/testing';
+import {TestBed, inject, async} from '@angular/core/testing';
 
 import {CloudDataService} from './cloud-data.service';
 import {ApiModule, CloudService} from 'cloudiator-rest-api';
@@ -45,14 +45,16 @@ describe('CloudDataService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should find correct cloud', inject([CloudDataService], (service: CloudDataService) => {
+  it('should find correct cloud', async(inject([CloudDataService], (service: CloudDataService) => {
 
-    service.findCloud(testData.cloudOne.id).toPromise().then(cloud => {
-      // expect(cloud.id).not.toBe(testData.cloudOne.id);
-      expect(true).toBeTruthy();
+    return service.findCloud(testData.cloudOne.id).toPromise().then(cloud => {
+      console.log(cloud)
+      expect(cloud.id).toEqual(testData.cloudOne.id);
+      expect(cloud.id).not.toEqual(testData.cloudOne.id);
+      // expect(true).toBeTruthy();
     });
 
-  }));
+  })));
 
   it('filterHardware should not error', inject([CloudDataService], (service: CloudDataService) => {
     expect(service.filterHardware(null, '')).toBeNull();
@@ -117,6 +119,17 @@ describe('CloudDataService', () => {
   }));
 
   it('filterHardware should find parameter greater than', inject([CloudDataService], (service: CloudDataService) => {
+    expect(service.filterHardware(testData.allHardware, `cloud`)).toEqual([]);
+    expect(service.filterHardware(testData.allHardware, `cloud=`)).toEqual([]);
+    expect(service.filterHardware(testData.allHardware, `cloud=222`)).toEqual([]);
+    expect(service.filterHardware(testData.allHardware, `cloud=${testData.cloudTwo.id}`)).toEqual(testData.allHardware);
+
+    expect(service.filterHardware(testData.allHardware, `id`)).toEqual([]);
+    expect(service.filterHardware(testData.allHardware, `id=`)).toEqual([]);
+    expect(service.filterHardware(testData.allHardware, `id=222`)).toEqual([]);
+    expect(service.filterHardware(testData.allHardware, `id=${testData.cloudTwo.id}`)).toEqual([]);
+    expect(service.filterHardware(testData.allHardware, `id=${testData.hardwareOne.id}`)).toEqual([testData.hardwareOne]);
+
     expect(service.filterHardware(testData.allHardware, `name>`)).toEqual([]);
     expect(service.filterHardware(testData.allHardware, `name> `)).toEqual([]);
     expect(service.filterHardware(testData.allHardware, `name>1`)).toEqual([]);
@@ -275,11 +288,27 @@ describe('CloudDataService', () => {
   }));
 
   it('filterImages should find basic searches', inject([CloudDataService], (service: CloudDataService) => {
+    expect(service.filterImages(testData.allImages, `cloud`)).toEqual([]);
+    expect(service.filterImages(testData.allImages, `cloud=`)).toEqual([]);
+    expect(service.filterImages(testData.allImages, `cloud=222`)).toEqual([]);
+    expect(service.filterImages(testData.allImages, `cloud=${testData.cloudTwo.id}`)).toEqual(testData.allImages);
+
+    expect(service.filterImages(testData.allImages, `id`)).toEqual([]);
+    expect(service.filterImages(testData.allImages, `id=`)).toEqual([]);
+    expect(service.filterImages(testData.allImages, `id=222`)).toEqual([]);
+    expect(service.filterImages(testData.allImages, `id=${testData.cloudTwo.id}`)).toEqual([]);
+    expect(service.filterImages(testData.allImages, `id=${testData.imageOne.id}`)).toEqual([testData.imageOne]);
+
     expect(service.filterImages(testData.allImages, ' ')).toEqual(testData.allImages);
     expect(service.filterImages(testData.allImages, testData.imageOne.name)).toEqual([testData.imageOne]);
     expect(service.filterImages(testData.allImages, '10sab')).toEqual([]);
     expect(service.filterImages(testData.allImages, 'not a valid search')).toEqual([]);
     expect(service.filterImages(testData.allImages, `${testData.imageOne.name.slice(1, 10)} ${testData.imageOne.name.slice(15, 17)}`))
       .toEqual([testData.imageOne]);
+
+    expect(service.filterImages(testData.allImages, `os=`)).toEqual([]);
+    expect(service.filterImages(testData.allImages, `os=222`)).toEqual([]);
+    expect(service.filterImages(testData.allImages, `os=${testData.imageThree.operatingSystem.operatingSystemFamily}`))
+      .toEqual([testData.imageThree]);
   }));
 });

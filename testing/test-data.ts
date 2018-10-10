@@ -19,7 +19,7 @@ export const allClouds: Cloud[] = [
     }
   },
   {
-    id: '1a79a4d60de6718e8e5b326e338ae533',
+    id: '02f7f6ab33e4a94d0f441947972668ef',
     endpoint: 'https://endpoint.example.com',
     cloudType: 'PRIVATE',
     api: <Api>{
@@ -60,6 +60,25 @@ export const cloudOne: Cloud = <Cloud>{
     secret: 'secret'
   }
 };
+
+export const cloudTwo: Cloud = <Cloud>{
+  id: '02f7f6ab33e4a94d0f441947972668ef',
+  endpoint: 'https://endpoint.example.com',
+  cloudType: 'PRIVATE',
+  api: <Api>{
+    providerName: 'openstack-nova'
+  },
+  credential: <CloudCredential>{
+    user: 'tenant:username',
+    secret: 'MeltdownVictim'
+  },
+  cloudConfiguration: {
+    nodeGroup: 'cloudiator',
+    properties: {
+      'sword.regions': 'RegionOne, RegionTwo'
+    }
+  }
+}
 
 export const hardwareOne: Hardware = <Hardware>{
   id: '02f7f6ab33e4a94d0f441947972668ef~RegionOne/931b887e-e747-4a66-b643-0cc5c0caa1cd',

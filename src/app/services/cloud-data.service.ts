@@ -200,6 +200,7 @@ export class CloudDataService {
           return (curr: Hardware) => this.compareNumbers(curr.disk, operator, term);
         default:
           // default case is used when no operator is found in the search term
+          // id is specifically excluded from this as it would cause a lot of clutter
           return (curr: Hardware) => {
             return curr.name.toLowerCase().includes(term.toLowerCase()) ||
               curr.cores.toString().toLowerCase().includes(term.toLowerCase()) ||
@@ -311,7 +312,7 @@ export class CloudDataService {
 
       // special filter for cloud id and normal id
       if (terms[0] === 'cloud') {
-        return objArray.filter(obj => !obj.id.includes(terms[1]));
+        return objArray.filter(obj => this.findCloudId(obj.id) !== terms[1]);
       }
       if (terms[0] === 'id') {
         return objArray.filter(obj => obj.id !== terms[1]);
