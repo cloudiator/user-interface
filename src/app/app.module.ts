@@ -18,11 +18,11 @@ import {ConfirmNewCloudDialogComponent} from './dialogs/confirm-new-cloud-dialog
 import {environment} from '../environments/environment';
 import {CloudDataService} from './services/cloud-data.service';
 import {RuntimeConfigService} from './services/runtime-config.service';
-import { ToastComponent } from './dialogs/toast/toast.component';
+import {ToastComponent} from './dialogs/toast/toast.component';
 import {ToastService} from './services/toast.service';
-import { HardwareOverviewComponent } from './components/hardware/hardware-overview/hardware-overview.component';
-import {CdkHeaderRow, CdkHeaderRowDef, CdkTable, CdkTableModule} from '@angular/cdk/table';
-import { ImagesOverviewComponent } from './components/images/images-overview/images-overview.component';
+import {HardwareOverviewComponent} from './components/hardware/hardware-overview/hardware-overview.component';
+import {CdkTableModule} from '@angular/cdk/table';
+import {ImagesOverviewComponent} from './components/images/images-overview/images-overview.component';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {

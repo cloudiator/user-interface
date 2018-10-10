@@ -27,7 +27,9 @@ export class CloudDataService {
 
     store.pipe(select(fromRoot.getRuntimeConfig)).subscribe(config => {
       cloudApiService.basePath = config.apiPath;
-      cloudApiService.configuration.apiKeys['X-API-Key'] = config.xApiKey;
+      if (cloudApiService.configuration) {
+        cloudApiService.configuration.apiKeys['X-API-Key'] = config.xApiKey;
+      }
     });
   }
 

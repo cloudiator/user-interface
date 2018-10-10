@@ -1,4 +1,4 @@
-import {Api, Cloud, CloudConfiguration, CloudCredential, Hardware, Image, Location, OperatingSystem, Property} from 'cloudiator-rest-api';
+import {Api, Cloud, CloudConfiguration, CloudCredential, Hardware, Image, Location, OperatingSystem} from 'cloudiator-rest-api';
 
 /* CLOUDS */
 export const allClouds: Cloud[] = [
@@ -8,16 +8,10 @@ export const allClouds: Cloud[] = [
     cloudType: 'PRIVATE',
     cloudConfiguration: <CloudConfiguration>{
       nodeGroup: 'nodes',
-      properties: [
-        <Property>{
-          key: 'propertyOne',
-          value: 'One'
-        },
-        <Property>{
-          key: 'propertyTwo',
-          value: 'Two'
-        },
-      ]
+      properties: {
+        'propertyOne': 'One',
+        'propertyTwo': 'Two'
+      }
     },
     credential: <CloudCredential>{
       user: 'user',
@@ -37,12 +31,9 @@ export const allClouds: Cloud[] = [
     },
     cloudConfiguration: {
       nodeGroup: 'cloudiator',
-      properties: [
-        <Property>{
-          key: 'sword.regions',
-          value: 'RegionOne, RegionTwo'
-        }
-      ]
+      properties: {
+        'sword.regions': 'RegionOne, RegionTwo'
+      }
     }
   }
 ];
@@ -54,11 +45,11 @@ export const cloudOne: Cloud = <Cloud>{
   cloudConfiguration: {
     nodeGroup: 'nodes',
     properties: [
-      <Property>{
+      {
         key: 'propertyOne',
         value: 'One'
       },
-      <Property>{
+      {
         key: 'propertyTwo',
         value: 'Two'
       },
@@ -132,25 +123,25 @@ export const allHardware: Hardware[] = [
 ];
 
 export const imageOne = <Image>{
-    id: '02f7f6ab33e4a94d0f441947972668ef~RegionOne/faa7fa7b-ddb3-4af5-aae3-f5d2d568c1c9',
-    name: 'molpro-image-v2.8',
-    providerId: 'faa7fa7b-ddb3-4af5-aae3-f5d2d568c1c9',
-    operatingSystem: <OperatingSystem>{
-      operatingSystemType: 'UNKOWN',
-      operatingSystemFamily: 'UNKOWN_OS_FAMILY',
-      operatingSystemArchitecture: 'UNKOWN',
-      operatingSystemVersion: '-1'
-    },
-    location: <Location>{
-      id: '02f7f6ab33e4a94d0f441947972668ef~RegionOne',
-      name: 'RegionOne',
-      providerId: 'RegionOne',
-      locationScope: 'REGION',
-      isAssignable: false,
-      geoLocation: null,
-      parent: null
-    }
-  };
+  id: '02f7f6ab33e4a94d0f441947972668ef~RegionOne/faa7fa7b-ddb3-4af5-aae3-f5d2d568c1c9',
+  name: 'molpro-image-v2.8',
+  providerId: 'faa7fa7b-ddb3-4af5-aae3-f5d2d568c1c9',
+  operatingSystem: <OperatingSystem>{
+    operatingSystemType: 'UNKOWN',
+    operatingSystemFamily: 'UNKOWN_OS_FAMILY',
+    operatingSystemArchitecture: 'UNKOWN',
+    operatingSystemVersion: '-1'
+  },
+  location: <Location>{
+    id: '02f7f6ab33e4a94d0f441947972668ef~RegionOne',
+    name: 'RegionOne',
+    providerId: 'RegionOne',
+    locationScope: 'REGION',
+    isAssignable: false,
+    geoLocation: null,
+    parent: null
+  }
+};
 export const imageTwo = <Image>{
   id: '02f7f6ab33e4a94d0f441947972668ef~RegionOne/4805c873-a637-42cb-a58d-027958a10235',
   name: 'cirros',

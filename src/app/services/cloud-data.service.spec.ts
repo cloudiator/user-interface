@@ -1,7 +1,7 @@
 import {TestBed, inject} from '@angular/core/testing';
 
 import {CloudDataService} from './cloud-data.service';
-import {ApiModule, CloudService, Hardware, Location} from 'cloudiator-rest-api';
+import {ApiModule, CloudService} from 'cloudiator-rest-api';
 import {HttpClientModule} from '@angular/common/http';
 import {combineReducers, StoreModule} from '@ngrx/store';
 import * as fromRoot from '../reducers';
@@ -12,8 +12,6 @@ import {Injector} from '@angular/core';
 import {Overlay} from '@angular/cdk/overlay';
 import {apiConfigFactory} from '../app.module';
 import {of} from 'rxjs';
-import {expectHardware, expectLocation} from '../../../testing/test.util';
-import {hardwareOne} from '../../../testing/test-data';
 
 describe('CloudDataService', () => {
 
@@ -281,6 +279,7 @@ describe('CloudDataService', () => {
     expect(service.filterImages(testData.allImages, testData.imageOne.name)).toEqual([testData.imageOne]);
     expect(service.filterImages(testData.allImages, '10sab')).toEqual([]);
     expect(service.filterImages(testData.allImages, 'not a valid search')).toEqual([]);
-    expect(service.filterImages(testData.allImages, `${testData.imageOne.name.slice(1, 10)} ${testData.imageOne.name.slice(15, 17)}`)).toEqual([testData.imageOne]);
+    expect(service.filterImages(testData.allImages, `${testData.imageOne.name.slice(1, 10)} ${testData.imageOne.name.slice(15, 17)}`))
+      .toEqual([testData.imageOne]);
   }));
 });
