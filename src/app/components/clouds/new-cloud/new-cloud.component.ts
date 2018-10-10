@@ -30,14 +30,18 @@ export class NewCloudComponent implements OnInit {
     },
     cloudConfiguration: {
       nodeGroup: '',
-      properties: [
-        {
-          key: '',
-          value: ''
-        },
-      ]
+      properties: {
+        '': ''
+      }
     }
   };
+
+  public properties = [
+    {
+      key: '',
+      value: ''
+    }
+  ];
 
   constructor(private cloudDataService: CloudDataService,
               private dialogService: DialogService,
@@ -52,7 +56,7 @@ export class NewCloudComponent implements OnInit {
    * Adds a new empty entry to the properties Array of cloud.
    */
   public addProperty() {
-    this.cloud.cloudConfiguration.properties.push({key: '', value: ''});
+    this.properties.push({key: '', value: ''});
   }
 
   /**
@@ -65,7 +69,12 @@ export class NewCloudComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(value => {
       if (value) {
-        this.cloud.cloudConfiguration.properties = this.cloud.cloudConfiguration.properties.filter(p => p.key !== '');
+        this.cloud.cloudConfiguration.properties = this.properties
+          .filter(p => p.key !== '')
+          .reduce((acc, curr) => {
+            acc[curr.key] = curr.value;
+            return acc;
+          }, {});
         this.cloudDataService.addCloud(this.cloud).toPromise()
           .then(() => {
             this.router.navigateByUrl('/clouds');
