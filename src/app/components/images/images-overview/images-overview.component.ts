@@ -3,6 +3,7 @@ import {FormControl} from '@angular/forms';
 import {Hardware, Image} from 'cloudiator-rest-api';
 import {BehaviorSubject, combineLatest} from 'rxjs';
 import {CloudDataService} from '../../../services/cloud-data.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-images-overview',
@@ -18,7 +19,8 @@ export class ImagesOverviewComponent implements OnInit {
   sortKey = new BehaviorSubject<string>('');
   sortDirection = new BehaviorSubject<string>('');
 
-  constructor(public cloudDataService: CloudDataService) { }
+  constructor(private activatedRoute: ActivatedRoute,
+    public cloudDataService: CloudDataService) { }
 
   ngOnInit() {
 
@@ -55,6 +57,15 @@ export class ImagesOverviewComponent implements OnInit {
 
 
     this.searchFormControl.setValue('');
+
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params.id) {
+        this.searchFormControl.patchValue(`id=${params.id}`);
+      } else if (params.cloud) {
+        this.searchFormControl.patchValue(`cloud=${params.cloud}`);
+      }
+    });
   }
 
   adjustSort(key: string) {

@@ -9,6 +9,7 @@ import {CloudCardComponent} from '../clouds/cloud-card/cloud-card.component';
 import {HardwareOverviewComponent} from '../hardware/hardware-overview/hardware-overview.component';
 import {CdkTableModule} from '@angular/cdk/table';
 import {ImagesOverviewComponent} from '../images/images-overview/images-overview.component';
+import {LocationsOverviewComponent} from '../locations/locations-overview/locations-overview.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -20,7 +21,8 @@ describe('AppComponent', () => {
         CloudOverviewComponent,
         CloudCardComponent,
         HardwareOverviewComponent,
-        ImagesOverviewComponent
+        ImagesOverviewComponent,
+        LocationsOverviewComponent
       ],
       imports: [
         AppRoutingModule,

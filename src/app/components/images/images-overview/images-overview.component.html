@@ -39,7 +39,7 @@
            <i class="fas fa-arrow-{{ sortDirection.value === 'asc' ? 'up' : 'down' }}"></i>
           </span>
         </th>
-        <td cdk-cell *cdkCellDef="let row"> {{row.operatingSystem.operatingSystemFamily}}</td>
+        <td cdk-cell *cdkCellDef="let row"> {{row.operatingSystem ? row.operatingSystem.operatingSystemFamily : ''}}</td>
       </ng-container>
 
       <!-- Header and Row Declarations -->

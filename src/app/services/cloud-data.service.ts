@@ -304,10 +304,20 @@ export class CloudDataService {
     const fn = (operator: string): any[] => {
       const terms = searchTerm.split(operator, 2);
 
+      // return if empty search value
       if (terms[1] === '') {
         return objArray;
       }
 
+      // special filter for cloud id and normal id
+      if (terms[0] === 'cloud') {
+        return objArray.filter(obj => !obj.id.includes(terms[1]));
+      }
+      if (terms[0] === 'id') {
+        return objArray.filter(obj => obj.id !== terms[1]);
+      }
+
+      // else use normal filter
       const filter = filterFn(terms[0], operator, terms[1]);
       return objArray.filter(obj => !filter(obj));
     };
@@ -334,6 +344,7 @@ export class CloudDataService {
     }
 
     {
+      // if no field filter is given
       const filter = filterFn('', '', searchTerm);
       return objArray.filter(obj => !filter(obj));
     }

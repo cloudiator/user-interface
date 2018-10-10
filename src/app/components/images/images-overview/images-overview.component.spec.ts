@@ -13,7 +13,8 @@ import {Overlay} from '@angular/cdk/overlay';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import * as fromRoot from '../../../reducers';
 import {apiConfigFactory} from '../../../app.module';
-import {Router, RouterModule} from '@angular/router';
+import {ActivatedRoute, Router, RouterModule} from '@angular/router';
+import {of} from 'rxjs';
 
 describe('ImagesOverviewComponent', () => {
   let component: ImagesOverviewComponent;
@@ -42,7 +43,13 @@ describe('ImagesOverviewComponent', () => {
         DialogService,
         ToastService,
         Overlay,
-        Injector
+        Injector,
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            queryParams: of({id: null})
+          }
+        }
       ]
     })
       .compileComponents();

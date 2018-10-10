@@ -13,7 +13,8 @@ import {ToastService} from '../../../services/toast.service';
 import {Overlay} from '@angular/cdk/overlay';
 import {Injector} from '@angular/core';
 import {apiConfigFactory} from '../../../app.module';
-import {Router, RouterModule} from '@angular/router';
+import {ActivatedRoute, Router, RouterModule} from '@angular/router';
+import {of} from 'rxjs';
 
 describe('HardwareOverviewComponent', () => {
   let component: HardwareOverviewComponent;
@@ -37,12 +38,18 @@ describe('HardwareOverviewComponent', () => {
         RouterModule
       ],
       providers: [
-        { provide: Router, useValue: router },
+        {provide: Router, useValue: router},
         CloudDataService,
         DialogService,
         ToastService,
         Overlay,
-        Injector
+        Injector,
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            queryParams: of({id: null})
+          }
+        }
       ]
     })
       .compileComponents();

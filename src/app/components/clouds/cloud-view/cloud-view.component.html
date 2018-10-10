@@ -25,7 +25,11 @@
   <div class="columns">
     <!-- hardware table -->
     <div class="column">
-      <div class="title is-4">Hardware</div>
+      <div class="title is-4"
+           [routerLink]="['/hardware']"
+           [queryParams]="{ cloud: cloud? cloud.id: null}">
+        Hardware
+      </div>
       <div class="table-container card">
         <table cdk-table class="table is-fullwidth is-striped is-hoverable" *ngIf="hardwareDataSource"
                [dataSource]="hardwareDataSource.value">
@@ -64,14 +68,18 @@
 
           <!-- Header and Row Declarations -->
           <tr cdk-header-row *cdkHeaderRowDef="['name', 'cores', 'ram', 'disk']; sticky: true"></tr>
-          <tr cdk-row *cdkRowDef="let row; columns: ['name', 'cores', 'ram', 'disk']"></tr>
+          <tr cdk-row *cdkRowDef="let row; columns: ['name', 'cores', 'ram', 'disk']"
+              [routerLink]="['/hardware']"
+              [queryParams]="{ id: row.id }"></tr>
         </table>
       </div>
     </div>
 
     <!-- Images table -->
     <div class="column">
-      <div class="title is-4">Images</div>
+      <div class="title is-4"
+           [routerLink]="['/images']"
+           [queryParams]="{ cloud: cloud? cloud.id: null}">Images</div>
       <div class="table-container card">
         <table cdk-table class="table is-fullwidth is-striped is-hoverable" *ngIf="imagesDataSource"
                [dataSource]="imagesDataSource.value">
@@ -84,9 +92,19 @@
             <td cdk-cell *cdkCellDef="let row"> {{row.name}}</td>
           </ng-container>
 
+          <!-- OS Definition -->
+          <ng-container cdkColumnDef="os">
+            <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable">
+              OS
+            </th>
+            <td cdk-cell *cdkCellDef="let row"> {{row.operatingSystem ? row.operatingSystem.operatingSystemFamily : ''}}</td>
+          </ng-container>
+
           <!-- Header and Row Declarations -->
-          <tr cdk-header-row *cdkHeaderRowDef="['name']; sticky: true"></tr>
-          <tr cdk-row *cdkRowDef="let row; columns: ['name']"></tr>
+          <tr cdk-header-row *cdkHeaderRowDef="['name', 'os']; sticky: true"></tr>
+          <tr cdk-row *cdkRowDef="let row; columns: ['name', 'os']"
+              [routerLink]="['/images']"
+              [queryParams]="{ id: row.id }"></tr>
         </table>
       </div>
     </div>

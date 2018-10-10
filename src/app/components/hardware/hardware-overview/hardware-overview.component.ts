@@ -3,6 +3,7 @@ import {BehaviorSubject, combineLatest} from 'rxjs';
 import {Hardware} from 'cloudiator-rest-api';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import {FormControl} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-hardware-overview',
@@ -18,7 +19,8 @@ export class HardwareOverviewComponent implements OnInit {
   sortKey = new BehaviorSubject<string>('');
   sortDirection = new BehaviorSubject<string>('');
 
-  constructor(public cloudDataService: CloudDataService) {
+  constructor(private activatedRoute: ActivatedRoute,
+              public cloudDataService: CloudDataService) {
   }
 
   ngOnInit() {
@@ -54,8 +56,16 @@ export class HardwareOverviewComponent implements OnInit {
       this.adjustSort('cores');
     });
 
-
     this.searchFormControl.setValue('');
+
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params.id) {
+        this.searchFormControl.patchValue(`id=${params.id}`);
+      } else if (params.cloud) {
+        this.searchFormControl.patchValue(`cloud=${params.cloud}`);
+      }
+    });
   }
 
   adjustSort(key: string) {
