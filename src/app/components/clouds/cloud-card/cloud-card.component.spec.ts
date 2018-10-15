@@ -1,7 +1,9 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import { CloudCardComponent } from './cloud-card.component';
-import {Router, RouterModule} from '@angular/router';
+import {ActivatedRoute, Router, RouterModule} from '@angular/router';
+import {of} from 'rxjs';
+import * as testData from 'testing/test-data';
 
 describe('CloudCardComponent', () => {
   let component: CloudCardComponent;
@@ -16,7 +18,13 @@ describe('CloudCardComponent', () => {
         RouterModule
       ],
       providers: [
-        {provide: Router, useValue: router}
+        {provide: Router, useValue: router},
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of({id: null})
+          }
+        }
       ]
     })
       .compileComponents();
@@ -25,10 +33,12 @@ describe('CloudCardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CloudCardComponent);
     component = fixture.componentInstance;
+
+    component.cloud = testData.cloudOne;
     fixture.detectChanges();
   });
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

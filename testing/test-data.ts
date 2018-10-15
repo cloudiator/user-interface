@@ -6,6 +6,7 @@ export const allClouds: Cloud[] = [
     id: '1234',
     endpoint: 'endpoint.com',
     cloudType: 'PRIVATE',
+    api: <Api> {},
     cloudConfiguration: <CloudConfiguration>{
       nodeGroup: 'nodes',
       properties: {
@@ -42,6 +43,7 @@ export const cloudOne: Cloud = <Cloud>{
   id: '1234',
   endpoint: 'endpoint.com',
   cloudType: 'PRIVATE',
+  api: <Api> {},
   cloudConfiguration: {
     nodeGroup: 'nodes',
     properties: [
