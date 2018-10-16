@@ -47,3 +47,7 @@ $custom-colors: ("secondary": ($secondary, $secondary-invert));
 .is-opaque {
   opacity: 0;
 }
+
+.is-clickable {
+  cursor: pointer;
+}

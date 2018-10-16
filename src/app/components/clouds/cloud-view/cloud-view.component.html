@@ -25,13 +25,13 @@
   <div class="columns">
     <!-- hardware table -->
     <div class="column">
-      <div class="title is-4"
+      <div class="title is-4 is-clickable"
            [routerLink]="['/hardware']"
            [queryParams]="{ cloud: cloud? cloud.id: null}">
         Hardware
       </div>
       <div class="table-container card">
-        <table cdk-table class="table is-fullwidth is-striped is-hoverable" *ngIf="hardwareDataSource"
+        <table cdk-table class="table is-fullwidth is-striped is-hoverable is-clickable" *ngIf="hardwareDataSource"
                [dataSource]="hardwareDataSource.value">
 
           <!-- Name Definition -->
@@ -79,9 +79,10 @@
     <div class="column">
       <div class="title is-4"
            [routerLink]="['/images']"
-           [queryParams]="{ cloud: cloud? cloud.id: null}">Images</div>
+           [queryParams]="{ cloud: cloud? cloud.id: null}">Images
+      </div>
       <div class="table-container card">
-        <table cdk-table class="table is-fullwidth is-striped is-hoverable" *ngIf="imagesDataSource"
+        <table cdk-table class="table is-fullwidth is-striped is-hoverable is-clickable" *ngIf="imagesDataSource"
                [dataSource]="imagesDataSource.value">
 
           <!-- Name Definition -->
@@ -97,7 +98,9 @@
             <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable">
               OS
             </th>
-            <td cdk-cell *cdkCellDef="let row"> {{row.operatingSystem ? row.operatingSystem.operatingSystemFamily : ''}}</td>
+            <td cdk-cell *cdkCellDef="let row"> {{row.operatingSystem ? row.operatingSystem.operatingSystemFamily :
+              ''}}
+            </td>
           </ng-container>
 
           <!-- Header and Row Declarations -->

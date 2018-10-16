@@ -11,7 +11,7 @@ import {CloudDataService} from '../../../services/cloud-data.service';
 })
 export class LocationsOverviewComponent implements OnInit {
 
-  dataSource: BehaviorSubject<Location[]>;
+  dataSource = new BehaviorSubject<Location[]>([]);
 
   searchFormControl = new FormControl();
 
@@ -22,6 +22,7 @@ export class LocationsOverviewComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.adjustSort('name');
 
     combineLatest(this.cloudDataService.findLocations(), this.searchFormControl.valueChanges, this.sortKey, this.sortDirection)
       .subscribe(([changedHardwareData, searchTerm, sortKey, sortDirection]) => {
@@ -47,13 +48,6 @@ export class LocationsOverviewComponent implements OnInit {
 
         this.dataSource.next(sortedLocations);
       });
-
-
-    this.cloudDataService.findLocations().subscribe(locations => {
-      this.dataSource = new BehaviorSubject<Location[]>(locations);
-      this.adjustSort('cores');
-    });
-
 
     this.searchFormControl.setValue('');
   }

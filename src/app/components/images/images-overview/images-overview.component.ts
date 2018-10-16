@@ -12,7 +12,7 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class ImagesOverviewComponent implements OnInit {
 
-  dataSource: BehaviorSubject<Image[]>;
+  dataSource = new BehaviorSubject<Image[]>([]);
 
   searchFormControl = new FormControl();
 
@@ -23,6 +23,7 @@ export class ImagesOverviewComponent implements OnInit {
     public cloudDataService: CloudDataService) { }
 
   ngOnInit() {
+    this.adjustSort('name');
 
     combineLatest(this.cloudDataService.findImages(), this.searchFormControl.valueChanges, this.sortKey, this.sortDirection)
       .subscribe(([changedHardwareData, searchTerm, sortKey, sortDirection]) => {
@@ -48,12 +49,6 @@ export class ImagesOverviewComponent implements OnInit {
 
         this.dataSource.next(sortedImages);
       });
-
-
-    this.cloudDataService.findImages().subscribe(images => {
-      this.dataSource = new BehaviorSubject<Image[]>(images);
-      this.adjustSort('name');
-    });
 
 
     this.searchFormControl.setValue('');

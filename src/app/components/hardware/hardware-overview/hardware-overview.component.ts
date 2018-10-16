@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {BehaviorSubject, combineLatest} from 'rxjs';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {BehaviorSubject, combineLatest, Subscription} from 'rxjs';
 import {Hardware} from 'cloudiator-rest-api';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import {FormControl} from '@angular/forms';
@@ -10,20 +10,23 @@ import {ActivatedRoute} from '@angular/router';
   templateUrl: './hardware-overview.component.html',
   styleUrls: ['./hardware-overview.component.scss']
 })
-export class HardwareOverviewComponent implements OnInit {
+export class HardwareOverviewComponent implements OnInit, OnDestroy {
 
-  dataSource: BehaviorSubject<Hardware[]>;
+  dataSource = new BehaviorSubject<Hardware[]>([]);
 
   searchFormControl = new FormControl();
 
   sortKey = new BehaviorSubject<string>('');
   sortDirection = new BehaviorSubject<string>('');
 
+  subscriptions: Subscription[] = [];
+
   constructor(private activatedRoute: ActivatedRoute,
               public cloudDataService: CloudDataService) {
   }
 
   ngOnInit() {
+    this.adjustSort('cores');
 
     combineLatest(this.cloudDataService.findHardware(), this.searchFormControl.valueChanges, this.sortKey, this.sortDirection)
       .subscribe(([changedHardwareData, searchTerm, sortKey, sortDirection]) => {
@@ -50,12 +53,6 @@ export class HardwareOverviewComponent implements OnInit {
         this.dataSource.next(sortedHardware);
       });
 
-
-    this.cloudDataService.findHardware().subscribe(hardware => {
-      this.dataSource = new BehaviorSubject<Hardware[]>(hardware);
-      this.adjustSort('cores');
-    });
-
     this.searchFormControl.setValue('');
 
 
@@ -66,6 +63,10 @@ export class HardwareOverviewComponent implements OnInit {
         this.searchFormControl.patchValue(`cloud=${params.cloud}`);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   adjustSort(key: string) {
