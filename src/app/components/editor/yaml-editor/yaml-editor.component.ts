@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import * as ace from 'brace';
 import 'brace/mode/yaml';
 import 'brace/theme/monokai';
@@ -12,6 +12,8 @@ import {Editor} from 'brace';
 export class YamlEditorComponent implements OnInit {
 
   public editor: Editor;
+
+  public theme = 'monokai';
 
   private options: any = {
     showPrintMargin: false,
@@ -31,7 +33,7 @@ export class YamlEditorComponent implements OnInit {
   ngOnInit() {
     this.editor = ace.edit('editor');
     this.editor.getSession().setMode('ace/mode/yaml');
-    this.editor.setTheme('ace/theme/monokai');
+    this.editor.setTheme(`ace/theme/${this.theme}`);
     this.editor.setOptions(this.options);
     this.editor.$blockScrolling = Infinity;
     this.editor.setValue([

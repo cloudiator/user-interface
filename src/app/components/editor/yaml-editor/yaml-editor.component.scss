@@ -2,16 +2,12 @@
 
 .editor-container {
   display: flex;
+  background: blue;
   height: 100%;
   flex-direction: column;
-  //padding: 5px 0 0 0;
-  //border-right: 1px #{$grey-lighter} solid;
-  //background: black;
 }
 
 .editor-header {
-  //margin: 5px;
-  //background: transparent;
   border: 1px #{$grey-darker} solid;
   padding: 7px 5px;
 }

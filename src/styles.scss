@@ -32,10 +32,15 @@ $modal-z: 200;
 
 // custom classes
 
+html {
+  overflow: hidden;
+}
+
 $app-container-height: calc(100vh - #{$navbar-height});
 
-.is-fullheight-container {
+.app-container {
   height: $app-container-height;
+  overflow-y: auto;
 }
 
 
