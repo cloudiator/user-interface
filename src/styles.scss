@@ -30,6 +30,12 @@ $custom-colors: ("secondary": ($secondary, $secondary-invert));
 
 // custom classes
 
+$app-container-height: calc(100vh - #{$navbar-height});
+
+.is-fullheight-container {
+  height: $app-container-height;
+}
+
 
 // container auto linewrap
 .is-flowing {

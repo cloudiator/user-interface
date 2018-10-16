@@ -6,6 +6,7 @@ import {CloudViewComponent} from './components/clouds/cloud-view/cloud-view.comp
 import {HardwareOverviewComponent} from './components/hardware/hardware-overview/hardware-overview.component';
 import {ImagesOverviewComponent} from './components/images/images-overview/images-overview.component';
 import {LocationsOverviewComponent} from './components/locations/locations-overview/locations-overview.component';
+import {YamlEditorComponent} from './components/editor/yaml-editor/yaml-editor.component';
 
 const routes: Routes = [
 
@@ -18,6 +19,8 @@ const routes: Routes = [
   {path: 'images', component: ImagesOverviewComponent},
 
   {path: 'locations', component: LocationsOverviewComponent},
+
+  {path: 'editor', component: YamlEditorComponent},
 
   {path: 'clouds', component: CloudOverviewComponent},
   {path: '', component: CloudOverviewComponent},
