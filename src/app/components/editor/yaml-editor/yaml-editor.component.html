@@ -11,7 +11,28 @@
     <div class="editor-container">
       <div class="editor-header ace-{{theme}}">
         <div class="level is-mobile">
-          <div class="level-left"></div>
+          <div class="level-left">
+            <div class="field has-addons">
+              <p class="control">
+                <input type="file" name="upload" id="upload" #upload class="is-hidden" (change)="onUploadChange($event)">
+                <label for="upload">
+                  <a class="button is-small is-outlined is-secondary">
+                    <span class="icon is-small">
+                      <i class="fas fa-upload"></i>
+                    </span>
+                  </a>
+                </label>
+              </p>
+              <p class="control">
+                <button class="button is-small is-outlined is-secondary"
+                        (click)="download('hello.txt','This is the content of my file :)');">
+                    <span class="icon is-small">
+                      <i class="fas fa-download"></i>
+                    </span>
+                </button>
+              </p>
+            </div>
+          </div>
           <div class="level-right">
             <button class="button is-small is-outlined is-secondary">validate</button>
           </div>
