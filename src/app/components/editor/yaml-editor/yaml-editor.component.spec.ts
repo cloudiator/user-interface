@@ -1,6 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { YamlEditorComponent } from './yaml-editor.component';
+import {YamlEditorComponent} from './yaml-editor.component';
+import {FormsModule} from '@angular/forms';
+import {combineReducers, StoreModule} from '@ngrx/store';
+import * as fromRoot from '../../../reducers';
 
 describe('YamlEditorComponent', () => {
   let component: YamlEditorComponent;
@@ -8,9 +11,16 @@ describe('YamlEditorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ YamlEditorComponent ]
+      declarations: [YamlEditorComponent],
+      imports: [
+        StoreModule.forRoot({
+          ...fromRoot.reducers,
+          'feature': combineReducers(fromRoot.reducers)
+        }),
+        FormsModule,
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
