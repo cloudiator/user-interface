@@ -1,6 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NavigationStart, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {select, Store} from '@ngrx/store';
+import * as fromRoot from '../../reducers';
 
 /**
  * Entry point of this app, everything is shown in this Container.
@@ -14,11 +16,14 @@ import {Subscription} from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
+
   showBurgerMenu = false;
+  editorHasUnsavedChanges: boolean;
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private store: Store<fromRoot.State>) {
   }
 
   ngOnInit() {
@@ -28,6 +33,8 @@ export class AppComponent implements OnInit, OnDestroy {
         this.showBurgerMenu = false;
       }
     });
+
+    const s1 = this.store.pipe(select(fromRoot.editorHasUnsavedChanges)).subscribe(value => this.editorHasUnsavedChanges = value);
 
     this.subscriptions.push(s0);
   }

@@ -4,6 +4,9 @@ import 'brace/mode/yaml';
 import 'brace/theme/monokai';
 import {Editor} from 'brace';
 import saveAs from 'file-saver';
+import {select, Store} from '@ngrx/store';
+import * as fromRoot from '../../../reducers';
+import * as fromEditor from '../../../actions/editor.actions';
 
 @Component({
   selector: 'app-yaml-editor',
@@ -28,7 +31,7 @@ export class YamlEditorComponent implements OnInit {
     mode: 'ace/mode/yaml'
   };
 
-  constructor() {
+  constructor(private store: Store<fromRoot.State>) {
   }
 
   ngOnInit() {
@@ -37,13 +40,13 @@ export class YamlEditorComponent implements OnInit {
     this.editor.setTheme(`ace/theme/${this.theme}`);
     this.editor.setOptions(this.options);
     this.editor.$blockScrolling = Infinity;
-    this.editor.setValue([
-      'sudo: required',
-      'language: node_js',
-      'node_js:',
-      '- node'
-    ].join('\n'));
     this.editor.clearSelection();
+    this.editor.getSession().on('change', () => {
+      this.store.dispatch(new fromEditor.SetValueAction(this.editor.getValue()));
+    });
+
+
+    this.store.pipe(select(fromRoot.getEditorValue)).subscribe(value => this.editor.setValue(value)).unsubscribe();
   }
 
   download() {
@@ -54,6 +57,7 @@ export class YamlEditorComponent implements OnInit {
     });
 
     saveAs(blob, filename);
+    this.store.dispatch(new fromEditor.ChangesSavedAction());
   }
 
   onUploadChange(event) {
@@ -62,6 +66,7 @@ export class YamlEditorComponent implements OnInit {
       const file = event.target.files[0];
       reader.readAsBinaryString(file);
       reader.onload = () => {
+        this.store.dispatch(new fromEditor.UploadFileAction(reader.result, file.name));
         this.editor.setValue(reader.result);
       };
     }

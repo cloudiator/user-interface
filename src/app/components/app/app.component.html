@@ -33,7 +33,9 @@
         Locations
       </a>
       <a class="navbar-item" routerLink="/editor" routerLinkActive="active">
-        Editor
+        <span class="is-badge-secondary  is-badge-small" data-badge="" [class.badge]="editorHasUnsavedChanges">
+          Editor
+        </span>
       </a>
     </div>
 
