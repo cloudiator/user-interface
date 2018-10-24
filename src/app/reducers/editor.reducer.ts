@@ -13,7 +13,7 @@ export interface State {
 export const initialState = {
   originalValue: '',
   value: '',
-  filename: '',
+  filename: 'unnamed.yaml',
   unsavedChanges: false
 };
 

@@ -17,6 +17,16 @@ export class YamlEditorComponent implements OnInit {
 
   public editor: Editor;
 
+  private _filename: string;
+  get filename(): string {
+    return this._filename;
+  }
+
+  set filename(filename: string) {
+    this.store.dispatch(new fromEditor.SetFilenameAction(filename));
+    this._filename = filename;
+  }
+
   public theme = 'monokai';
 
   private options: any = {
@@ -47,10 +57,11 @@ export class YamlEditorComponent implements OnInit {
 
 
     this.store.pipe(select(fromRoot.getEditorValue)).subscribe(value => this.editor.setValue(value)).unsubscribe();
+    this.store.pipe(select(fromRoot.getEditorFilename)).subscribe(filename => this._filename = filename).unsubscribe();
   }
 
   download() {
-    const filename = 'task.yaml';
+    const filename = this._filename;
 
     const blob = new Blob([this.editor.getValue()], {
       type: 'text/plain;charset=utf-8'
@@ -68,6 +79,7 @@ export class YamlEditorComponent implements OnInit {
       reader.onload = () => {
         this.store.dispatch(new fromEditor.UploadFileAction(reader.result, file.name));
         this.editor.setValue(reader.result);
+        this._filename = file.name;
       };
     }
   }
