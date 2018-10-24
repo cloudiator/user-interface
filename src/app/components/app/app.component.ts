@@ -1,8 +1,9 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {NavigationStart, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
+import {of, Subscription} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../../reducers';
+import {fakeAsync} from '@angular/core/testing';
 
 /**
  * Entry point of this app, everything is shown in this Container.
@@ -16,7 +17,6 @@ import * as fromRoot from '../../reducers';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-
   showBurgerMenu = false;
   editorHasUnsavedChanges: boolean;
 
@@ -24,6 +24,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router,
               private store: Store<fromRoot.State>) {
+  }
+
+  @HostListener('window:beforeunload')
+  unloadNotification() {
+    if (this.editorHasUnsavedChanges) {
+      return false;
+    }
+    return true;
   }
 
   ngOnInit() {
