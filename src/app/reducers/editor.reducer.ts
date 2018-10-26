@@ -1,6 +1,4 @@
 import * as editorActions from '../actions/editor.actions';
-import {Cloud} from 'cloudiator-rest-api';
-import {st} from '@angular/core/src/render3';
 
 
 export interface State {

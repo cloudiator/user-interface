@@ -77,8 +77,8 @@ export class YamlEditorComponent implements OnInit {
       const file = event.target.files[0];
       reader.readAsBinaryString(file);
       reader.onload = () => {
-        this.store.dispatch(new fromEditor.UploadFileAction(reader.result, file.name));
-        this.editor.setValue(reader.result);
+        this.store.dispatch(new fromEditor.UploadFileAction(reader.result.toString(), file.name));
+        this.editor.setValue(reader.result.toString());
         this._filename = file.name;
       };
     }
