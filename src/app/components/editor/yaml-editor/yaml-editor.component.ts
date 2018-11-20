@@ -7,6 +7,7 @@ import saveAs from 'file-saver';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../../../reducers';
 import * as fromEditor from '../../../actions/editor.actions';
+import {YamlDataService} from '../../../services/yaml-data-service';
 
 @Component({
   selector: 'app-yaml-editor',
@@ -41,7 +42,8 @@ export class YamlEditorComponent implements OnInit {
     mode: 'ace/mode/yaml'
   };
 
-  constructor(private store: Store<fromRoot.State>) {
+  constructor(private store: Store<fromRoot.State>,
+              private yamlDataService: YamlDataService) {
   }
 
   ngOnInit() {
@@ -82,5 +84,10 @@ export class YamlEditorComponent implements OnInit {
         this._filename = file.name;
       };
     }
+  }
+
+  onValidate() {
+    console.log('yaml sent');
+    this.yamlDataService.parseYaml(this.editor.getValue()).subscribe(value => console.log(value));
   }
 }

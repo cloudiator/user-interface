@@ -28,10 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   @HostListener('window:beforeunload')
   unloadNotification() {
-    if (this.editorHasUnsavedChanges) {
-      return false;
-    }
-    return true;
+    return !this.editorHasUnsavedChanges;
   }
 
   ngOnInit() {
@@ -44,11 +41,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
     const s1 = this.store.pipe(select(fromRoot.editorHasUnsavedChanges)).subscribe(value => this.editorHasUnsavedChanges = value);
 
-    this.subscriptions.push(s0);
+    this.subscriptions.push(s0, s1);
   }
 
 
   ngOnDestroy() {
     this.subscriptions.forEach(s => s.unsubscribe());
   }
+
 }

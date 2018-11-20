@@ -29,7 +29,7 @@
     "bulma-badge": "^2.0.0",
     "bulma-checkradio": "^2.1.0",
     "bulma-divider": "^2.0.1",
-    "cloudiator-rest-api": "^1.0.0",
+    "cloudiator-rest-api": "^1.1.0",
     "core-js": "^2.5.4",
     "file-saver": "^2.0.0-rc.4",
     "rxjs": "^6.3.3",
