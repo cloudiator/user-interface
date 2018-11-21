@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import * as cytoscape from 'cytoscape';
-import coseBilkent from 'cytoscape-cose-bilkent';
 
 
 @Component({
