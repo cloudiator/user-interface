@@ -6,7 +6,7 @@ export const allClouds: Cloud[] = [
     id: '1234',
     endpoint: 'endpoint.com',
     cloudType: 'PRIVATE',
-    api: <Api> {},
+    api: <Api>{},
     cloudConfiguration: <CloudConfiguration>{
       nodeGroup: 'nodes',
       properties: {
@@ -43,7 +43,7 @@ export const cloudOne: Cloud = <Cloud>{
   id: '1234',
   endpoint: 'endpoint.com',
   cloudType: 'PRIVATE',
-  api: <Api> {},
+  api: <Api>{},
   cloudConfiguration: {
     nodeGroup: 'nodes',
     properties: [
@@ -80,7 +80,7 @@ export const cloudTwo: Cloud = <Cloud>{
       'sword.regions': 'RegionOne, RegionTwo'
     }
   }
-}
+};
 
 export const hardwareOne: Hardware = <Hardware>{
   id: '02f7f6ab33e4a94d0f441947972668ef~RegionOne/931b887e-e747-4a66-b643-0cc5c0caa1cd',
@@ -211,3 +211,86 @@ export const allImages: Image[] = [
   imageTwo,
   imageThree
 ];
+
+export const graphData: any = {
+  nodes: [
+    {
+      data: {
+        id: 'wiki',
+        name: 'wiki'
+      }
+    },
+    {
+      data: {
+        id: 'loadbalancer',
+        name: 'loadbalancer'
+      }
+    },
+    {
+      data: {
+        id: 'database',
+        name: 'database'
+      }
+    }
+    // ,
+    // {
+    //   data: {
+    //     id: 'database1',
+    //     name: 'database'
+    //   }
+    // },
+    // {
+    //   data: {
+    //     id: 'database2',
+    //     name: 'database'
+    //   }
+    // },
+    // {
+    //   data: {
+    //     id: 'database3',
+    //     name: 'database'
+    //   }
+    // },
+    // {
+    //   data: {
+    //     id: 'database4',
+    //     name: 'database'
+    //   }
+    // },
+    // {
+    //   data: {
+    //     id: 'database5',
+    //     name: 'database'
+    //   }
+    // },
+    // {
+    //   data: {
+    //     id: 'database6',
+    //     name: 'database'
+    //   }
+    // },
+    // {
+    //   data: {
+    //     id: 'database7',
+    //     name: 'database'
+    //   }
+    // }
+  ],
+  edges: [
+    {
+      data: {
+        id: -222996446,
+        source: 'wiki',
+        target: 'loadbalancer'
+      }
+    },
+    {
+      data: {
+        id: -1368644092,
+        source: 'database',
+        target: 'wiki'
+      },
+      classes: 'mandatory'
+    }
+  ]
+};

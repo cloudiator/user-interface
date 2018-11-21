@@ -31,6 +31,7 @@
     "bulma-divider": "^2.0.1",
     "cloudiator-rest-api": "^1.1.0",
     "core-js": "^2.5.4",
+    "cytoscape": "^3.2.20",
     "file-saver": "^2.0.0-rc.4",
     "rxjs": "^6.3.3",
     "zone.js": "^0.8.26"

@@ -1,13 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import * as ace from 'brace';
+import {Editor} from 'brace';
 import 'brace/mode/yaml';
 import 'brace/theme/monokai';
-import {Editor} from 'brace';
 import saveAs from 'file-saver';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../../../reducers';
 import * as fromEditor from '../../../actions/editor.actions';
 import {YamlDataService} from '../../../services/yaml-data-service';
+import {graphData} from '../../../../../testing/test-data';
+import {ToastService} from '../../../services/toast.service';
+import {ToastType} from '../../../model/toast';
 
 @Component({
   selector: 'app-yaml-editor',
@@ -42,7 +45,10 @@ export class YamlEditorComponent implements OnInit {
     mode: 'ace/mode/yaml'
   };
 
+  public graphData: any = graphData;
+
   constructor(private store: Store<fromRoot.State>,
+              private toastService: ToastService,
               private yamlDataService: YamlDataService) {
   }
 
@@ -88,6 +94,19 @@ export class YamlEditorComponent implements OnInit {
 
   onValidate() {
     console.log('yaml sent');
-    this.yamlDataService.parseYaml(this.editor.getValue()).subscribe(value => console.log(value));
+    this.yamlDataService.parseYaml(this.editor.getValue())
+      .then(job => {
+        // ToDo: implement behaviour on valid yaml when working test environment exists.
+        console.log(job);
+      })
+      .catch(err => {
+        switch (err.status) {
+          case 400:
+            this.toastService.show({text: 'Invalid YAML', type: ToastType.DANGER}, true);
+            break;
+          default:
+            console.log(err);
+        }
+      });
   }
 }

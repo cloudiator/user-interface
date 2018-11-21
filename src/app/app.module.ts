@@ -25,6 +25,7 @@ import {CdkTableModule} from '@angular/cdk/table';
 import {ImagesOverviewComponent} from './components/images/images-overview/images-overview.component';
 import { LocationsOverviewComponent } from './components/locations/locations-overview/locations-overview.component';
 import { YamlEditorComponent } from './components/editor/yaml-editor/yaml-editor.component';
+import { YamlGraphComponent } from './components/editor/yaml-graph/yaml-graph.component';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -48,6 +49,7 @@ export function apiConfigFactory(): Configuration {
     ImagesOverviewComponent,
     LocationsOverviewComponent,
     YamlEditorComponent,
+    YamlGraphComponent,
   ],
   imports: [
     BrowserModule,
