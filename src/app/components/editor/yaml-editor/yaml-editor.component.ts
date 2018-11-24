@@ -3,14 +3,12 @@ import * as ace from 'brace';
 import {Editor} from 'brace';
 import 'brace/mode/yaml';
 import 'brace/theme/monokai';
-import saveAs from 'file-saver';
-import {select, Store} from '@ngrx/store';
-import * as fromRoot from '../../../reducers';
-import * as fromEditor from '../../../actions/editor.actions';
-import {YamlDataService} from '../../../services/yaml-data-service';
-import {graphData} from '../../../../../testing/test-data';
+import {YamlDataService} from '../../../services/yaml-data.service';
 import {ToastService} from '../../../services/toast.service';
 import {ToastType} from '../../../model/toast';
+import {JobDataService} from '../../../services/job-data.service';
+import {EditorService} from '../../../services/editor.service';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-yaml-editor',
@@ -27,7 +25,7 @@ export class YamlEditorComponent implements OnInit {
   }
 
   set filename(filename: string) {
-    this.store.dispatch(new fromEditor.SetFilenameAction(filename));
+    this.editorService.setFilename(filename);
     this._filename = filename;
   }
 
@@ -45,9 +43,8 @@ export class YamlEditorComponent implements OnInit {
     mode: 'ace/mode/yaml'
   };
 
-  public graphData: any = graphData;
-
-  constructor(private store: Store<fromRoot.State>,
+  constructor(private editorService: EditorService,
+              private jobDataService: JobDataService,
               private toastService: ToastService,
               private yamlDataService: YamlDataService) {
   }
@@ -60,44 +57,34 @@ export class YamlEditorComponent implements OnInit {
     this.editor.$blockScrolling = Infinity;
     this.editor.clearSelection();
     this.editor.getSession().on('change', () => {
-      this.store.dispatch(new fromEditor.SetValueAction(this.editor.getValue()));
+      this.editorService.setEditorValue(this.editor.getValue());
     });
 
 
-    this.store.pipe(select(fromRoot.getEditorValue)).subscribe(value => this.editor.setValue(value)).unsubscribe();
-    this.store.pipe(select(fromRoot.getEditorFilename)).subscribe(filename => this._filename = filename).unsubscribe();
+    this.editorService.getEditorValue().pipe(take(1)).subscribe(value => this.editor.setValue(value));
+    this.editorService.getFilename().pipe(take(1)).subscribe(filename => this._filename = filename);
   }
 
-  download() {
-    const filename = this._filename;
-
-    const blob = new Blob([this.editor.getValue()], {
-      type: 'text/plain;charset=utf-8'
-    });
-
-    saveAs(blob, filename);
-    this.store.dispatch(new fromEditor.ChangesSavedAction());
+  onDownload() {
+    this.editorService.downloadFile();
   }
 
   onUploadChange(event) {
-    const reader = new FileReader();
-    if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
-      reader.readAsBinaryString(file);
-      reader.onload = () => {
-        this.store.dispatch(new fromEditor.UploadFileAction(reader.result.toString(), file.name));
-        this.editor.setValue(reader.result.toString());
-        this._filename = file.name;
-      };
-    }
+    this.editorService.uploadFile(event.target.files)
+      .then(() => {
+        this.editorService.getEditorValue().pipe(take(1)).subscribe(value => this.editor.setValue(value));
+        this.editorService.getFilename().pipe(take(1)).subscribe(filename => this._filename = filename);
+      })
+      .catch();
   }
 
   onValidate() {
-    console.log('yaml sent');
     this.yamlDataService.parseYaml(this.editor.getValue())
       .then(job => {
-        // ToDo: implement behaviour on valid yaml when working test environment exists.
         console.log(job);
+        // job is valid and graph is queried
+        this.jobDataService.jobGraph(job.id).subscribe(graph =>
+          this.editorService.setEditorGraph(graph));
       })
       .catch(err => {
         switch (err.status) {

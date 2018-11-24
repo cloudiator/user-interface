@@ -13,6 +13,7 @@ import {LocationsOverviewComponent} from '../locations/locations-overview/locati
 import {YamlEditorComponent} from '../editor/yaml-editor/yaml-editor.component';
 import {combineReducers, StoreModule} from '@ngrx/store';
 import * as fromRoot from '../../reducers';
+import {YamlGraphComponent} from '../editor/yaml-graph/yaml-graph.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -26,7 +27,8 @@ describe('AppComponent', () => {
         HardwareOverviewComponent,
         ImagesOverviewComponent,
         LocationsOverviewComponent,
-        YamlEditorComponent
+        YamlEditorComponent,
+        YamlGraphComponent
       ],
       imports: [
         StoreModule.forRoot({

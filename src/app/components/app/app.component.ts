@@ -1,9 +1,7 @@
 import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {NavigationStart, Router} from '@angular/router';
-import {of, Subscription} from 'rxjs';
-import {select, Store} from '@ngrx/store';
-import * as fromRoot from '../../reducers';
-import {fakeAsync} from '@angular/core/testing';
+import {Subscription} from 'rxjs';
+import {EditorService} from '../../services/editor.service';
 
 /**
  * Entry point of this app, everything is shown in this Container.
@@ -22,13 +20,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private router: Router,
-              private store: Store<fromRoot.State>) {
+  constructor(private editorService: EditorService,
+              private router: Router) {
   }
 
   @HostListener('window:beforeunload')
   unloadNotification() {
-    return !this.editorHasUnsavedChanges;
+    // ToDo: reactivate
+    // return !this.editorHasUnsavedChanges;
   }
 
   ngOnInit() {
@@ -39,7 +38,7 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
 
-    const s1 = this.store.pipe(select(fromRoot.editorHasUnsavedChanges)).subscribe(value => this.editorHasUnsavedChanges = value);
+    const s1 = this.editorService.HasUnsaveChanges().subscribe(value => this.editorHasUnsavedChanges = value);
 
     this.subscriptions.push(s0, s1);
   }

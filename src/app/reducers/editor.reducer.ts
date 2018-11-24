@@ -6,13 +6,15 @@ export interface State {
   value: string;
   filename: string;
   unsavedChanges: boolean;
+  editorGraph: any | null;
 }
 
 export const initialState = {
   originalValue: '',
   value: '',
   filename: 'unnamed.yaml',
-  unsavedChanges: false
+  unsavedChanges: false,
+  editorGraph: null
 };
 
 export function reducer(state = initialState, action: editorActions.All): State {
@@ -25,6 +27,8 @@ export function reducer(state = initialState, action: editorActions.All): State 
       return {...state, originalValue: action.value, value: action.value, filename: action.filename, unsavedChanges: false};
     case editorActions.CHANGES_SAVED:
       return {...state, unsavedChanges: false, originalValue: state.value};
+    case editorActions.SET_EDITOR_GRAPH:
+      return {...state, editorGraph: action.editorGraph};
   }
   return state;
 }
@@ -32,3 +36,4 @@ export function reducer(state = initialState, action: editorActions.All): State 
 export const getValue = (state: State): string => state.value;
 export const getFilename = (state: State): string => state.filename;
 export const hasUnsavedChanges = (state: State): boolean => state.unsavedChanges;
+export const getEditorGraph = (state: State): boolean => state.editorGraph;

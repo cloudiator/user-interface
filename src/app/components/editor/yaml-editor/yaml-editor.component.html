@@ -29,7 +29,7 @@
               <p class="control">
                 <button class="button is-small is-outlined is-secondary"
                         [disabled]="editor.getValue() === '' || filename === ''"
-                        (click)="download()">
+                        (click)="onDownload()">
                     <span class="icon is-small">
                       <i class="fas fa-download"></i>
                     </span>
@@ -56,6 +56,6 @@
   </div>
   <!-- Right Side -->
   <div class="column">
-      <app-yaml-graph [graphData]="graphData"></app-yaml-graph>
+      <app-yaml-graph></app-yaml-graph>
     </div>
 </div>
