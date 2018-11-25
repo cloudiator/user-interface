@@ -19,7 +19,7 @@ export class JobDataService {
               private toastService: ToastService) {
     store.pipe(select(fromRoot.getRuntimeConfig)).subscribe(config => {
       jobApiService.basePath = config.apiPath;
-      if (jobApiService.configuration) {
+      if (jobApiService.configuration && jobApiService.configuration.apiKeys) {
         jobApiService.configuration.apiKeys['X-API-Key'] = config.xApiKey;
       }
     });

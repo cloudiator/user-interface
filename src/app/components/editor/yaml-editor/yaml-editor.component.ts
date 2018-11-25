@@ -43,7 +43,7 @@ export class YamlEditorComponent implements OnInit {
     mode: 'ace/mode/yaml'
   };
 
-  constructor(private editorService: EditorService,
+  constructor(public editorService: EditorService,
               private jobDataService: JobDataService,
               private toastService: ToastService,
               private yamlDataService: YamlDataService) {

@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
 import { JobDataService } from './job-data.service';
 import {combineReducers, StoreModule} from '@ngrx/store';
@@ -21,6 +21,7 @@ describe('JobDataService', () => {
       HttpClientModule
     ],
     providers: [
+      JobDataService,
       DialogService,
       ToastService,
       Overlay,
@@ -28,8 +29,7 @@ describe('JobDataService', () => {
     ]
   }));
 
-  it('should be created', () => {
-    const service: JobDataService = TestBed.get(JobDataService);
+  it('should be created', inject([JobDataService], (service: JobDataService) => {
     expect(service).toBeTruthy();
-  });
+  }));
 });

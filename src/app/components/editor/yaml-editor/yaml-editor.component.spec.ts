@@ -12,6 +12,9 @@ import {ApiModule} from 'cloudiator-rest-api';
 import {apiConfigFactory} from '../../../app.module';
 import {Overlay} from '@angular/cdk/overlay';
 import {Injector} from '@angular/core';
+import {EditorService} from '../../../services/editor.service';
+import {of} from 'rxjs';
+import {resolve} from 'q';
 
 describe('YamlEditorComponent', () => {
   let component: YamlEditorComponent;
@@ -30,6 +33,7 @@ describe('YamlEditorComponent', () => {
         ApiModule.forRoot(apiConfigFactory)
       ],
       providers: [
+        EditorService,
         YamlDataService,
         ToastService,
         Overlay,
@@ -43,10 +47,26 @@ describe('YamlEditorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(YamlEditorComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    // fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('test', () => {
+    // const editorspy = jasmine.createSpyObj('EditorService', ['downloadFile']);
+    spyOn(component.editorService, 'downloadFile').and.stub();
+    component.onDownload();
+    // fixture.detectChanges();
+    expect(component.editorService.downloadFile).toHaveBeenCalled();
+
+
+    spyOn(component.editorService, 'getFilename').and.returnValue(of('name'));
+    spyOn(component.editorService, 'uploadFile').and.callFake(() => new Promise(resolve1 => resolve1()));
+    // fixture.detectChanges();
+    component.onUploadChange({target: {files: null}});
+
+    expect(component.filename).toEqual('name');
   });
 });

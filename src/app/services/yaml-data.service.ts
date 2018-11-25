@@ -3,7 +3,6 @@ import {RuntimeConfigService} from './runtime-config.service';
 import {ToastService} from './toast.service';
 import {Job, YamlService} from 'cloudiator-rest-api';
 import {of} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../reducers';
 
@@ -16,10 +15,9 @@ export class YamlDataService {
               private runtimeConfigService: RuntimeConfigService,
               private store: Store<fromRoot.State>,
               private toastService: ToastService) {
-
     store.pipe(select(fromRoot.getRuntimeConfig)).subscribe(config => {
       yamlApiService.basePath = config.apiPath;
-      if (yamlApiService.configuration) {
+      if (yamlApiService.configuration && yamlApiService.configuration.apiKeys) {
         yamlApiService.configuration.apiKeys['X-API-Key'] = config.xApiKey;
       }
     });

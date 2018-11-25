@@ -14,6 +14,8 @@ describe('EditorService', () => {
     ]
   }));
 
+  beforeEach(() => {});
+
   it('should be created', () => {
     const service: EditorService = TestBed.get(EditorService);
     expect(service).toBeTruthy();
