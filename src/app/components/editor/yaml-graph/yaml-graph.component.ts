@@ -76,7 +76,6 @@ export class YamlGraphComponent implements OnInit {
 
     this.editorService.getEditorGraph().subscribe(graphData => {
       if (this.cy && graphData) {
-        console.log('testfilter', this.cy.$(() => true));
         this.cy.remove(this.cy.$(() => true));
         this.cy.add(graphData);
         this.cy.layout(this.circLayout).run();

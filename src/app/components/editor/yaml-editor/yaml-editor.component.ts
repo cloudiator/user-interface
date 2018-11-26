@@ -44,9 +44,9 @@ export class YamlEditorComponent implements OnInit {
   };
 
   constructor(public editorService: EditorService,
-              private jobDataService: JobDataService,
-              private toastService: ToastService,
-              private yamlDataService: YamlDataService) {
+              public jobDataService: JobDataService,
+              public toastService: ToastService,
+              public yamlDataService: YamlDataService) {
   }
 
   ngOnInit() {
@@ -80,20 +80,24 @@ export class YamlEditorComponent implements OnInit {
 
   onValidate() {
     this.yamlDataService.parseYaml(this.editor.getValue())
-      .then(job => {
-        console.log(job);
-        // job is valid and graph is queried
-        this.jobDataService.jobGraph(job.id).subscribe(graph =>
-          this.editorService.setEditorGraph(graph));
-      })
-      .catch(err => {
-        switch (err.status) {
-          case 400:
-            this.toastService.show({text: 'Invalid YAML', type: ToastType.DANGER}, true);
-            break;
-          default:
-            console.log(err);
-        }
-      });
+      .pipe(take(1))
+      .subscribe(job => {
+          // job is valid and graph is queried
+          this.jobDataService.jobGraph(job.id).subscribe(graph =>
+            this.editorService.setEditorGraph(graph));
+        },
+        err => {
+          if (err.status) {
+            switch (err.status) {
+              case 400:
+                this.toastService.show({text: 'Invalid YAML', type: ToastType.DANGER}, true);
+                break;
+              default:
+                this.toastService.show({text: 'Unexpected Error', type: ToastType.DANGER}, true);
+            }
+          } else {
+            this.toastService.show({text: 'Unexpected Error', type: ToastType.DANGER}, true);
+          }
+        });
   }
 }

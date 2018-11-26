@@ -4,7 +4,6 @@ import * as fromEditor from '../actions/editor.actions';
 import {select, Store} from '@ngrx/store';
 import saveAs from 'file-saver';
 import {Observable} from 'rxjs';
-import {reject} from 'q';
 import {take} from 'rxjs/operators';
 
 @Injectable({
@@ -12,7 +11,7 @@ import {take} from 'rxjs/operators';
 })
 export class EditorService {
 
-  constructor(private store: Store<fromRoot.State>) {
+  constructor(public store: Store<fromRoot.State>) {
   }
 
   public getEditorValue(): Observable<string> {
@@ -44,6 +43,7 @@ export class EditorService {
   }
 
   public downloadFile() {
+    // toDo: error handling
     this.store.pipe(
       select(fromRoot.editorState),
       take(1))
@@ -58,8 +58,9 @@ export class EditorService {
   }
 
   public uploadFile(files: FileList): Promise<any> {
-    const reader = new FileReader();
-    if (files && files.length > 0) {
+    console.log(files);
+    if (files instanceof FileList && files.length > 0) {
+      const reader = new FileReader();
       const file = files[0];
       reader.readAsBinaryString(file);
       return new Promise(resolve => {
@@ -69,6 +70,6 @@ export class EditorService {
         };
       });
     }
-    return new Promise(() => reject());
+    return Promise.reject('could not load file');
   }
 }

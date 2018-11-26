@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {RuntimeConfigService} from './runtime-config.service';
 import {ToastService} from './toast.service';
 import {Job, YamlService} from 'cloudiator-rest-api';
-import {of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../reducers';
 
@@ -11,10 +11,10 @@ import * as fromRoot from '../reducers';
 })
 export class YamlDataService {
 
-  constructor(private yamlApiService: YamlService,
-              private runtimeConfigService: RuntimeConfigService,
-              private store: Store<fromRoot.State>,
-              private toastService: ToastService) {
+  constructor(public yamlApiService: YamlService,
+              public runtimeConfigService: RuntimeConfigService,
+              public store: Store<fromRoot.State>,
+              public toastService: ToastService) {
     store.pipe(select(fromRoot.getRuntimeConfig)).subscribe(config => {
       yamlApiService.basePath = config.apiPath;
       if (yamlApiService.configuration && yamlApiService.configuration.apiKeys) {
@@ -23,7 +23,7 @@ export class YamlDataService {
     });
   }
 
-  public parseYaml(yaml: string): Promise<Job> {
+  public parseYaml(yaml: string): Observable<Job> {
 
     // ToDo: Absolutely dangerous, spams server with jobs if yaml is valid.
 
@@ -38,7 +38,6 @@ export class YamlDataService {
     //           return throwError(err);
     //       }
     //     }))
-    //     .toPromise();
-    return of(<Job>{id: '4ebd98ce-09e5-4fb7-b439-e82eb2a7de69'}).toPromise();
+    return of(<Job>{id: '4ebd98ce-09e5-4fb7-b439-e82eb2a7de69'});
   }
 }

@@ -1,4 +1,4 @@
-import {Api, Cloud, CloudConfiguration, CloudCredential, Hardware, Image, Location, OperatingSystem} from 'cloudiator-rest-api';
+import {Api, Cloud, CloudConfiguration, CloudCredential, Hardware, Image, Job, Location, OperatingSystem} from 'cloudiator-rest-api';
 
 /* CLOUDS */
 export const allClouds: Cloud[] = [
@@ -212,6 +212,188 @@ export const allImages: Image[] = [
   imageThree
 ];
 
+/* JOBS */
+export const job = {
+  id: '445bdb66-3c87-44ca-bc51-3670b008643e',
+  name: 'mediawiki',
+  tasks: [
+    {
+      name: 'wiki',
+      ports: [
+        {
+          type: 'PortProvided',
+          name: 'WIKIPROV',
+          port: 80
+        },
+        {
+          type: 'PortRequired',
+          name: 'WIKIREQMARIADB',
+          updateAction: null,
+          isMandatory: true
+        }
+      ],
+      interfaces: [
+        {
+          type: 'LanceInterface',
+          containerType: 'DOCKER',
+          init: null,
+          preInstall:
+            'sudo apt-get -y update && sudo apt-get -y install git && git clone https://github.com/dbaur/mediawiki-tutorial.git',
+          install: './mediawiki-tutorial/scripts/lance/mediawiki.sh install',
+          postInstall: './mediawiki-tutorial/scripts/lance/mediawiki.sh configure',
+          preStart: null,
+          start: './mediawiki-tutorial/scripts/lance/mediawiki.sh startBlocking',
+          startDetection: null,
+          stopDetection: null,
+          postStart: null,
+          preStop: null,
+          stop: null,
+          postStop: null,
+          shutdown: null
+        }
+      ],
+      optimization: null,
+      requirements: [
+        {
+          type: 'OclRequirement',
+          constraint: 'nodes->forAll(location.providerId = \'nova\')'
+        },
+        {
+          type: 'OclRequirement',
+          constraint: 'nodes->forAll(hardware.cores >= 2)'
+        },
+        {
+          type: 'OclRequirement',
+          constraint: 'nodes->forAll(hardware.ram >= 2048)'
+        },
+        {
+          type: 'OclRequirement',
+          constraint: 'nodes->forAll(image.providerId = \'f688f98d-7e62-4404-a672-1fc054fcfa6c\')'
+        }
+      ],
+      taskType: 'BATCH'
+    },
+    {
+      name: 'database',
+      ports: [
+        {
+          type: 'PortProvided',
+          name: 'MARIADBPROV',
+          port: 3306
+        }
+      ],
+      interfaces: [
+        {
+          type: 'LanceInterface',
+          containerType: 'DOCKER',
+          init: null,
+          preInstall:
+            'sudo apt-get -y update && sudo apt-get -y install git && git clone https://github.com/dbaur/mediawiki-tutorial.git',
+          install: './mediawiki-tutorial/scripts/lance/mariaDB.sh install',
+          postInstall: './mediawiki-tutorial/scripts/lance/mariaDB.sh configure',
+          preStart: null,
+          start: './mediawiki-tutorial/scripts/lance/mariaDB.sh startBlocking',
+          startDetection: null,
+          stopDetection: null,
+          postStart: null,
+          preStop: null,
+          stop: null,
+          postStop: null,
+          shutdown: null
+        }
+      ],
+      optimization: null,
+      requirements: [
+        {
+          type: 'OclRequirement',
+          constraint: 'nodes->forAll(location.providerId = \'nova\')'
+        },
+        {
+          type: 'OclRequirement',
+          constraint: 'nodes->forAll(hardware.cores >= 2)'
+        },
+        {
+          type: 'OclRequirement',
+          constraint: 'nodes->forAll(hardware.ram >= 2048)'
+        },
+        {
+          type: 'OclRequirement',
+          constraint: 'nodes->forAll(image.providerId = \'f688f98d-7e62-4404-a672-1fc054fcfa6c\')'
+        }
+      ],
+      taskType: 'BATCH'
+    },
+    {
+      name: 'loadbalancer',
+      ports: [
+        {
+          type: 'PortRequired',
+          name: 'LOADBALANCERREQWIKI',
+          updateAction: './mediawiki-tutorial/scripts/lance/nginx.sh configure',
+          isMandatory: false
+        },
+        {
+          type: 'PortProvided',
+          name: 'LBPROV',
+          port: 80
+        }
+      ],
+      interfaces: [
+        {
+          type: 'LanceInterface',
+          containerType: 'DOCKER',
+          init: null,
+          preInstall:
+            'sudo apt-get -y update && sudo apt-get -y install git && git clone https://github.com/dbaur/mediawiki-tutorial.git',
+          install: './mediawiki-tutorial/scripts/lance/nginx.sh install',
+          postInstall: null,
+          preStart: null,
+          start: './mediawiki-tutorial/scripts/lance/nginx.sh startBlocking',
+          startDetection: null,
+          stopDetection: null,
+          postStart: null,
+          preStop: null,
+          stop: null,
+          postStop: null,
+          shutdown: null
+        }
+      ],
+      optimization: null,
+      requirements: [
+        {
+          type: 'OclRequirement',
+          constraint: 'nodes->forAll(location.providerId = \'nova\')'
+        },
+        {
+          type: 'OclRequirement',
+          constraint: 'nodes->forAll(hardware.cores >= 2)'
+        },
+        {
+          type: 'OclRequirement',
+          constraint: 'nodes->forAll(hardware.ram >= 2048)'
+        },
+        {
+          type: 'OclRequirement',
+          constraint: 'nodes->forAll(image.providerId = \'f688f98d-7e62-4404-a672-1fc054fcfa6c\')'
+        }
+      ],
+      taskType: 'BATCH'
+    }
+  ],
+  communications: [
+    {
+      portRequired: 'LOADBALANCERREQWIKI',
+      portProvided: 'WIKIPROV'
+    },
+    {
+      portRequired: 'WIKIREQMARIADB',
+      portProvided: 'MARIADBPROV'
+    }
+  ],
+  requirements: null
+};
+
+/* GRAPH */
 export const graphData: any = {
   nodes: [
     {
@@ -232,49 +414,6 @@ export const graphData: any = {
         name: 'database'
       }
     }
-    // ,
-    // {
-    //   data: {
-    //     id: 'database1',
-    //     name: 'database'
-    //   }
-    // },
-    // {
-    //   data: {
-    //     id: 'database2',
-    //     name: 'database'
-    //   }
-    // },
-    // {
-    //   data: {
-    //     id: 'database3',
-    //     name: 'database'
-    //   }
-    // },
-    // {
-    //   data: {
-    //     id: 'database4',
-    //     name: 'database'
-    //   }
-    // },
-    // {
-    //   data: {
-    //     id: 'database5',
-    //     name: 'database'
-    //   }
-    // },
-    // {
-    //   data: {
-    //     id: 'database6',
-    //     name: 'database'
-    //   }
-    // },
-    // {
-    //   data: {
-    //     id: 'database7',
-    //     name: 'database'
-    //   }
-    // }
   ],
   edges: [
     {
