@@ -10,7 +10,7 @@ branches:
 before_script:
 - npm install -g @angular/cli
 script:
-- ng test --watch=false --browsers=ChromeHeadlessNoSandbox --environment=prod
+- ng test --watch=false --browsers=ChromeHeadlessNoSandbox --environment=prod --reporters=progress,kjhtml
 - ng build --prod
 after_success:
 - ci/publish_docker.sh
