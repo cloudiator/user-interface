@@ -48,7 +48,6 @@ describe('CloudDataService', () => {
   it('should find correct cloud', async(inject([CloudDataService], (service: CloudDataService) => {
 
     return service.findCloud(testData.cloudOne.id).toPromise().then(cloud => {
-      console.log(cloud)
       expect(cloud.id).toEqual(testData.cloudOne.id);
       expect(cloud.id).not.toEqual(testData.cloudOne.id);
       // expect(true).toBeTruthy();

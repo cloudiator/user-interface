@@ -1,0 +1,61 @@
+<!--<div class="hero">-->
+<!--<div class="hero-body">-->
+<!--<div class="container">-->
+<!--<h1 class="title">YAML Editor</h1>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<div class="columns is-gapless is-mobile" style="height:100%;">
+  <!-- Editor Side -->
+  <div class="column is-half">
+    <div class="editor-container">
+      <div class="editor-header ace-{{theme}}">
+        <!-- Editor Header -->
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="field has-addons">
+              <p class="control">
+                <input type="file" name="upload" id="upload" #upload class="is-hidden"
+                       (change)="onUploadChange($event)">
+                <label for="upload">
+                  <a class="button is-small is-outlined is-secondary">
+                    <span class="icon is-small">
+                      <i class="fas fa-upload"></i>
+                    </span>
+                  </a>
+                </label>
+              </p>
+              <!-- Download button -->
+              <p class="control">
+                <button class="button is-small is-outlined is-secondary"
+                        [disabled]="editor.getValue() === '' || filename === ''"
+                        (click)="onDownload()">
+                    <span class="icon is-small">
+                      <i class="fas fa-download"></i>
+                    </span>
+                </button>
+              </p>
+            </div>
+          </div>
+          <div class="level-item">
+            <input #filenameField type="text" id="filename-input" class="input is-small is-rounded has-text-centered"
+                   [(ngModel)]="filename"
+                   name="filename">
+          </div>
+          <div class="level-right">
+            <button class="button is-small is-outlined is-secondary" (click)="onValidate()">validate</button>
+          </div>
+        </div>
+      </div>
+      <div id="editor"
+           class=""
+           style="height:100%;"
+           onChange="onEditorChange()">
+      </div>
+    </div>
+  </div>
+  <!-- Right Side -->
+  <div class="column">
+      <app-yaml-graph></app-yaml-graph>
+    </div>
+</div>

@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { LocationsOverviewComponent } from './locations-overview.component';
+import {LocationsOverviewComponent} from './locations-overview.component';
 import {combineReducers, StoreModule} from '@ngrx/store';
 import * as fromRoot from '../../../reducers';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -13,8 +13,9 @@ import {CloudDataService} from '../../../services/cloud-data.service';
 import {DialogService} from '../../../services/dialog.service';
 import {ToastService} from '../../../services/toast.service';
 import {Overlay} from '@angular/cdk/overlay';
-import {Injector} from '@angular/core';
+import {Injector, NgModule} from '@angular/core';
 import {of} from 'rxjs';
+import {ToastComponent} from '../../../dialogs/toast/toast.component';
 
 describe('LocationsOverviewComponent', () => {
   let component: LocationsOverviewComponent;
@@ -24,7 +25,8 @@ describe('LocationsOverviewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LocationsOverviewComponent ],
+      declarations: [
+        LocationsOverviewComponent],
       imports: [
         StoreModule.forRoot({
           ...fromRoot.reducers,
@@ -35,10 +37,11 @@ describe('LocationsOverviewComponent', () => {
         CdkTableModule,
         HttpClientModule,
         ApiModule.forRoot(apiConfigFactory),
-        RouterModule
+        RouterModule,
+        TestModule
       ],
       providers: [
-        { provide: Router, useValue: router },
+        {provide: Router, useValue: router},
         CloudDataService,
         DialogService,
         ToastService,
@@ -52,7 +55,7 @@ describe('LocationsOverviewComponent', () => {
         }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -65,3 +68,14 @@ describe('LocationsOverviewComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+
+
+@NgModule({
+  declarations: [ToastComponent],
+  imports: [], // <-- added this line
+  entryComponents: [ToastComponent],
+  exports: [ToastComponent],
+})
+class TestModule {
+}
