@@ -13,7 +13,7 @@ import {CloudViewComponent} from './components/clouds/cloud-view/cloud-view.comp
 import {CloudCardComponent} from './components/clouds/cloud-card/cloud-card.component';
 import {DialogService} from './services/dialog.service';
 import {DeleteCloudDialogComponent} from './dialogs/delete-cloud-dialog/delete-cloud-dialog.component';
-import {Overlay, OverlayModule} from '@angular/cdk/overlay';
+import {OverlayModule} from '@angular/cdk/overlay';
 import {ConfirmNewCloudDialogComponent} from './dialogs/confirm-new-cloud-dialog/confirm-new-cloud-dialog.component';
 import {environment} from '../environments/environment';
 import {CloudDataService} from './services/cloud-data.service';
@@ -63,11 +63,6 @@ export function apiConfigFactory(): Configuration {
     CdkTableModule
   ],
   providers: [
-    Overlay,
-    DialogService,
-    CloudDataService,
-    RuntimeConfigService,
-    ToastService
   ],
   entryComponents: [
     ToastComponent,
