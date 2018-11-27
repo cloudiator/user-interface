@@ -3,7 +3,7 @@ import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../reducers';
 import * as fromJobData from '../actions/job-data.actions';
 import {RuntimeConfigService} from './runtime-config.service';
-import {ToastService} from './toast.service';
+import {ToastService} from '../app-dialog/services/toast.service';
 import {Job, JobService} from 'cloudiator-rest-api';
 import {Observable} from 'rxjs';
 import {ToastType} from '../model/toast';

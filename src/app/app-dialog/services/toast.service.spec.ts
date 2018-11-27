@@ -1,19 +1,15 @@
 import {TestBed, inject} from '@angular/core/testing';
 
 import {ToastService} from './toast.service';
-import {Overlay} from '@angular/cdk/overlay';
-import {DialogService} from './dialog.service';
-import {Injector} from '@angular/core';
+import {AppDialogModule} from '../app-dialog.module';
 
 describe('ToastService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        DialogService,
-        ToastService,
-        Overlay,
-        Injector
-      ]
+      imports: [
+        AppDialogModule
+      ],
+      providers: []
     });
   });
 

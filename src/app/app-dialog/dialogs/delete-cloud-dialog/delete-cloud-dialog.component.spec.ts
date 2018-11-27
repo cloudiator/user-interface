@@ -1,16 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ToastComponent } from './toast.component';
-import {DialogRef} from '../../model/dialogRef';
+import { DeleteCloudDialogComponent } from './delete-cloud-dialog.component';
+import {DialogRef} from '../../../model/dialogRef';
 import {DIALOG_DATA} from '../../services/dialog.service';
 
-describe('ToastComponent', () => {
-  let component: ToastComponent;
-  let fixture: ComponentFixture<ToastComponent>;
+describe('DeleteCloudDialogComponent', () => {
+  let component: DeleteCloudDialogComponent;
+  let fixture: ComponentFixture<DeleteCloudDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ToastComponent ],
+      declarations: [ DeleteCloudDialogComponent ],
       providers: [
         {provide: DialogRef, useVale: {}},
         { provide: DIALOG_DATA, useValue: {}}
@@ -20,7 +20,7 @@ describe('ToastComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ToastComponent);
+    fixture = TestBed.createComponent(DeleteCloudDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

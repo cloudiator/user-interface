@@ -7,7 +7,8 @@ import {ConfirmNewCloudDialogComponent} from './dialogs/confirm-new-cloud-dialog
 import {DeleteCloudDialogComponent} from './dialogs/delete-cloud-dialog/delete-cloud-dialog.component';
 
 @NgModule({
-  declarations: [ToastComponent,
+  declarations: [
+    ToastComponent,
     ConfirmNewCloudDialogComponent,
     DeleteCloudDialogComponent
   ],
@@ -18,7 +19,8 @@ import {DeleteCloudDialogComponent} from './dialogs/delete-cloud-dialog/delete-c
     DialogService,
     ToastService
   ],
-  entryComponents: [ToastComponent,
+  entryComponents: [
+    ToastComponent,
     ConfirmNewCloudDialogComponent,
     DeleteCloudDialogComponent
   ]

@@ -6,7 +6,7 @@ import {combineReducers, StoreModule} from '@ngrx/store';
 import * as fromRoot from '../../../reducers';
 import {YamlGraphComponent} from '../yaml-graph/yaml-graph.component';
 import {YamlDataService} from '../../../services/yaml-data.service';
-import {ToastService} from '../../../services/toast.service';
+import {ToastService} from '../../../app-dialog/services/toast.service';
 import {HttpClientModule, HttpErrorResponse} from '@angular/common/http';
 import {ApiModule} from 'cloudiator-rest-api';
 import {apiConfigFactory} from '../../../app.module';
@@ -18,6 +18,8 @@ import * as testData from '../../../../../testing/test-data';
 import {ToastType} from '../../../model/toast';
 import {By} from '@angular/platform-browser';
 import {take} from 'rxjs/operators';
+import {CdkTableModule} from '@angular/cdk/table';
+import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
 
 describe('YamlEditorComponent', () => {
   let component: YamlEditorComponent;
@@ -33,14 +35,12 @@ describe('YamlEditorComponent', () => {
         }),
         FormsModule,
         HttpClientModule,
-        ApiModule.forRoot(apiConfigFactory)
+        ApiModule.forRoot(apiConfigFactory),
+        AppDialogModule
       ],
       providers: [
         EditorService,
-        YamlDataService,
-        ToastService,
-        Overlay,
-        Injector
+        YamlDataService
       ]
 
     })

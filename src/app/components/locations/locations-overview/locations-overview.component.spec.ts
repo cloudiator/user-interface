@@ -10,12 +10,8 @@ import {ApiModule} from 'cloudiator-rest-api';
 import {apiConfigFactory} from '../../../app.module';
 import {ActivatedRoute, Router, RouterModule} from '@angular/router';
 import {CloudDataService} from '../../../services/cloud-data.service';
-import {DialogService} from '../../../services/dialog.service';
-import {ToastService} from '../../../services/toast.service';
-import {Overlay} from '@angular/cdk/overlay';
-import {Injector, NgModule} from '@angular/core';
 import {of} from 'rxjs';
-import {ToastComponent} from '../../../dialogs/toast/toast.component';
+import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
 
 describe('LocationsOverviewComponent', () => {
   let component: LocationsOverviewComponent;
@@ -38,15 +34,11 @@ describe('LocationsOverviewComponent', () => {
         HttpClientModule,
         ApiModule.forRoot(apiConfigFactory),
         RouterModule,
-        TestModule
+        AppDialogModule
       ],
       providers: [
         {provide: Router, useValue: router},
         CloudDataService,
-        DialogService,
-        ToastService,
-        Overlay,
-        Injector,
         {
           provide: ActivatedRoute,
           useValue: {
@@ -68,14 +60,3 @@ describe('LocationsOverviewComponent', () => {
     expect(component).toBeTruthy();
   });
 });
-
-
-
-@NgModule({
-  declarations: [ToastComponent],
-  imports: [], // <-- added this line
-  entryComponents: [ToastComponent],
-  exports: [ToastComponent],
-})
-class TestModule {
-}

@@ -3,8 +3,8 @@ import {CloudDataService} from '../../../services/cloud-data.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Cloud, Hardware, Image} from 'cloudiator-rest-api';
 import {BehaviorSubject, Subscription} from 'rxjs';
-import {DialogService} from '../../../services/dialog.service';
-import {DeleteCloudDialogComponent} from '../../../dialogs/delete-cloud-dialog/delete-cloud-dialog.component';
+import {DialogService} from '../../../app-dialog/services/dialog.service';
+import {DeleteCloudDialogComponent} from '../../../app-dialog/dialogs/delete-cloud-dialog/delete-cloud-dialog.component';
 import {map} from 'rxjs/operators';
 
 /**

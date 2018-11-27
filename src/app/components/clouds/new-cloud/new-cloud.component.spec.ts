@@ -9,9 +9,10 @@ import * as fromRoot from '../../../reducers';
 import {combineReducers, StoreModule} from '@ngrx/store';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ApiModule} from 'cloudiator-rest-api';
-import {DialogService} from '../../../services/dialog.service';
-import {ToastService} from '../../../services/toast.service';
+import {DialogService} from '../../../app-dialog/services/dialog.service';
+import {ToastService} from '../../../app-dialog/services/toast.service';
 import {apiConfigFactory} from '../../../app.module';
+import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
 
 describe('NewCloudComponent', () => {
   let component: NewCloudComponent;
@@ -28,12 +29,10 @@ describe('NewCloudComponent', () => {
         ApiModule.forRoot(apiConfigFactory),
         RouterTestingModule,
         FormsModule,
-        HttpClientModule
+        HttpClientModule,
+        AppDialogModule
       ],
       providers: [
-        ToastService,
-        DialogService,
-        Overlay,
         CloudDataService,
       ]
     })

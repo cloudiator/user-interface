@@ -7,7 +7,7 @@ import {select, Store} from '@ngrx/store';
 import {map} from 'rxjs/operators';
 import {HttpResponse} from '@angular/common/http';
 import {RuntimeConfigService} from './runtime-config.service';
-import {ToastService} from './toast.service';
+import {ToastService} from '../app-dialog/services/toast.service';
 import {ToastType} from '../model/toast';
 
 /**

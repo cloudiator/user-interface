@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {RuntimeConfigService} from './runtime-config.service';
-import {ToastService} from './toast.service';
+import {ToastService} from '../app-dialog/services/toast.service';
 import {Job, YamlService} from 'cloudiator-rest-api';
 import {Observable, of} from 'rxjs';
 import {select, Store} from '@ngrx/store';

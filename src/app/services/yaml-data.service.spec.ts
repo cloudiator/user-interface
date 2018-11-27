@@ -4,12 +4,13 @@ import {YamlDataService} from './yaml-data.service';
 import {ApiModule} from 'cloudiator-rest-api';
 import {HttpClientModule} from '@angular/common/http';
 import {apiConfigFactory} from '../app.module';
-import {DialogService} from './dialog.service';
-import {ToastService} from './toast.service';
+import {DialogService} from '../app-dialog/services/dialog.service';
+import {ToastService} from '../app-dialog/services/toast.service';
 import {Overlay} from '@angular/cdk/overlay';
 import {Injector} from '@angular/core';
 import {combineReducers, StoreModule} from '@ngrx/store';
 import * as fromRoot from '../reducers';
+import {AppDialogModule} from '../app-dialog/app-dialog.module';
 
 describe('YamlDataService', () => {
 
@@ -20,14 +21,10 @@ describe('YamlDataService', () => {
         'feature': combineReducers(fromRoot.reducers)
       }),
       ApiModule.forRoot(apiConfigFactory),
-      HttpClientModule
+      HttpClientModule,
+      AppDialogModule
     ],
-    providers: [
-      DialogService,
-      ToastService,
-      Overlay,
-      Injector
-    ]
+    providers: []
   }));
 
   it('should be created', () => {

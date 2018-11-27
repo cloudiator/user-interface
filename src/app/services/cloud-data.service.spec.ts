@@ -6,12 +6,13 @@ import {HttpClientModule} from '@angular/common/http';
 import {combineReducers, StoreModule} from '@ngrx/store';
 import * as fromRoot from '../reducers';
 import * as testData from '../../../testing/test-data';
-import {DialogService} from './dialog.service';
-import {ToastService} from './toast.service';
+import {DialogService} from '../app-dialog/services/dialog.service';
+import {ToastService} from '../app-dialog/services/toast.service';
 import {Injector} from '@angular/core';
 import {Overlay} from '@angular/cdk/overlay';
 import {apiConfigFactory} from '../app.module';
 import {of} from 'rxjs';
+import {AppDialogModule} from '../app-dialog/app-dialog.module';
 
 describe('CloudDataService', () => {
 
@@ -28,15 +29,12 @@ describe('CloudDataService', () => {
           'feature': combineReducers(fromRoot.reducers)
         }),
         HttpClientModule,
-        ApiModule.forRoot(apiConfigFactory)
+        ApiModule.forRoot(apiConfigFactory),
+        AppDialogModule
       ],
       providers: [
         CloudDataService,
-        {provide: CloudService, useValue: mockCloudService},
-        DialogService,
-        ToastService,
-        Overlay,
-        Injector
+        {provide: CloudService, useValue: mockCloudService}
       ]
     });
   });

@@ -8,13 +8,14 @@ import {ApiModule, CloudService} from 'cloudiator-rest-api';
 import {HttpClientModule} from '@angular/common/http';
 import {combineReducers, StoreModule} from '@ngrx/store';
 import * as fromRoot from '../../../reducers';
-import {DialogService} from '../../../services/dialog.service';
-import {ToastService} from '../../../services/toast.service';
+import {DialogService} from '../../../app-dialog/services/dialog.service';
+import {ToastService} from '../../../app-dialog/services/toast.service';
 import {Overlay} from '@angular/cdk/overlay';
 import {Injector} from '@angular/core';
 import {apiConfigFactory} from '../../../app.module';
 import {ActivatedRoute, Router, RouterModule} from '@angular/router';
 import {of} from 'rxjs';
+import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
 
 describe('HardwareOverviewComponent', () => {
   let component: HardwareOverviewComponent;
@@ -35,15 +36,12 @@ describe('HardwareOverviewComponent', () => {
         CdkTableModule,
         HttpClientModule,
         ApiModule.forRoot(apiConfigFactory),
-        RouterModule
+        RouterModule,
+        AppDialogModule
       ],
       providers: [
         {provide: Router, useValue: router},
         CloudDataService,
-        DialogService,
-        ToastService,
-        Overlay,
-        Injector,
         {
           provide: ActivatedRoute,
           useValue: {

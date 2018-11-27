@@ -5,10 +5,11 @@ import {combineReducers, StoreModule} from '@ngrx/store';
 import * as fromRoot from '../reducers';
 import {ApiModule} from 'cloudiator-rest-api';
 import {HttpClientModule} from '@angular/common/http';
-import {DialogService} from './dialog.service';
-import {ToastService} from './toast.service';
+import {DialogService} from '../app-dialog/services/dialog.service';
+import {ToastService} from '../app-dialog/services/toast.service';
 import {Overlay} from '@angular/cdk/overlay';
 import {Injector} from '@angular/core';
+import {AppDialogModule} from '../app-dialog/app-dialog.module';
 
 describe('JobDataService', () => {
   beforeEach(() => TestBed.configureTestingModule({
@@ -18,14 +19,11 @@ describe('JobDataService', () => {
         'feature': combineReducers(fromRoot.reducers)
       }),
       ApiModule,
-      HttpClientModule
+      HttpClientModule,
+      AppDialogModule
     ],
     providers: [
-      JobDataService,
-      DialogService,
-      ToastService,
-      Overlay,
-      Injector
+      JobDataService
     ]
   }));
 

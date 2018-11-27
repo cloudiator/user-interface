@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {DialogRef} from '../../model/dialogRef';
+import {DialogRef} from '../../../model/dialogRef';
 import {DIALOG_DATA} from '../../services/dialog.service';
 
 @Component({
