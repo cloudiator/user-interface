@@ -10,9 +10,7 @@ import {environment} from '../../environments/environment';
  * Handler for notifications. Currently only supports one notification at a time.
  */
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ToastService {
 
   private toastRef: DialogRef = null;

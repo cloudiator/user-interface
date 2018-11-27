@@ -26,9 +26,7 @@ export const DIALOG_DATA = new InjectionToken<any>('DIALOG_DATA');
 /**
  * Service to open modal Dialogs
  */
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class DialogService {
 
   /**

@@ -13,7 +13,7 @@ export class ToastComponent implements OnInit {
   toast: Toast;
 
   constructor(public dialogRef: DialogRef,
-              @Inject(DIALOG_DATA) public data: Toast) { }
+              @Inject(DIALOG_DATA)  public data: Toast) { }
 
   ngOnInit() {
     this.toast = this.data;

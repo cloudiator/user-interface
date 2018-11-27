@@ -26,6 +26,7 @@ import {ImagesOverviewComponent} from './components/images/images-overview/image
 import { LocationsOverviewComponent } from './components/locations/locations-overview/locations-overview.component';
 import { YamlEditorComponent } from './components/editor/yaml-editor/yaml-editor.component';
 import { YamlGraphComponent } from './components/editor/yaml-graph/yaml-graph.component';
+import {AppDialogModule} from './app-dialog.module';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -42,9 +43,6 @@ export function apiConfigFactory(): Configuration {
     NewCloudComponent,
     CloudViewComponent,
     CloudCardComponent,
-    DeleteCloudDialogComponent,
-    ConfirmNewCloudDialogComponent,
-    ToastComponent,
     HardwareOverviewComponent,
     ImagesOverviewComponent,
     LocationsOverviewComponent,
@@ -59,16 +57,10 @@ export function apiConfigFactory(): Configuration {
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    OverlayModule,
-    CdkTableModule
+    CdkTableModule,
+    AppDialogModule
   ],
-  providers: [
-  ],
-  entryComponents: [
-    ToastComponent,
-    DeleteCloudDialogComponent,
-    ConfirmNewCloudDialogComponent,
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
