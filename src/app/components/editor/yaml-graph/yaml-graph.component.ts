@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import * as cytoscape from 'cytoscape';
-import * as fromRoot from '../../../reducers';
-import {select, Store} from '@ngrx/store';
 import {EditorService} from '../../../services/editor.service';
 
 

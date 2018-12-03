@@ -27,6 +27,7 @@ import { LocationsOverviewComponent } from './components/locations/locations-ove
 import { YamlEditorComponent } from './components/editor/yaml-editor/yaml-editor.component';
 import { YamlGraphComponent } from './components/editor/yaml-graph/yaml-graph.component';
 import {AppDialogModule} from './app-dialog/app-dialog.module';
+import {RootStoreModule} from './root-store/root-store.module';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -52,7 +53,7 @@ export function apiConfigFactory(): Configuration {
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AppStoreModule,
+    RootStoreModule,
     ApiModule.forRoot(apiConfigFactory),
     HttpClientModule,
     FormsModule,

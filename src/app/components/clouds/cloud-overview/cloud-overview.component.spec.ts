@@ -4,9 +4,8 @@ import {CloudOverviewComponent} from './cloud-overview.component';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import {CloudCardComponent} from '../cloud-card/cloud-card.component';
 import {RouterTestingModule} from '@angular/router/testing';
-import {combineReducers, StoreModule} from '@ngrx/store';
-import * as fromRoot from '../../../reducers';
 import {Observable} from 'rxjs';
+import {RootStoreModule} from '../../../root-store';
 
 describe('CloudOverviewComponent', () => {
   let component: CloudOverviewComponent;
@@ -23,10 +22,7 @@ describe('CloudOverviewComponent', () => {
         CloudCardComponent
       ],
       imports: [
-        StoreModule.forRoot({
-          ...fromRoot.reducers,
-          'feature': combineReducers(fromRoot.reducers)
-        }),
+        RootStoreModule,
         RouterTestingModule,
       ],
       providers: [

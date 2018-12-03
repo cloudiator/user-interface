@@ -1,51 +1,50 @@
 import {Injectable} from '@angular/core';
-import * as fromRoot from '../reducers';
-import * as fromEditor from '../actions/editor.actions';
 import {select, Store} from '@ngrx/store';
 import saveAs from 'file-saver';
 import {Observable} from 'rxjs';
 import {take} from 'rxjs/operators';
+import {EditorActions, EditorSelectors, RootStoreState} from '../root-store';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EditorService {
 
-  constructor(public store: Store<fromRoot.State>) {
+  constructor(public store: Store<RootStoreState.State>) {
   }
 
   public getEditorValue(): Observable<string> {
-    return this.store.pipe(select(fromRoot.getEditorValue));
+    return this.store.pipe(select(EditorSelectors.selectValue));
   }
 
   public setEditorValue(value: string) {
-    this.store.dispatch(new fromEditor.SetValueAction(value));
+    this.store.dispatch(new EditorActions.SetValueAction(value));
   }
 
   public getFilename(): Observable<string> {
-    return this.store.pipe(select(fromRoot.getEditorFilename));
+    return this.store.pipe(select(EditorSelectors.selectFilename));
   }
 
   public setFilename(filename: string) {
-    this.store.dispatch(new fromEditor.SetFilenameAction(filename));
+    this.store.dispatch(new EditorActions.SetFilenameAction(filename));
   }
 
   public getEditorGraph(): Observable<any | null> {
-    return this.store.pipe(select(fromRoot.getEditorGraph));
+    return this.store.pipe(select(EditorSelectors.selectGraph));
   }
 
   public setEditorGraph(graphData: any | null) {
-    this.store.dispatch(new fromEditor.SetEditorGraphAction(graphData));
+    this.store.dispatch(new EditorActions.SetEditorGraphAction(graphData));
   }
 
   public HasUnsaveChanges(): Observable<boolean> {
-    return this.store.pipe(select(fromRoot.editorHasUnsavedChanges));
+    return this.store.pipe(select(EditorSelectors.selectHasUnsavedChanges));
   }
 
   public downloadFile() {
     // toDo: error handling
     this.store.pipe(
-      select(fromRoot.editorState),
+      select(EditorSelectors.selectEditorState),
       take(1))
       .subscribe(state => {
         const blob = new Blob([state.value], {
@@ -53,7 +52,7 @@ export class EditorService {
         });
 
         saveAs(blob, state.filename);
-        this.store.dispatch(new fromEditor.ChangesSavedAction());
+        this.store.dispatch(new EditorActions.ChangesSavedAction());
       });
   }
 
@@ -65,7 +64,7 @@ export class EditorService {
       reader.readAsBinaryString(file);
       return new Promise(resolve => {
         reader.onload = () => {
-          this.store.dispatch(new fromEditor.UploadFileAction(reader.result.toString(), file.name));
+          this.store.dispatch(new EditorActions.UploadFileAction(reader.result.toString(), file.name));
           resolve();
         };
       });

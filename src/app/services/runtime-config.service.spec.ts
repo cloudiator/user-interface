@@ -2,17 +2,13 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { RuntimeConfigService } from './runtime-config.service';
 import {HttpClientModule} from '@angular/common/http';
-import {combineReducers, StoreModule} from '@ngrx/store';
-import * as fromRoot from '../reducers';
+import {RootStoreModule} from '../root-store';
 
 describe('RuntimeConfigService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        StoreModule.forRoot({
-        ...fromRoot.reducers,
-        'feature': combineReducers(fromRoot.reducers)
-      }),
+       RootStoreModule,
         HttpClientModule
       ],
       providers: [RuntimeConfigService]

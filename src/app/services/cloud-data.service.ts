@@ -1,14 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Cloud, CloudService, Hardware, Image, NewCloud, Location} from 'cloudiator-rest-api';
 import {Observable} from 'rxjs';
-import * as fromRoot from '../reducers';
-import * as cloudActions from '../actions/cloud-data.actions';
 import {select, Store} from '@ngrx/store';
 import {map} from 'rxjs/operators';
 import {HttpResponse} from '@angular/common/http';
 import {RuntimeConfigService} from './runtime-config.service';
 import {ToastService} from '../app-dialog/services/toast.service';
 import {ToastType} from '../model/toast';
+import {CloudDataActions, CloudDataSelectors, RootStoreState, RuntimeConfigSelectors} from '../root-store';
 
 /**
  * Local layer between the cloud swagger service and Components, handles the redux store management of clouds.
@@ -21,10 +20,10 @@ export class CloudDataService {
 
   constructor(private cloudApiService: CloudService,
               private runtimeConfigService: RuntimeConfigService,
-              private store: Store<fromRoot.State>,
+              private store: Store<RootStoreState.State>,
               private toastService: ToastService) {
 
-    store.pipe(select(fromRoot.getRuntimeConfig)).subscribe(config => {
+    store.pipe(select(RuntimeConfigSelectors.selectConfig)).subscribe(config => {
       cloudApiService.basePath = config.apiPath;
       if (cloudApiService.configuration) {
         cloudApiService.configuration.apiKeys['X-API-Key'] = config.xApiKey;
@@ -47,7 +46,7 @@ export class CloudDataService {
    */
   public findClouds(): Observable<Cloud[]> {
     this.fetchClouds();
-    return this.store.pipe(select(fromRoot.getClouds));
+    return this.store.pipe(select(CloudDataSelectors.selectClouds));
   }
 
   /**
@@ -56,7 +55,7 @@ export class CloudDataService {
    */
   public findCloud(id: string): Observable<Cloud> {
     this.fetchClouds();
-    return this.store.pipe(select(fromRoot.getClouds), map(cloud => cloud.find(c => c.id === id)));
+    return this.store.pipe(select(CloudDataSelectors.selectClouds), map(cloud => cloud.find(c => c.id === id)));
   }
 
   /**
@@ -77,10 +76,10 @@ export class CloudDataService {
 
     if (id) {
       return this.store.pipe(
-        select(fromRoot.getHardware),
+        select(CloudDataSelectors.selectHardware),
         map(hardware => hardware.filter(hw => hw.id.includes(id))));
     }
-    return this.store.pipe(select(fromRoot.getHardware));
+    return this.store.pipe(select(CloudDataSelectors.selectHardware));
   }
 
   /* IMAGES */
@@ -90,10 +89,10 @@ export class CloudDataService {
 
     if (id) {
       return this.store.pipe(
-        select(fromRoot.getImages),
+        select(CloudDataSelectors.selectImages),
         map(images => images.filter(image => image.id.includes(id))));
     }
-    return this.store.pipe(select(fromRoot.getImages));
+    return this.store.pipe(select(CloudDataSelectors.selectImages));
   }
 
   public findLocations(id?: string): Observable<Location[]> {
@@ -101,10 +100,10 @@ export class CloudDataService {
 
     if (id) {
       return this.store.pipe(
-        select(fromRoot.getLocations),
+        select(CloudDataSelectors.selectLocations),
         map(locations => locations.filter(location => location.id.includes(id))));
     }
-    return this.store.pipe(select(fromRoot.getLocations));
+    return this.store.pipe(select(CloudDataSelectors.selectLocations));
   }
 
   /**
@@ -118,7 +117,7 @@ export class CloudDataService {
       // fetch Clouds
       this.cloudApiService.findClouds().toPromise()
         .then(clouds => {
-          this.store.dispatch(new cloudActions.SetCloudsAction(clouds));
+          this.store.dispatch(new CloudDataActions.SetCloudsAction(clouds));
         })
         .catch(() => {
           console.error('could not fetch clouds');
@@ -133,7 +132,7 @@ export class CloudDataService {
       // fetch Hardware
       this.cloudApiService.findHardware().toPromise()
         .then(hardware => {
-          this.store.dispatch(new cloudActions.SetHardwareAction(hardware));
+          this.store.dispatch(new CloudDataActions.SetHardwareAction(hardware));
         })
         .catch(() => {
           console.error('could not fetch Hardware');
@@ -147,7 +146,7 @@ export class CloudDataService {
       // fetch Images
       this.cloudApiService.findImages().toPromise()
         .then(images => {
-          this.store.dispatch(new cloudActions.SetImagesAction(images));
+          this.store.dispatch(new CloudDataActions.SetImagesAction(images));
         })
         .catch(() => {
           console.error('could not fetch Images');
@@ -161,7 +160,7 @@ export class CloudDataService {
       // fetch Images
       this.cloudApiService.findLocations().toPromise()
         .then(locations => {
-          this.store.dispatch(new cloudActions.SetLocationsAction(locations));
+          this.store.dispatch(new CloudDataActions.SetLocationsAction(locations));
         })
         .catch(() => {
           console.error('could not fetch Images');

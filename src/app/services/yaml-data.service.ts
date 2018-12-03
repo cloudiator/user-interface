@@ -4,7 +4,7 @@ import {ToastService} from '../app-dialog/services/toast.service';
 import {Job, YamlService} from 'cloudiator-rest-api';
 import {Observable, of} from 'rxjs';
 import {select, Store} from '@ngrx/store';
-import * as fromRoot from '../reducers';
+import {RootStoreState, RuntimeConfigSelectors} from '../root-store';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +13,9 @@ export class YamlDataService {
 
   constructor(public yamlApiService: YamlService,
               public runtimeConfigService: RuntimeConfigService,
-              public store: Store<fromRoot.State>,
+              public store: Store<RootStoreState.State>,
               public toastService: ToastService) {
-    store.pipe(select(fromRoot.getRuntimeConfig)).subscribe(config => {
+    store.pipe(select(RuntimeConfigSelectors.selectConfig)).subscribe(config => {
       yamlApiService.basePath = config.apiPath;
       if (yamlApiService.configuration && yamlApiService.configuration.apiKeys) {
         yamlApiService.configuration.apiKeys['X-API-Key'] = config.xApiKey;

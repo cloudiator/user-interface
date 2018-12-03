@@ -4,22 +4,14 @@ import {YamlDataService} from './yaml-data.service';
 import {ApiModule} from 'cloudiator-rest-api';
 import {HttpClientModule} from '@angular/common/http';
 import {apiConfigFactory} from '../app.module';
-import {DialogService} from '../app-dialog/services/dialog.service';
-import {ToastService} from '../app-dialog/services/toast.service';
-import {Overlay} from '@angular/cdk/overlay';
-import {Injector} from '@angular/core';
-import {combineReducers, StoreModule} from '@ngrx/store';
-import * as fromRoot from '../reducers';
 import {AppDialogModule} from '../app-dialog/app-dialog.module';
+import {RootStoreModule} from '../root-store';
 
 describe('YamlDataService', () => {
 
   beforeEach(() => TestBed.configureTestingModule({
     imports: [
-      StoreModule.forRoot({
-        ...fromRoot.reducers,
-        'feature': combineReducers(fromRoot.reducers)
-      }),
+      RootStoreModule,
       ApiModule.forRoot(apiConfigFactory),
       HttpClientModule,
       AppDialogModule

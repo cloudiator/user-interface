@@ -4,18 +4,13 @@ import {HardwareOverviewComponent} from './hardware-overview.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CdkTableModule} from '@angular/cdk/table';
 import {CloudDataService} from '../../../services/cloud-data.service';
-import {ApiModule, CloudService} from 'cloudiator-rest-api';
+import {ApiModule} from 'cloudiator-rest-api';
 import {HttpClientModule} from '@angular/common/http';
-import {combineReducers, StoreModule} from '@ngrx/store';
-import * as fromRoot from '../../../reducers';
-import {DialogService} from '../../../app-dialog/services/dialog.service';
-import {ToastService} from '../../../app-dialog/services/toast.service';
-import {Overlay} from '@angular/cdk/overlay';
-import {Injector} from '@angular/core';
 import {apiConfigFactory} from '../../../app.module';
 import {ActivatedRoute, Router, RouterModule} from '@angular/router';
 import {of} from 'rxjs';
 import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
+import {RootStoreModule} from '../../../root-store';
 
 describe('HardwareOverviewComponent', () => {
   let component: HardwareOverviewComponent;
@@ -27,10 +22,7 @@ describe('HardwareOverviewComponent', () => {
     TestBed.configureTestingModule({
       declarations: [HardwareOverviewComponent],
       imports: [
-        StoreModule.forRoot({
-          ...fromRoot.reducers,
-          'feature': combineReducers(fromRoot.reducers)
-        }),
+        RootStoreModule,
         FormsModule,
         ReactiveFormsModule,
         CdkTableModule,

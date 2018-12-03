@@ -2,8 +2,6 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {CloudViewComponent} from './cloud-view.component';
 import {RouterTestingModule} from '@angular/router/testing';
-import * as fromRoot from '../../../reducers';
-import {combineReducers, StoreModule} from '@ngrx/store';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import {Overlay} from '@angular/cdk/overlay';
 import {ActivatedRoute, convertToParamMap} from '@angular/router';
@@ -11,6 +9,7 @@ import {Observable} from 'rxjs';
 import {Api, CloudCredential, CloudType} from 'cloudiator-rest-api';
 import {CdkTableModule} from '@angular/cdk/table';
 import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
+import {RootStoreModule} from '../../../root-store';
 
 describe('CloudViewComponent', () => {
   let component: CloudViewComponent;
@@ -34,10 +33,7 @@ describe('CloudViewComponent', () => {
         CloudViewComponent
       ],
       imports: [
-        StoreModule.forRoot({
-          ...fromRoot.reducers,
-          'feature': combineReducers(fromRoot.reducers)
-        }),
+        RootStoreModule,
         RouterTestingModule,
         CdkTableModule,
         AppDialogModule

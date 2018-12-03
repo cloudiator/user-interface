@@ -11,9 +11,8 @@ import {CdkTableModule} from '@angular/cdk/table';
 import {ImagesOverviewComponent} from '../images/images-overview/images-overview.component';
 import {LocationsOverviewComponent} from '../locations/locations-overview/locations-overview.component';
 import {YamlEditorComponent} from '../editor/yaml-editor/yaml-editor.component';
-import {combineReducers, StoreModule} from '@ngrx/store';
-import * as fromRoot from '../../reducers';
 import {YamlGraphComponent} from '../editor/yaml-graph/yaml-graph.component';
+import {RootStoreModule} from '../../root-store';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -31,10 +30,7 @@ describe('AppComponent', () => {
         YamlGraphComponent
       ],
       imports: [
-        StoreModule.forRoot({
-          ...fromRoot.reducers,
-          'feature': combineReducers(fromRoot.reducers)
-        }),
+        RootStoreModule,
         AppRoutingModule,
         FormsModule,
         ReactiveFormsModule,
