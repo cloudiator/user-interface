@@ -2,8 +2,7 @@ import {TestBed} from '@angular/core/testing';
 
 import {EditorService} from './editor.service';
 import {take} from 'rxjs/operators';
-import * as fromEditor from '../actions/editor.actions';
-import {RootStoreModule} from '../root-store';
+import {EditorActions, RootStoreModule} from '../root-store';
 
 describe('EditorService', () => {
   beforeEach(() => TestBed.configureTestingModule({
@@ -37,7 +36,7 @@ describe('EditorService', () => {
       .pipe(take(1))
       .subscribe(value => expect(value).toBeTruthy());
 
-    await service.store.dispatch(new fromEditor.ChangesSavedAction());
+    await service.store.dispatch(new EditorActions.ChangesSavedAction());
     service.HasUnsaveChanges()
       .pipe(take(1))
       .subscribe(value => expect(value).toBeFalsy());

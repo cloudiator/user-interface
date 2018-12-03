@@ -1,5 +1,5 @@
-import * as jobActions from '../../actions/job-data.actions';
-import {initialState, State} from '../../reducers/job-data.reducer';
+import * as jobActions from './actions';
+import {initialState, State} from './state';
 
 export function jobDataReducer(state = initialState, action: jobActions.All): State {
   switch (action.type) {
