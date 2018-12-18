@@ -38,8 +38,9 @@ export class YamlEditorComponent implements OnInit {
     highlightActiveLine: false,
     fadeFoldWidgets: true,
     showLineNumbers: true,
-    fontSize: 16,
-    wrap: false,
+    fontSize: 14,
+    tabSize: 2,
+    wrap: true,
     mode: 'ace/mode/yaml'
   };
 

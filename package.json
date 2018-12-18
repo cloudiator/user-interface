@@ -6,6 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test --browsers=Chrome --source-map=false",
+    "travis-test": "ng test --watch=false --environemt=prod --browsers=ChromeHeadlessNoSandbox --reporters=progress,kjhtml",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "compodoc": "npx compodoc",
