@@ -32,6 +32,11 @@
       <a class="navbar-item" routerLink="/locations" routerLinkActive="active">
         Locations
       </a>
+      <a class="navbar-item" routerLink="/editor" routerLinkActive="active">
+        <span class="is-badge-secondary  is-badge-small" data-badge="" [class.badge]="editorHasUnsavedChanges">
+          Editor
+        </span>
+      </a>
     </div>
 
     <div class="navbar-end">
@@ -52,6 +57,6 @@
 
 </nav>
 
-<div class="container">
+<div class="app-container" style="position: absolute; width: 100vw;">
   <router-outlet></router-outlet>
 </div>

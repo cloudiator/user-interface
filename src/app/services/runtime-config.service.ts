@@ -1,12 +1,11 @@
 import {Injectable, Optional} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import * as fromRoot from '../reducers';
-import {SetRuntimeConfigAction} from '../actions/runtime-config.actions';
 import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
-import {AuthMode, RuntimeConfig} from '../model/RuntimeConfig';
+import {RuntimeConfig} from '../model/RuntimeConfig';
 import {Configuration} from 'cloudiator-rest-api';
 import {environment} from '../../environments/environment';
+import {RootStoreState, RuntimeConfigActions, RuntimeConfigSelectors} from '../root-store';
 
 @Injectable({
   providedIn: 'root'
@@ -14,25 +13,26 @@ import {environment} from '../../environments/environment';
 export class RuntimeConfigService {
 
   constructor(private http: HttpClient,
-              private store: Store<fromRoot.State>,
+              private store: Store<RootStoreState.State>,
               @Optional() private configuration: Configuration) {
 
     if (environment.useRuntimeConfig) {
       this.fetchConfig();
     } else {
-      this.store.dispatch(new SetRuntimeConfigAction(<RuntimeConfig>{
-        apiPath: environment.apiPath,
-        authMode: environment.authMode,
-        xApiKey: environment.xApiKey
-      }));
+      this.store.dispatch(
+        new RuntimeConfigActions.SetRuntimeConfigAction(<RuntimeConfig>{
+          apiPath: environment.apiPath,
+          authMode: environment.authMode,
+          xApiKey: environment.xApiKey
+        }));
     }
   }
 
   private fetchConfig() {
     this.http.get<RuntimeConfig>(`${environment.href}assets/appConfig.json`).toPromise().then(value => {
-      this.store.dispatch(new SetRuntimeConfigAction(<RuntimeConfig>value));
+      this.store.dispatch(new RuntimeConfigActions.SetRuntimeConfigAction(<RuntimeConfig>value));
     }).catch(() => {
-      this.store.dispatch(new SetRuntimeConfigAction(<RuntimeConfig>{
+      this.store.dispatch(new RuntimeConfigActions.SetRuntimeConfigAction(<RuntimeConfig>{
         apiPath: environment.apiPath,
         authMode: environment.authMode,
         xApiKey: environment.xApiKey
@@ -42,7 +42,7 @@ export class RuntimeConfigService {
 
   public awaitConfigLoad(): Promise<any> {
     return new Promise(resolve => {
-      const obs = this.store.pipe(select(fromRoot.getRuntimeConfigIsFetched)).subscribe(fetched => {
+      const obs = this.store.pipe(select(RuntimeConfigSelectors.selectIsFetched)).subscribe(fetched => {
         if (fetched) {
           resolve(true);
         }
@@ -51,14 +51,14 @@ export class RuntimeConfigService {
   }
 
   getApiPath(): Observable<String> {
-    return this.store.pipe(select(fromRoot.getApiPath));
+    return this.store.pipe(select(RuntimeConfigSelectors.selectApiPath));
   }
 
   getXApiKey(): Observable<String> {
-    return this.store.pipe(select(fromRoot.getXApiKey));
+    return this.store.pipe(select(RuntimeConfigSelectors.selectXApiKey));
   }
 
   getRuntimeConfig(): Observable<RuntimeConfig> {
-    return this.store.pipe(select(fromRoot.getRuntimeConfig));
+    return this.store.pipe(select(RuntimeConfigSelectors.selectConfig));
   }
 }

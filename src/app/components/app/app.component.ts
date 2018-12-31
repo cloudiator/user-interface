@@ -1,12 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {RuntimeConfigService} from '../../services/runtime-config.service';
-import {ToastService} from '../../services/toast.service';
-import {Toast, ToastType} from '../../model/toast';
-import {text} from '@angular/core/src/render3/instructions';
-import {DialogService} from '../../services/dialog.service';
-import {ConfirmNewCloudDialogComponent} from '../../dialogs/confirm-new-cloud-dialog/confirm-new-cloud-dialog.component';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {NavigationStart, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {EditorService} from '../../services/editor.service';
 
 /**
  * Entry point of this app, everything is shown in this Container.
@@ -21,10 +16,18 @@ import {Subscription} from 'rxjs';
 export class AppComponent implements OnInit, OnDestroy {
 
   showBurgerMenu = false;
+  editorHasUnsavedChanges: boolean;
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private router: Router) {
+  constructor(private editorService: EditorService,
+              private router: Router) {
+  }
+
+  @HostListener('window:beforeunload')
+  unloadNotification() {
+    // ToDo: reactivate
+    // return !this.editorHasUnsavedChanges;
   }
 
   ngOnInit() {
@@ -35,11 +38,14 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.subscriptions.push(s0);
+    const s1 = this.editorService.HasUnsaveChanges().subscribe(value => this.editorHasUnsavedChanges = value);
+
+    this.subscriptions.push(s0, s1);
   }
 
 
   ngOnDestroy() {
     this.subscriptions.forEach(s => s.unsubscribe());
   }
+
 }

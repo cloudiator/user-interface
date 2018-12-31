@@ -1,20 +1,16 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ImagesOverviewComponent} from './images-overview.component';
-import {ApiModule, CloudService} from 'cloudiator-rest-api';
-import {combineReducers, StoreModule} from '@ngrx/store';
+import {ApiModule} from 'cloudiator-rest-api';
 import {HttpClientModule} from '@angular/common/http';
-import {ToastService} from '../../../services/toast.service';
 import {CdkTableModule} from '@angular/cdk/table';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {Injector} from '@angular/core';
-import {DialogService} from '../../../services/dialog.service';
-import {Overlay} from '@angular/cdk/overlay';
 import {CloudDataService} from '../../../services/cloud-data.service';
-import * as fromRoot from '../../../reducers';
 import {apiConfigFactory} from '../../../app.module';
 import {ActivatedRoute, Router, RouterModule} from '@angular/router';
 import {of} from 'rxjs';
+import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
+import {RootStoreModule} from '../../../root-store';
 
 describe('ImagesOverviewComponent', () => {
   let component: ImagesOverviewComponent;
@@ -26,24 +22,18 @@ describe('ImagesOverviewComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ImagesOverviewComponent],
       imports: [
-        StoreModule.forRoot({
-          ...fromRoot.reducers,
-          'feature': combineReducers(fromRoot.reducers)
-        }),
+        RootStoreModule,
         FormsModule,
         ReactiveFormsModule,
         CdkTableModule,
         HttpClientModule,
         ApiModule.forRoot(apiConfigFactory),
-        RouterModule
+        RouterModule,
+        AppDialogModule
       ],
       providers: [
         { provide: Router, useValue: router },
         CloudDataService,
-        DialogService,
-        ToastService,
-        Overlay,
-        Injector,
         {
           provide: ActivatedRoute,
           useValue: {

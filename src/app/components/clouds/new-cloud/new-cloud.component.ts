@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {NewCloud} from 'cloudiator-rest-api';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import {Router} from '@angular/router';
-import {DialogService} from '../../../services/dialog.service';
-import {ConfirmNewCloudDialogComponent} from '../../../dialogs/confirm-new-cloud-dialog/confirm-new-cloud-dialog.component';
-import {ToastService} from '../../../services/toast.service';
+import {DialogService} from '../../../app-dialog/services/dialog.service';
+import {ConfirmNewCloudDialogComponent} from '../../../app-dialog/dialogs/confirm-new-cloud-dialog/confirm-new-cloud-dialog.component';
+import {ToastService} from '../../../app-dialog/services/toast.service';
 import {ToastType} from '../../../model/toast';
 
 /**

@@ -2,16 +2,13 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {NewCloudComponent} from './new-cloud.component';
 import {FormsModule} from '@angular/forms';
-import {Overlay} from '@angular/cdk/overlay';
 import {HttpClientModule} from '@angular/common/http';
 import {CloudDataService} from '../../../services/cloud-data.service';
-import * as fromRoot from '../../../reducers';
-import {combineReducers, StoreModule} from '@ngrx/store';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ApiModule} from 'cloudiator-rest-api';
-import {DialogService} from '../../../services/dialog.service';
-import {ToastService} from '../../../services/toast.service';
 import {apiConfigFactory} from '../../../app.module';
+import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
+import {RootStoreModule} from '../../../root-store';
 
 describe('NewCloudComponent', () => {
   let component: NewCloudComponent;
@@ -21,19 +18,14 @@ describe('NewCloudComponent', () => {
     TestBed.configureTestingModule({
       declarations: [NewCloudComponent],
       imports: [
-        StoreModule.forRoot({
-          ...fromRoot.reducers,
-          'feature': combineReducers(fromRoot.reducers)
-        }),
+        RootStoreModule,
         ApiModule.forRoot(apiConfigFactory),
         RouterTestingModule,
         FormsModule,
-        HttpClientModule
+        HttpClientModule,
+        AppDialogModule
       ],
       providers: [
-        ToastService,
-        DialogService,
-        Overlay,
         CloudDataService,
       ]
     })

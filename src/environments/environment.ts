@@ -10,7 +10,7 @@ export const environment = {
   href: '/',
   apiPath: 'http://134.60.64.119:9000',
   authMode: AuthMode.SINGLE,
-  xApiKey: 'CloudiatorUI2018',
+  xApiKey: 'secureUI',
   notificationDuration: 10000
 };
 

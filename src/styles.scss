@@ -29,8 +29,20 @@ $modal-z: 200;
 @import "../node_modules/bulma/bulma";
 @import "../node_modules/bulma-divider/dist/css/bulma-divider";
 @import "../node_modules/bulma-checkradio/dist/css/bulma-checkradio";
+@import "../node_modules/bulma-badge/dist/css/bulma-badge";
 
 // custom classes
+
+html {
+  overflow: hidden;
+}
+
+$app-container-height: calc(100vh - #{$navbar-height});
+
+.app-container {
+  height: $app-container-height;
+  overflow-y: auto;
+}
 
 
 // container auto linewrap
