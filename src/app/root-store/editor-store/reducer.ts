@@ -13,6 +13,10 @@ export function editorReducer(state = initialState, action: editorActions.All): 
       return {...state, unsavedChanges: false, originalValue: state.value};
     case editorActions.SET_EDITOR_GRAPH:
       return {...state, editorGraph: action.editorGraph};
+    case editorActions.SET_EDITOR_JOB:
+      return {...state, editorJob: action.editorJob};
+    case editorActions.SET_EDITOR_QUEUE:
+      return {...state, editorQueue: action.editorQueue};
   }
   return state;
 }

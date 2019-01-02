@@ -2,15 +2,18 @@ import {Injectable} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import saveAs from 'file-saver';
 import {Observable} from 'rxjs';
-import {take} from 'rxjs/operators';
+import {filter, mergeMap, take} from 'rxjs/operators';
 import {EditorActions, EditorSelectors, RootStoreState} from '../root-store';
+import {JobDataService} from './job-data.service';
+import {Job, Queue} from 'cloudiator-rest-api';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EditorService {
 
-  constructor(public store: Store<RootStoreState.State>) {
+  constructor(public store: Store<RootStoreState.State>,
+              public jobDataService: JobDataService) {
   }
 
   public getEditorValue(): Observable<string> {
@@ -29,8 +32,30 @@ export class EditorService {
     this.store.dispatch(new EditorActions.SetFilenameAction(filename));
   }
 
-  public getEditorGraph(): Observable<any | null> {
-    return this.store.pipe(select(EditorSelectors.selectGraph));
+  getEditorJob(): Observable<Job> {
+    return this.store.pipe(select(EditorSelectors.selectJob));
+  }
+
+  setEditorJob(job: Job) {
+    this.store.dispatch(new EditorActions.SetEditorJobAction(job));
+  }
+
+  getEditorQueue(): Observable<Queue> {
+    return this.store.pipe(select(EditorSelectors.selectQueue));
+  }
+
+  setEditorQueue(queue: Queue) {
+    this.store.dispatch(new EditorActions.SetEditorQueueAction(queue));
+  }
+
+  /**
+   * Queies the Graph for the Editor's Job, and filters the request if the job is null right now.
+   */
+  public getEditorGraph(): Observable<any> {
+    return this.store.pipe(select(EditorSelectors.selectJob)).pipe(
+      filter(job => !!job),
+      mergeMap(job => this.jobDataService.jobGraph(job.id))
+    );
   }
 
   public setEditorGraph(graphData: any | null) {

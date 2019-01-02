@@ -26,6 +26,10 @@ $custom-colors: ("secondary": ($secondary, $secondary-invert));
 
 $modal-z: 200;
 
+$tabs-link-active-color: $secondary;
+$tabs-link-active-border-bottom-color: $secondary;
+
+
 @import "../node_modules/bulma/bulma";
 @import "../node_modules/bulma-divider/dist/css/bulma-divider";
 @import "../node_modules/bulma-checkradio/dist/css/bulma-checkradio";

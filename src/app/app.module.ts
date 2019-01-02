@@ -19,6 +19,9 @@ import { YamlEditorComponent } from './components/editor/yaml-editor/yaml-editor
 import { YamlGraphComponent } from './components/editor/yaml-graph/yaml-graph.component';
 import {AppDialogModule} from './app-dialog/app-dialog.module';
 import {RootStoreModule} from './root-store';
+import { EditorGraphViewComponent } from './components/editor/editor-graph-view/editor-graph-view.component';
+import { NodeGraphComponent } from './components/editor/node-graph/node-graph.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -40,9 +43,12 @@ export function apiConfigFactory(): Configuration {
     LocationsOverviewComponent,
     YamlEditorComponent,
     YamlGraphComponent,
+    EditorGraphViewComponent,
+    NodeGraphComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     RootStoreModule,
     ApiModule.forRoot(apiConfigFactory),

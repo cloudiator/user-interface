@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import * as ace from 'brace';
 import {Editor} from 'brace';
 import 'brace/mode/yaml';
@@ -8,14 +8,16 @@ import {ToastService} from '../../../app-dialog/services/toast.service';
 import {ToastType} from '../../../model/toast';
 import {JobDataService} from '../../../services/job-data.service';
 import {EditorService} from '../../../services/editor.service';
-import {take} from 'rxjs/operators';
+import {filter, take} from 'rxjs/operators';
+import {ProcessDataService} from '../../../services/process-data.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-yaml-editor',
   templateUrl: './yaml-editor.component.html',
   styleUrls: ['./yaml-editor.component.scss']
 })
-export class YamlEditorComponent implements OnInit {
+export class YamlEditorComponent implements OnInit, OnDestroy {
 
   public editor: Editor;
 
@@ -28,6 +30,10 @@ export class YamlEditorComponent implements OnInit {
     this.editorService.setFilename(filename);
     this._filename = filename;
   }
+
+  public isValidating = false;
+  public isValid = false;
+  public isSubmitting = false;
 
   public theme = 'monokai';
 
@@ -44,10 +50,13 @@ export class YamlEditorComponent implements OnInit {
     mode: 'ace/mode/yaml'
   };
 
+  private subscriptions: Subscription[] = [];
+
   constructor(public editorService: EditorService,
               public jobDataService: JobDataService,
+              private processDataService: ProcessDataService,
               public toastService: ToastService,
-              public yamlDataService: YamlDataService) {
+              private yamlDataService: YamlDataService) {
   }
 
   ngOnInit() {
@@ -64,6 +73,13 @@ export class YamlEditorComponent implements OnInit {
 
     this.editorService.getEditorValue().pipe(take(1)).subscribe(value => this.editor.setValue(value));
     this.editorService.getFilename().pipe(take(1)).subscribe(filename => this._filename = filename);
+
+    // Set is valid if EditorJob is not null
+    this.subscriptions.push(this.editorService.getEditorJob().subscribe(job => this.isValid = !!job));
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   onDownload() {
@@ -80,14 +96,16 @@ export class YamlEditorComponent implements OnInit {
   }
 
   onValidate() {
+    this.isValidating = true;
     this.yamlDataService.parseYaml(this.editor.getValue())
       .pipe(take(1))
       .subscribe(job => {
-          // job is valid and graph is queried
-          this.jobDataService.jobGraph(job.id).subscribe(graph =>
-            this.editorService.setEditorGraph(graph));
+          // job is valid and stored
+          this.editorService.setEditorJob(job);
+          this.isValidating = false;
         },
         err => {
+          this.isValidating = false;
           if (err.status) {
             switch (err.status) {
               case 400:
@@ -100,5 +118,16 @@ export class YamlEditorComponent implements OnInit {
             this.toastService.show({text: 'Unexpected Error', type: ToastType.DANGER}, true);
           }
         });
+  }
+
+  onSubmit() {
+    this.isSubmitting = true;
+    this.processDataService.addSchedule().subscribe(queue => {
+      this.editorService.setEditorQueue(queue);
+      this.isSubmitting = false;
+    },
+    err => {
+      this.isSubmitting = false;
+    });
   }
 }
