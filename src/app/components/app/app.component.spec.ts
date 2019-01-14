@@ -13,6 +13,12 @@ import {LocationsOverviewComponent} from '../locations/locations-overview/locati
 import {YamlEditorComponent} from '../editor/yaml-editor/yaml-editor.component';
 import {YamlGraphComponent} from '../editor/yaml-graph/yaml-graph.component';
 import {RootStoreModule} from '../../root-store';
+import {EditorGraphViewComponent} from '../editor/editor-graph-view/editor-graph-view.component';
+import {NodeGraphComponent} from '../editor/node-graph/node-graph.component';
+import {ApiModule} from 'cloudiator-rest-api';
+import {apiConfigFactory} from '../../app.module';
+import {HttpClientModule} from '@angular/common/http';
+import {AppDialogModule} from '../../app-dialog/app-dialog.module';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -27,14 +33,19 @@ describe('AppComponent', () => {
         ImagesOverviewComponent,
         LocationsOverviewComponent,
         YamlEditorComponent,
-        YamlGraphComponent
+        YamlGraphComponent,
+        EditorGraphViewComponent,
+        NodeGraphComponent
       ],
       imports: [
         RootStoreModule,
         AppRoutingModule,
         FormsModule,
         ReactiveFormsModule,
-        CdkTableModule
+        CdkTableModule,
+        ApiModule.forRoot(apiConfigFactory),
+        HttpClientModule,
+        AppDialogModule
       ],
       providers: []
     }).compileComponents();

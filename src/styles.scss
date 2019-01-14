@@ -43,6 +43,11 @@ html {
 
 $app-container-height: calc(100vh - #{$navbar-height});
 
+// notification z-index
+.notification {
+  z-index: 201;
+}
+
 .app-container {
   height: $app-container-height;
   overflow-y: auto;

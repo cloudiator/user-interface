@@ -6,6 +6,7 @@ import {RuntimeConfig} from '../model/RuntimeConfig';
 import {Configuration} from 'cloudiator-rest-api';
 import {environment} from '../../environments/environment';
 import {RootStoreState, RuntimeConfigActions, RuntimeConfigSelectors} from '../root-store';
+import {filter, take} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -41,13 +42,13 @@ export class RuntimeConfigService {
   }
 
   public awaitConfigLoad(): Promise<any> {
-    return new Promise(resolve => {
-      const obs = this.store.pipe(select(RuntimeConfigSelectors.selectIsFetched)).subscribe(fetched => {
-        if (fetched) {
-          resolve(true);
-        }
-      });
-    });
+    return new Promise(resolve =>
+      this.store
+        .pipe(
+          select(RuntimeConfigSelectors.selectIsFetched),
+          filter(isFetched => isFetched),
+          take(1))
+        .subscribe(() => resolve(true)));
   }
 
   getApiPath(): Observable<String> {

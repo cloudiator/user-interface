@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {EditorService} from '../../../services/editor.service';
 import {Subscription} from 'rxjs';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {filter} from 'rxjs/operators';
 
 export enum Tab {
   JOB,
@@ -59,6 +60,7 @@ export class EditorGraphViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.push(this.editorService.getEditorJob().subscribe(job => this.isValid = !!job));
     this.subscriptions.push(this.editorService.getEditorQueue().subscribe(queue => this.isScheduled = !!queue));
+    this.subscriptions.push(this.editorService.getEditorQueue().subscribe(queue => console.log(queue)));
   }
 
   ngOnDestroy() {

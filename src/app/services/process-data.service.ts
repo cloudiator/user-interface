@@ -22,6 +22,10 @@ export class ProcessDataService {
     });
   }
 
+  /**
+   * Takes the current Job from the Editor store and submits a new Schedule for it.
+   * @return {Observable<Queue>} Observable returning the return Queue of the submitted Schedule.
+   */
   public addSchedule(): Observable<Queue> {
     return this.store.pipe(
       select(EditorSelectors.selectJob),

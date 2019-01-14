@@ -3,11 +3,18 @@ import {TestBed} from '@angular/core/testing';
 import {EditorService} from './editor.service';
 import {take} from 'rxjs/operators';
 import {EditorActions, RootStoreModule} from '../root-store';
+import {HttpClientModule} from '@angular/common/http';
+import {ApiModule} from 'cloudiator-rest-api';
+import {apiConfigFactory} from '../app.module';
+import {AppDialogModule} from '../app-dialog/app-dialog.module';
 
 describe('EditorService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     imports: [
-      RootStoreModule
+      RootStoreModule,
+      HttpClientModule,
+      ApiModule.forRoot(apiConfigFactory),
+      AppDialogModule
     ]
   }));
 

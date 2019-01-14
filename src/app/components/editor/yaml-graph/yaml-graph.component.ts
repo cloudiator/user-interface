@@ -71,6 +71,9 @@ export class YamlGraphComponent implements OnInit {
     this.cy.layout(this.circLayout).run();
     this.cy.elements('node').forEach(ele => ele.ungrabify());
     this.cy.elements('node').forEach(ele => ele.unselectify());
+    this.cy.on('resize', () => {
+      this.cy.center();
+    });
 
     this.editorService.getEditorGraph().subscribe(graphData => {
       if (this.cy && graphData) {

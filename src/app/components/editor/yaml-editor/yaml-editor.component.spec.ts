@@ -14,6 +14,9 @@ import {ToastType} from '../../../model/toast';
 import {take} from 'rxjs/operators';
 import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
 import {RootStoreModule} from '../../../root-store';
+import {EditorGraphViewComponent} from '../editor-graph-view/editor-graph-view.component';
+import {NodeGraphComponent} from '../node-graph/node-graph.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('YamlEditorComponent', () => {
   let component: YamlEditorComponent;
@@ -21,13 +24,19 @@ describe('YamlEditorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [YamlEditorComponent, YamlGraphComponent],
+      declarations: [
+        YamlEditorComponent,
+        YamlGraphComponent,
+        EditorGraphViewComponent,
+        NodeGraphComponent
+      ],
       imports: [
         RootStoreModule,
         FormsModule,
         HttpClientModule,
         ApiModule.forRoot(apiConfigFactory),
-        AppDialogModule
+        AppDialogModule,
+        BrowserAnimationsModule
       ],
       providers: [
         EditorService,
@@ -110,11 +119,12 @@ describe('YamlEditorComponent', () => {
 
     spyOn(component.yamlDataService, 'parseYaml').and.returnValue(of(testData.job));
     spyOn(component.jobDataService, 'jobGraph').and.returnValue(of(testData.graphData));
-    spyOn(component.editorService, 'setEditorGraph').and.stub();
+    spyOn(component.editorService, 'setEditorJob').and.stub();
 
     await component.onValidate();
 
-    expect(component.editorService.setEditorGraph).toHaveBeenCalled();
+    expect(component.editorService.setEditorJob).toHaveBeenCalled();
+    expect(component.isValidating).toBeFalsy();
   });
 
   it('onValidate should handle errors', async () => {

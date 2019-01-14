@@ -54,9 +54,9 @@ export class YamlEditorComponent implements OnInit, OnDestroy {
 
   constructor(public editorService: EditorService,
               public jobDataService: JobDataService,
-              private processDataService: ProcessDataService,
+              public processDataService: ProcessDataService,
               public toastService: ToastService,
-              private yamlDataService: YamlDataService) {
+              public yamlDataService: YamlDataService) {
   }
 
   ngOnInit() {
@@ -102,6 +102,7 @@ export class YamlEditorComponent implements OnInit, OnDestroy {
       .subscribe(job => {
           // job is valid and stored
           this.editorService.setEditorJob(job);
+          this.editorService.setEditorQueue(null);
           this.isValidating = false;
         },
         err => {
@@ -122,7 +123,9 @@ export class YamlEditorComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.isSubmitting = true;
-    this.processDataService.addSchedule().subscribe(queue => {
+    this.processDataService.addSchedule()
+      .pipe(take(1))
+      .subscribe(queue => {
       this.editorService.setEditorQueue(queue);
       this.isSubmitting = false;
     },
