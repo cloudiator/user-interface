@@ -3,6 +3,7 @@ import {EditorService} from '../../../services/editor.service';
 import {Subscription} from 'rxjs';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {filter} from 'rxjs/operators';
+import {QueueStatus} from 'cloudiator-rest-api';
 
 export enum Tab {
   JOB,
@@ -33,7 +34,7 @@ export enum Tab {
       transition(':leave', [
         style({
           flexGrow: 1
-}),
+        }),
         animate('0.2s', style({
           flexGrow: 0.00001
         }))
@@ -46,7 +47,7 @@ export enum Tab {
 export class EditorGraphViewComponent implements OnInit, OnDestroy {
 
   public isValid = false;
-  public isScheduled = false;
+  public queueStatus: '' | QueueStatus = '';
 
   public tab = Tab;
 
@@ -59,8 +60,8 @@ export class EditorGraphViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.push(this.editorService.getEditorJob().subscribe(job => this.isValid = !!job));
-    this.subscriptions.push(this.editorService.getEditorQueue().subscribe(queue => this.isScheduled = !!queue));
-    this.subscriptions.push(this.editorService.getEditorQueue().subscribe(queue => console.log(queue)));
+    this.subscriptions.push(this.editorService.getEditorQueue().subscribe(queue =>
+      this.queueStatus = queue ? queue.status : ''));
   }
 
   ngOnDestroy() {

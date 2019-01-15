@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import saveAs from 'file-saver';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {filter, mergeMap, take} from 'rxjs/operators';
 import {EditorActions, EditorSelectors, RootStoreState} from '../root-store';
 import {JobDataService} from './job-data.service';
 import {Job, Queue} from 'cloudiator-rest-api';
+import {QueueDataService} from './queue-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ import {Job, Queue} from 'cloudiator-rest-api';
 export class EditorService {
 
   constructor(public store: Store<RootStoreState.State>,
-              public jobDataService: JobDataService) {
+              public jobDataService: JobDataService,
+              public queueDataService: QueueDataService) {
   }
 
   public getEditorValue(): Observable<string> {
@@ -45,6 +47,9 @@ export class EditorService {
   }
 
   setEditorQueue(queue: Queue) {
+    if (queue) {
+    this.queueDataService.listenToQueueTaskStatus(queue.id);
+    }
     this.store.dispatch(new EditorActions.SetEditorQueueAction(queue));
   }
 

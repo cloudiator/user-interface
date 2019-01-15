@@ -1,6 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import {EditorService} from '../../../services/editor.service';
+import {QueueService, QueueStatus} from 'cloudiator-rest-api';
+import {QueueDataService} from '../../../services/queue-data.service';
+import {takeUntil} from 'rxjs/operators';
+import {forEach} from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-node-graph',
@@ -9,14 +13,18 @@ import {EditorService} from '../../../services/editor.service';
 })
 export class NodeGraphComponent implements OnInit, OnDestroy {
 
-  public isScheduled = false;
+  public queueStatus: '' | QueueStatus = '';
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private editorService: EditorService) { }
+  constructor(private editorService: EditorService,
+              private queueDataService: QueueDataService) {
+  }
 
   ngOnInit() {
-    this.subscriptions.push(this.editorService.getEditorQueue().subscribe(queue => this.isScheduled = !! queue));
+    this.subscriptions.push(this.editorService.getEditorQueue().subscribe(queue => {
+      this.queueStatus = !!queue ? queue.status : '';
+    }));
   }
 
   ngOnDestroy() {

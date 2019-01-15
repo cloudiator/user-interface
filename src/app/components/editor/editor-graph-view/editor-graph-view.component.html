@@ -7,14 +7,14 @@
           [@tabEnterAnimation]
       style="overflow-x: hidden; flex-basis: 0">
         <a>Job</a></li>
-      <li *ngIf="isScheduled"
+      <li *ngIf="queueStatus !== ''"
           [class.is-active]="isTab(tab.NODE)"
           (click)="switchTab(tab.NODE)"
           [@tabEnterAnimation]
       style="overflow-x: hidden; flex-basis: 0">
         <a>
           Nodes
-          <span class="icon is-medium">
+          <span *ngIf="queueStatus === 'RUNNING' || queueStatus === 'SCHEDULED'" class="icon is-medium">
             <i class="fas fa-spinner fa-pulse"></i>
           </span>
         </a>
@@ -31,5 +31,5 @@
   </div>
 </div>
 
-<button class="button" style="position: absolute; z-index: 99999; right: 10px; bottom: 10px" (click)="isValid = !isValid">valid</button>
-<button class="button" style="position: absolute; z-index: 99999; right: 80px; bottom: 10px" (click)="isScheduled = !isScheduled">scheduled</button>
+<!--<button class="button" style="position: absolute; z-index: 99999; right: 10px; bottom: 10px" (click)="isValid = !isValid">valid</button>-->
+<!--<button class="button" style="position: absolute; z-index: 99999; right: 80px; bottom: 10px" (click)="queueStatus = !queueStatus">scheduled</button>-->
