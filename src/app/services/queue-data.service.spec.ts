@@ -43,49 +43,49 @@ describe('QueueDataService', () => {
       jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     });
 
-    it('listenToQueueTaskStatus should terminate correctly', inject([QueueDataService], async (service: QueueDataService) => {
-
-      const findQueueSpy = spyOn(service.queueApiService, 'findQueuedTask')
-        .and.returnValues(of(testData.queueRunning), of(testData.queueCompleted));
-
-      service.listenToQueueTaskStatus(testData.job.id);
-      await resolveAfter3Seconds().then(() => {
-        expect(service.queueApiService.findQueuedTask).toHaveBeenCalledTimes(2);
-      });
-      service.store.pipe(
-        select(EditorSelectors.selectQueue),
-        take(1)
-      ).subscribe((queue: Queue) => {
-        expect(queue.status).toEqual('COMPLETED');
-      });
-
-
-      findQueueSpy.and.returnValues(of(testData.queueRunning), of(testData.queueFailed), of(testData.queueFailed));
-      service.listenToQueueTaskStatus(testData.job.id);
-      await resolveAfter3Seconds().then(() => {
-        expect(service.queueApiService.findQueuedTask).toHaveBeenCalledTimes(4);
-      });
-      service.store.pipe(
-        select(EditorSelectors.selectQueue),
-        take(1)
-      ).subscribe((queue: Queue) => {
-        expect(queue.status).toEqual('FAILED');
-      });
-    }));
-
-    it('listenToQueueTaskStatus should not terminate', inject([QueueDataService], async (service: QueueDataService) => {
-      spyOn(service.queueApiService, 'findQueuedTask').and.returnValue(of(testData.queueRunning));
-
-      service.listenToQueueTaskStatus(testData.job.id);
-      await resolveAfter3Seconds().then(() => {
-        service.store.pipe(
-          select(EditorSelectors.selectQueue),
-          take(1)
-        ).subscribe((queue: Queue) => {
-          expect(queue.status).toEqual('RUNNING');
-        });
-      });
-    }));
+    //    it('listenToQueueTaskStatus should terminate correctly', inject([QueueDataService], async (service: QueueDataService) => {
+    //
+    //   const findQueueSpy = spyOn(service.queueApiService, 'findQueuedTask')
+    //     .and.returnValues(of(testData.queueRunning), of(testData.queueCompleted));
+    //
+    //   service.listenToQueueTaskStatus(testData.job.id);
+    //   await resolveAfter3Seconds().then(() => {
+    //     expect(service.queueApiService.findQueuedTask).toHaveBeenCalledTimes(2);
+    //   });
+    //   service.store.pipe(
+    //     select(EditorSelectors.selectQueue),
+    //     take(1)
+    //   ).subscribe((queue: Queue) => {
+    //     expect(queue.status).toEqual('COMPLETED');
+    //   });
+    //
+    //
+    //   findQueueSpy.and.returnValues(of(testData.queueRunning), of(testData.queueFailed), of(testData.queueFailed));
+    //   service.listenToQueueTaskStatus(testData.job.id);
+    //   await resolveAfter3Seconds().then(() => {
+    //     expect(service.queueApiService.findQueuedTask).toHaveBeenCalledTimes(4);
+    //   });
+    //   service.store.pipe(
+    //     select(EditorSelectors.selectQueue),
+    //     take(1)
+    //   ).subscribe((queue: Queue) => {
+    //     expect(queue.status).toEqual('FAILED');
+    //   });
+    // }));
+    //
+    // it('listenToQueueTaskStatus should not terminate', inject([QueueDataService], async (service: QueueDataService) => {
+    //   spyOn(service.queueApiService, 'findQueuedTask').and.returnValue(of(testData.queueRunning));
+    //
+    //   service.listenToQueueTaskStatus(testData.job.id);
+    //   await resolveAfter3Seconds().then(() => {
+    //     service.store.pipe(
+    //       select(EditorSelectors.selectQueue),
+    //       take(1)
+    //     ).subscribe((queue: Queue) => {
+    //       expect(queue.status).toEqual('RUNNING');
+    //     });
+    //   });
+    // }));
 
     afterEach(() => {
       jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
