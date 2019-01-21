@@ -5,7 +5,7 @@ import {FormsModule} from '@angular/forms';
 import {YamlGraphComponent} from '../yaml-graph/yaml-graph.component';
 import {YamlDataService} from '../../../services/yaml-data.service';
 import {HttpClientModule, HttpErrorResponse} from '@angular/common/http';
-import {ApiModule} from 'cloudiator-rest-api';
+import {ApiModule, QueueService} from 'cloudiator-rest-api';
 import {apiConfigFactory} from '../../../app.module';
 import {EditorService} from '../../../services/editor.service';
 import {of, throwError} from 'rxjs';
@@ -21,6 +21,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 describe('YamlEditorComponent', () => {
   let component: YamlEditorComponent;
   let fixture: ComponentFixture<YamlEditorComponent>;
+
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -40,7 +41,7 @@ describe('YamlEditorComponent', () => {
       ],
       providers: [
         EditorService,
-        YamlDataService
+        YamlDataService,
       ]
 
     })
@@ -50,6 +51,7 @@ describe('YamlEditorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(YamlEditorComponent);
     component = fixture.componentInstance;
+
   });
 
   it('should create', () => {

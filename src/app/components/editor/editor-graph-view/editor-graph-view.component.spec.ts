@@ -6,16 +6,24 @@ import {NodeGraphComponent} from '../node-graph/node-graph.component';
 import {RootStoreModule} from '../../../root-store';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
-import {ApiModule} from 'cloudiator-rest-api';
+import {ApiModule, JobService} from 'cloudiator-rest-api';
 import {apiConfigFactory} from '../../../app.module';
 import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import * as testData from 'testing/test-data';
 import {EditorService} from '../../../services/editor.service';
+import {of} from 'rxjs';
 
 describe('EditorGraphViewComponent', () => {
   let component: EditorGraphViewComponent;
   let fixture: ComponentFixture<EditorGraphViewComponent>;
+
+
+  const mockJobService = jasmine.createSpyObj('JobService', {
+    'findJob': of(testData.job),
+    'findJobs': of([testData.job]),
+    'jobGraph': of(testData.graphData),
+  });
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -31,7 +39,7 @@ describe('EditorGraphViewComponent', () => {
         AppDialogModule,
         BrowserAnimationsModule],
       providers: [
-        EditorService
+        {provide: JobService, useValue: mockJobService}
       ]
     })
       .compileComponents();
