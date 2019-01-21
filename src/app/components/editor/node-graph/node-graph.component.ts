@@ -17,7 +17,7 @@ export class NodeGraphComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private editorService: EditorService,
+  constructor(public editorService: EditorService,
               private queueDataService: QueueDataService) {
   }
 

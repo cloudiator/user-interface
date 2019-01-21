@@ -10,7 +10,6 @@ import {ToastType} from '../../../model/toast';
 /**
  * A Form to add a new Cloud.
  */
-
 @Component({
   selector: 'app-new-cloud',
   templateUrl: './new-cloud.component.html',
@@ -18,6 +17,10 @@ import {ToastType} from '../../../model/toast';
 })
 export class NewCloudComponent implements OnInit {
 
+  /**
+   * Object representing the new Cloud that is to be generated
+   * @type {NewCloud}
+   */
   public cloud: NewCloud = {
     endpoint: '',
     cloudType: 'PRIVATE',
@@ -36,6 +39,10 @@ export class NewCloudComponent implements OnInit {
     }
   };
 
+  /**
+   * Array to represent configuration properties as key value pairs.
+   * @type {{key: string; value: string}[]}
+   */
   public properties = [
     {
       key: '',
@@ -43,12 +50,14 @@ export class NewCloudComponent implements OnInit {
     }
   ];
 
+  /** @ignore */
   constructor(private cloudDataService: CloudDataService,
               private dialogService: DialogService,
               private router: Router,
               private toastService: ToastService) {
   }
 
+  /** @ignore */
   ngOnInit() {
   }
 

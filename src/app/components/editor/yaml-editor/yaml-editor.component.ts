@@ -123,7 +123,7 @@ export class YamlEditorComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.isSubmitting = true;
-    this.processDataService.addSchedule()
+    this.processDataService.submitEditorSchedule()
       .pipe(take(1))
       .subscribe(queue => {
       this.editorService.setEditorQueue(queue);
@@ -131,6 +131,7 @@ export class YamlEditorComponent implements OnInit, OnDestroy {
     },
     err => {
       this.isSubmitting = false;
+      this.toastService.show({text: 'Unexpected Error', type: ToastType.DANGER}, true);
     });
   }
 }

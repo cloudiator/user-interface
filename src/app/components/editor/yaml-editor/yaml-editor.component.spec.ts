@@ -152,4 +152,21 @@ describe('YamlEditorComponent', () => {
     expect(component.toastService.show).toHaveBeenCalledWith({text: 'Unexpected Error', type: ToastType.DANGER}, true);
     expect(component.toastService.show).toHaveBeenCalledTimes(3);
   });
+
+  it('onSubmit schould call correct  targets', async () => {
+    spyOn(component.processDataService, 'submitEditorSchedule').and.returnValue(of(testData.queueScheduled));
+    spyOn(component.editorService, 'setEditorQueue').and.callThrough();
+
+    await component.onSubmit();
+
+    expect(component.isSubmitting).toBeFalsy();
+    expect(component.processDataService.submitEditorSchedule).toHaveBeenCalledTimes(1);
+    expect(component.editorService.setEditorQueue).toHaveBeenCalledTimes(1);
+
+    component.editorService.getEditorQueue()
+      .pipe(take(1))
+      .subscribe(queue => {
+        expect(queue).toEqual(testData.queueScheduled);
+      });
+  });
 });

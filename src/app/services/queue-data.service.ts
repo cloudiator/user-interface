@@ -6,15 +6,23 @@ import {EditorActions, RootStoreState} from '../root-store';
 import {interval, Observable, of, Subject, Subscription} from 'rxjs';
 import {first, map, mergeMap, takeUntil} from 'rxjs/operators';
 
+/**
+ * Service responsible for handling interactions with the Queue Api.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class QueueDataService {
 
+  /**
+   * Subscription of the queueStatus interval.
+   */
   private queueStatusSubscription: Subscription;
 
+  /** @ignore */
   constructor(public queueApiService: QueueService,
-              private store: Store<RootStoreState.State>) {
+              public store: Store<RootStoreState.State>) {
+    // Sets queueService settings according to RuntimeConfig.
     store.pipe(select(RuntimeConfigSelectors.selectConfig)).subscribe(config => {
       queueApiService.basePath = config.apiPath;
       if (queueApiService.configuration) {
@@ -24,6 +32,11 @@ export class QueueDataService {
   }
 
 
+  /**
+   * Pulls the Queue for the given id from the Server.
+   * @param {string} id
+   * @return {Observable<Queue>}
+   */
   public findQueuedTask(id: string): Observable<Queue> {
     return this.queueApiService.findQueuedTask(id, 'body');
   }
@@ -47,15 +60,16 @@ export class QueueDataService {
 
     const destroy = new Subject<boolean>();
     // poll Server every second
-    interval(1000).pipe(
-      takeUntil(destroy),
-      mergeMap(() => this.bol ? this.obs : this.queueApiService.findQueuedTask(id))
-    ).subscribe((queue: Queue) => {
-      this.store.dispatch(new EditorActions.SetEditorQueueAction(queue));
-      // if queue finished, stop polling
-      if (queue.status === 'COMPLETED' || queue.status === 'FAILED') {
-        destroy.next(true);
-      }
-    });
+    this.queueStatusSubscription =
+      interval(1000).pipe(
+        takeUntil(destroy),
+        mergeMap(() => this.bol ? this.obs : this.findQueuedTask(id))
+      ).subscribe((queue: Queue) => {
+        this.store.dispatch(new EditorActions.SetEditorQueueAction(queue));
+        // if queue finished, stop polling
+        if (queue.status === 'COMPLETED' || queue.status === 'FAILED') {
+          destroy.next(true);
+        }
+      });
   }
 }

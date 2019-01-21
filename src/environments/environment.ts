@@ -8,9 +8,9 @@ export const environment = {
   production: false,
   useRuntimeConfig: false,
   href: '/',
-  apiPath: 'http://134.60.64.119:9000',
+  apiPath: 'https://881c45f1-765d-415c-9fd1-251063685f28.mock.pstmn.io',
   authMode: AuthMode.SINGLE,
-  xApiKey: 'secureUI',
+  xApiKey: 'cd5f0aafad544fcfa29595c87f5c2bb8',
   notificationDuration: 10000
 };
 
