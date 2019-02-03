@@ -35,6 +35,8 @@
     "cytoscape": "^3.2.20",
     "file-saver": "^2.0.0-rc.4",
     "rxjs": "^6.3.3",
+    "terser": "^3.14.1",
+    "webpack": "^4.29.0",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
