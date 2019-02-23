@@ -1,4 +1,16 @@
-import {Api, Cloud, CloudConfiguration, CloudCredential, Hardware, Image, Job, Location, OperatingSystem} from 'cloudiator-rest-api';
+import {
+  Api,
+  Cloud,
+  CloudConfiguration,
+  CloudCredential, CloudiatorProcess,
+  Hardware,
+  Image,
+  Job,
+  LanceInterface,
+  Location, OclRequirement,
+  OperatingSystem, PortRequired,
+  Queue, Schedule
+} from 'cloudiator-rest-api';
 
 /* CLOUDS */
 export const allClouds: Cloud[] = [
@@ -82,6 +94,7 @@ export const cloudTwo: Cloud = <Cloud>{
   }
 };
 
+/* HARDWARE */
 export const hardwareOne: Hardware = <Hardware>{
   id: '02f7f6ab33e4a94d0f441947972668ef~RegionOne/931b887e-e747-4a66-b643-0cc5c0caa1cd',
   name: 'small',
@@ -136,22 +149,21 @@ export const hardwareTree: Hardware = <Hardware>{
   }
 };
 
-/* HARDWARE */
 export const allHardware: Hardware[] = [
   hardwareOne,
   hardwareTwo,
   hardwareTree
 ];
 
+/* IMAGES */
 export const imageOne = <Image>{
   id: '02f7f6ab33e4a94d0f441947972668ef~RegionOne/faa7fa7b-ddb3-4af5-aae3-f5d2d568c1c9',
   name: 'molpro-image-v2.8',
   providerId: 'faa7fa7b-ddb3-4af5-aae3-f5d2d568c1c9',
   operatingSystem: <OperatingSystem>{
-    operatingSystemType: 'UNKOWN',
     operatingSystemFamily: 'UNKOWN_OS_FAMILY',
     operatingSystemArchitecture: 'UNKOWN',
-    operatingSystemVersion: '-1'
+    operatingSystemVersion: -1
   },
   location: <Location>{
     id: '02f7f6ab33e4a94d0f441947972668ef~RegionOne',
@@ -168,10 +180,9 @@ export const imageTwo = <Image>{
   name: 'cirros',
   providerId: '4805c873-a637-42cb-a58d-027958a10235',
   operatingSystem: <OperatingSystem>{
-    operatingSystemType: 'UNKOWN',
     operatingSystemFamily: 'UNKOWN_OS_FAMILY',
     operatingSystemArchitecture: 'UNKOWN',
-    operatingSystemVersion: '-1'
+    operatingSystemVersion: -1
   },
   location: <Location>{
     id: '02f7f6ab33e4a94d0f441947972668ef~RegionOne',
@@ -183,15 +194,15 @@ export const imageTwo = <Image>{
     parent: null
   }
 };
+
 export const imageThree = <Image>{
   id: '02f7f6ab33e4a94d0f441947972668ef~RegionOne/baaca739-89b9-4d86-826f-c281e03a8c19',
   name: 'Ubuntu Server 14.04.2 AMD64 LTS',
   providerId: 'baaca739-89b9-4d86-826f-c281e03a8c19',
   operatingSystem: <OperatingSystem>{
-    operatingSystemType: 'UNKOWN',
     operatingSystemFamily: 'UBUNTU',
     operatingSystemArchitecture: 'AMD64',
-    operatingSystemVersion: '-1'
+    operatingSystemVersion: -1
   },
   location: <Location>{
     id: '02f7f6ab33e4a94d0f441947972668ef~RegionOne',
@@ -204,8 +215,6 @@ export const imageThree = <Image>{
   }
 };
 
-
-/* IMAGES */
 export const allImages: Image[] = [
   imageOne,
   imageTwo,
@@ -433,3 +442,40 @@ export const graphData: any = {
     }
   ]
 };
+
+
+/* QUEUE */
+export const queueScheduled: Queue = {
+  id: '445bdb66-3c87-44ca-bc51-3670b008643e',
+  status: 'SCHEDULED'
+};
+export const queueRunning: Queue = {
+  id: '445bdb66-3c87-44ca-bc51-3670b008643e',
+  status: 'RUNNING'
+};
+export const queueCompleted: Queue = {
+  id: '445bdb66-3c87-44ca-bc51-3670b008643e',
+  status: 'COMPLETED'
+};
+export const queueFailed: Queue = {
+  id: '445bdb66-3c87-44ca-bc51-3670b008643e',
+  status: 'FAILED'
+};
+
+/* Schedule */
+export const schedules: Array<Schedule> = [
+  {
+    job: 'string',
+    instantiation: 'AUTOMATIC',
+    id: 'string',
+    processes: [
+      <CloudiatorProcess>{
+        id: 'string',
+        processType: 'string',
+        type: 'LANCE',
+        schedule: 'string',
+        task: 'string'
+      }
+    ]
+  }
+];

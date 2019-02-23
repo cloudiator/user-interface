@@ -22,6 +22,7 @@ import {RootStoreModule} from './root-store';
 import { EditorGraphViewComponent } from './components/editor/editor-graph-view/editor-graph-view.component';
 import { NodeGraphComponent } from './components/editor/node-graph/node-graph.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { SchedulesOverviewComponent } from './components/schedules/schedules-overview/schedules-overview.component';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -45,6 +46,7 @@ export function apiConfigFactory(): Configuration {
     YamlGraphComponent,
     EditorGraphViewComponent,
     NodeGraphComponent,
+    SchedulesOverviewComponent,
   ],
   imports: [
     BrowserModule,

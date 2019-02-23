@@ -6,6 +6,7 @@ import {Job, JobService} from 'cloudiator-rest-api';
 import {Observable} from 'rxjs';
 import {ToastType} from '../model/toast';
 import {JobDataActions, JobDataSelectors, RootStoreState, RuntimeConfigSelectors} from '../root-store';
+import {find, first, map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,11 @@ export class JobDataService {
     return this.store.pipe(select(JobDataSelectors.selectJobs));
   }
 
+  public findJob(id: string): Observable<Job> {
+    console.log(this.findJobs())
+    return this.findJobs().pipe(map(jobs => jobs.find(job => job.id === id)));
+  }
+
   public jobGraph(id: string): Observable<any> {
     return this.jobApiService.jobGraph(id);
   }
@@ -38,7 +44,7 @@ export class JobDataService {
     this.runtimeConfigService.awaitConfigLoad().then(() => {
       this.jobApiService.findJobs().toPromise()
         .then(jobs => {
-          this.store.dispatch(new JobDataActions.SetJobsActiom(jobs));
+          this.store.dispatch(new JobDataActions.SetJobsAction(jobs));
         })
         .catch(() => {
           this.toastService.show({text: 'could not fetch Jobs', type: ToastType.DANGER}, false);

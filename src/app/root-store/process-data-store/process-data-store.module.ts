@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {StoreModule} from '@ngrx/store';
-import {jobDataReducer} from './reducer';
+import {processDatareducer} from './reducer';
 
 @NgModule({
-  declarations: [],
   imports: [
     CommonModule,
-    StoreModule.forFeature('jobData', jobDataReducer)
-  ]
+    StoreModule.forFeature('processData', processDatareducer)
+  ],
+  declarations: []
 })
-export class JobDataStoreModule { }
+export class ProcessDataStoreModule { }

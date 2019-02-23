@@ -1,0 +1,19 @@
+@import "../../../../styles";
+
+.view {
+  height: 100%;
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.list-header {
+  flex: 0 1 100px;
+}
+
+.list-view {
+  flex: 1 1 auto;
+  overflow-y: scroll;
+}

@@ -19,6 +19,7 @@ import {ApiModule} from 'cloudiator-rest-api';
 import {apiConfigFactory} from '../../app.module';
 import {HttpClientModule} from '@angular/common/http';
 import {AppDialogModule} from '../../app-dialog/app-dialog.module';
+import {SchedulesOverviewComponent} from '../schedules/schedules-overview/schedules-overview.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -35,7 +36,8 @@ describe('AppComponent', () => {
         YamlEditorComponent,
         YamlGraphComponent,
         EditorGraphViewComponent,
-        NodeGraphComponent
+        NodeGraphComponent,
+        SchedulesOverviewComponent
       ],
       imports: [
         RootStoreModule,
