@@ -24,6 +24,7 @@ const routes: Routes = [
   {path: 'editor', component: YamlEditorComponent},
 
   {path: 'schedules', component: SchedulesOverviewComponent},
+  {path: 'schedules/:id', component: SchedulesOverviewComponent},
 
   {path: 'clouds', component: CloudOverviewComponent},
   {path: '', component: CloudOverviewComponent},

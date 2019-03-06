@@ -9,12 +9,14 @@
         </div>
       </div>
     </div>
-    <div class="list-view" style="width: 100%; height: auto">
-      <div *ngFor="let schedule of schedules">
-        {{schedule.id}}
+    <div class="list list-view is-hoverable" style="width: 100%; height: auto">
+      <div *ngFor="let view of scheduleViews">
+        <a class="list-item" [routerLink]="['/schedules', view.schedule.id]">{{view.job?.name}}</a>
       </div>
     </div>
   </div>
   <!-- RIGHT SIDE -->
-  <div class="column card"></div>
+  <div class="column card">
+    <app-schedules-view></app-schedules-view>
+  </div>
 </div>

@@ -32,7 +32,6 @@ export class JobDataService {
   }
 
   public findJob(id: string): Observable<Job> {
-    console.log(this.findJobs())
     return this.findJobs().pipe(map(jobs => jobs.find(job => job.id === id)));
   }
 

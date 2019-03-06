@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-import {Observable, zip} from 'rxjs';
+import {forkJoin, merge, Observable, of, zip} from 'rxjs';
 import {Job, ProcessService, Queue, Schedule} from 'cloudiator-rest-api';
 import {select, Store} from '@ngrx/store';
 import * as RuntimeConfigSelectors from '../root-store/runtime-config-store/selectors';
 import * as RootStoreState from '../root-store/root-state';
 import {EditorSelectors} from '../root-store/editor-store';
-import {concatMap, flatMap, map, mergeAll, mergeMap, take} from 'rxjs/operators';
+import {concatAll, concatMap, filter, first, flatMap, map, mergeAll, mergeMap, take, tap} from 'rxjs/operators';
 import {ProcessDataActions, ProcessDataSelectors} from '../root-store/process-data-store';
 import {RuntimeConfigService} from './runtime-config.service';
 import {JobDataService} from './job-data.service';
@@ -48,10 +48,21 @@ export class ProcessDataService {
     return this.getSchedules().pipe(
       map(schedules =>
         schedules.map(schedule =>
-          this.jobDataService.findJob(schedule.job)
-            .pipe(map(job => [schedule, job]))
+          this.jobDataService.findJob(schedule.job).pipe(
+            map(job => {
+              return <ScheduleView>{
+                schedule: schedule,
+                job: job
+              };
+            })
+          )
         )
-      )
+      ),
+      map(arr => forkJoin(arr))
+      // flatMap(arr => {
+      //   console.log('in flatmap')
+      //   return mergeAll(arr);
+      // })
     );
   }
 
