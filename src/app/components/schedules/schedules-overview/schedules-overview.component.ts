@@ -3,7 +3,7 @@ import {ProcessDataService} from '../../../services/process-data.service';
 import {Subscription} from 'rxjs';
 import {ScheduleView} from '../../../model/ScheduleView';
 import {JobDataService} from '../../../services/job-data.service';
-import {takeUntil} from 'rxjs/operators';
+import {map, take, takeUntil, tap} from 'rxjs/operators';
 import {set} from '../../../lodashUtils';
 import * as _ from 'lodash';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -15,6 +15,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class SchedulesOverviewComponent implements OnInit, OnDestroy {
   scheduleViews: ScheduleView[] = [];
+
+  activeViewId: string = null;
+  activeScheduleView: ScheduleView = null;
 
   /**
    * Subscriptions of findJob observables
@@ -32,24 +35,39 @@ export class SchedulesOverviewComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.subscriptions.push(
-      this.processDataService.getSchedules().subscribe(schedules => {
-        // map schedules to scheduleViews
-        this.scheduleViews = schedules.map(sch => {
-          return {
-            schedule: sch,
-            job: null
-          };
-        });
+      this.route.paramMap
+        .pipe(
+          map(paramsMap => paramsMap.get('id')),
+          tap(console.log)
+        )
+        .subscribe(id => {
+          this.activeViewId = id;
+          this.updateActiveScheduleView();
+        })
+    );
 
-        // cleanup old findJob subscriptions
-        this.jobSubscriptions.forEach(s => s.unsubscribe());
+    this.subscriptions.push(
+      this.processDataService.getSchedules()
+        .subscribe(schedules => {
+          // map schedules to scheduleViews
+          this.scheduleViews = schedules.map(sch => {
+            return {
+              schedule: sch,
+              job: null
+            };
+          });
 
-        // add new findJob subscriptions
-        this.jobSubscriptions = this.scheduleViews.map(sv =>
-          this.jobDataService.findJob(sv.schedule.job)
-            .subscribe(job => sv.job = job)
-        );
-      })
+          // cleanup old findJob subscriptions
+          this.jobSubscriptions.forEach(s => s.unsubscribe());
+
+          // add new findJob subscriptions
+          this.jobSubscriptions = this.scheduleViews.map(sv =>
+            this.jobDataService.findJob(sv.schedule.job)
+              .subscribe(job => sv.job = job)
+          );
+
+          this.updateActiveScheduleView();
+        })
     );
   }
 
@@ -59,5 +77,11 @@ export class SchedulesOverviewComponent implements OnInit, OnDestroy {
 
   test() {
     console.log(this.scheduleViews);
+  }
+
+  private updateActiveScheduleView() {
+    if (this.activeViewId) {
+      this.activeScheduleView = this.scheduleViews.find(sv => sv.schedule.id === this.activeViewId);
+    }
   }
 }

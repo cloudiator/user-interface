@@ -29,6 +29,10 @@ $modal-z: 200;
 $tabs-link-active-color: $secondary;
 $tabs-link-active-border-bottom-color: $secondary;
 
+$link: $black;
+$list-item-color: red;
+$list-item-active-background-color: $secondary;
+$list-radius: 0px;
 
 @import "../node_modules/bulma/bulma";
 @import "../node_modules/bulma-divider/dist/css/bulma-divider";
