@@ -1,7 +1,7 @@
 <div class="view columns is-gapless is-mobile is-clipped">
 
   <!-- LEFT SIDE -->
-  <div class="list-container column is-one-third">
+  <div class="list-container column is-one-third-tablet hide-mobile" [class.hidden-mobile]="activeScheduleView">
     <div class="hero card">
       <div class="hero-body">
         <div class="container">
@@ -11,12 +11,13 @@
     </div>
     <div class="list list-view is-hoverable" style="width: 100%; height: auto">
       <div *ngFor="let view of scheduleViews">
-        <a class="list-item is-active" [routerLink]="['/schedules', view.schedule.id]" [class.is-active]="view.schedule.id == activeViewId">{{view.job?.name}}</a>
+        <a class="list-item is-active" [routerLink]="['/schedules', view.schedule.id]"
+           [class.is-active]="view.schedule.id == activeViewId">{{view.job?.name}}</a>
       </div>
     </div>
   </div>
-  <!-- RIGHT SIDE -->
-  <div class="column card">
+  <!--RIGHT SIDE-->
+  <div class="view-container column card" [class.hidden-mobile]="!activeScheduleView">
     <app-schedules-view [scheduleView]="activeScheduleView"></app-schedules-view>
   </div>
 </div>

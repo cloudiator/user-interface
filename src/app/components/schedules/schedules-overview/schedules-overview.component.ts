@@ -37,8 +37,7 @@ export class SchedulesOverviewComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.route.paramMap
         .pipe(
-          map(paramsMap => paramsMap.get('id')),
-          tap(console.log)
+          map(paramsMap => paramsMap.get('id'))
         )
         .subscribe(id => {
           this.activeViewId = id;

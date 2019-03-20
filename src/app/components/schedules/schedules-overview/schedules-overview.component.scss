@@ -1,4 +1,5 @@
 @import "../../../../styles";
+@import "~bulma/sass/utilities/mixins";
 
 .view {
   height: 100%;
@@ -15,10 +16,19 @@
 
 .list-view {
   flex: 1 1 auto;
-  overflow-y: scroll;
+  overflow-y: auto;
   //border-radius: 0 !important;
 }
 
 //.list-item {
 //  border-radius: 0 !important;
 //}
+
+@include mobile {
+  .list-container {
+    //display: none;
+  }
+  .view-container {
+    //display: none;
+  }
+}

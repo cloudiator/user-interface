@@ -29,12 +29,13 @@ $modal-z: 200;
 $tabs-link-active-color: $secondary;
 $tabs-link-active-border-bottom-color: $secondary;
 
-$link: $black;
+//$link: $black;
 $list-item-color: red;
 $list-item-active-background-color: $secondary;
 $list-radius: 0px;
 
 @import "../node_modules/bulma/bulma";
+@import "../node_modules/bulma/sass/utilities/mixins";
 @import "../node_modules/bulma-divider/dist/css/bulma-divider";
 @import "../node_modules/bulma-checkradio/dist/css/bulma-checkradio";
 @import "../node_modules/bulma-badge/dist/css/bulma-badge";
@@ -77,4 +78,10 @@ $app-container-height: calc(100vh - #{$navbar-height});
 
 .is-clickable {
   cursor: pointer;
+}
+
+@include mobile {
+  .hidden-mobile {
+    display: none !important;
+  }
 }

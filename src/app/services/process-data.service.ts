@@ -5,11 +5,12 @@ import {select, Store} from '@ngrx/store';
 import * as RuntimeConfigSelectors from '../root-store/runtime-config-store/selectors';
 import * as RootStoreState from '../root-store/root-state';
 import {EditorSelectors} from '../root-store/editor-store';
-import {concatAll, concatMap, filter, first, flatMap, map, mergeAll, mergeMap, take, tap} from 'rxjs/operators';
+import {concatAll, concatMap, delay, filter, first, map, mergeAll, mergeMap, take, tap} from 'rxjs/operators';
 import {ProcessDataActions, ProcessDataSelectors} from '../root-store/process-data-store';
 import {RuntimeConfigService} from './runtime-config.service';
 import {JobDataService} from './job-data.service';
 import {ScheduleView} from '../model/ScheduleView';
+import * as testData from 'testing/test-data';
 
 @Injectable({
   providedIn: 'root'
@@ -64,6 +65,11 @@ export class ProcessDataService {
       //   return mergeAll(arr);
       // })
     );
+  }
+
+  scheduleGraph(id: string): Observable<any> {
+    // return this.processApiService.scheduleGraph(id);
+    return of(testData.graphData);
   }
 
 

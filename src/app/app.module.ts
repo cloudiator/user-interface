@@ -1,5 +1,6 @@
-import {BrowserModule} from '@angular/platform-browser';
+import {BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import * as Hammer from 'hammerjs';
 
 import {AppComponent} from './components/app/app.component';
 import {AppRoutingModule} from './app-routing.module';
@@ -33,6 +34,13 @@ export function apiConfigFactory(): Configuration {
   return new Configuration(params);
 }
 
+export class BottomSheetHammerConfig extends HammerGestureConfig {
+  overrides = <any> {
+    pan: { direction: Hammer.DIRECTION_VERTICAL },
+    swipe: { direction: Hammer.DIRECTION_VERTICAL },
+  };
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,7 +70,9 @@ export function apiConfigFactory(): Configuration {
     CdkTableModule,
     AppDialogModule
   ],
-  providers: [],
+  providers: [
+    { provide: HAMMER_GESTURE_CONFIG, useClass: BottomSheetHammerConfig}
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,3 +1,35 @@
-<div *ngIf="scheduleView">
-  {{scheduleView.schedule.id}}
+<div [class.is-opaque]="!scheduleView"
+     style="width: 100%; height: 100%">
+  <!-- view-->
+  <div [class.is-opaque]="isLoading" style="position: absolute; width: 100%; height: 100%;">
+    <div id="cy" style="width: 100%; height: 100%;"></div>
+    <div class="bottom-sheet card has-shadow"
+         [@sheetOpenClose]="sheetOpenClose"
+         (swipedown)="sheetOpenClose = 'closed'"
+         (swipeup)="sheetOpenClose = 'open'"
+         (click)="onSheetClick()"
+    > test test
+      <a class="bottom-sheet-button"
+         (click)="switchOpenState()">
+    <span class="icon" [@buttonOpenClose]="sheetOpenClose">
+      <i class="fas fa-arrow-down"></i>
+    </span>
+      </a>
+    </div>
+  </div>
+
+  <!-- loading screen -->
+  <div *ngIf="isLoading" class="is-flex"
+       style="position: absolute; justify-content: center; align-items: center; width: 100%; height: 100%;">
+  <span class="icon is-large">
+    <i class="fas fa-3x fa-spinner fa-pulse"></i>
+  </span>
+  </div>
+  <!-- back button -->
+  <a class="back-button is-hidden-tablet has-text-black"
+     routerLink="/schedules">
+    <span class="icon">
+      <i class="fas fa-arrow-left"></i>
+    </span>
+  </a>
 </div>
