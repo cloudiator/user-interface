@@ -1,6 +1,14 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SchedulesOverviewComponent } from './schedules-overview.component';
+import {SchedulesOverviewComponent} from './schedules-overview.component';
+import {SchedulesViewComponent} from '../schedules-view/schedules-view.component';
+import {RouterTestingModule} from '@angular/router/testing';
+import {ApiModule, JobService} from 'cloudiator-rest-api';
+import {HttpClientModule} from '@angular/common/http';
+import {apiConfigFactory} from '../../../app.module';
+import {RootStoreModule} from '../../../root-store';
+import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('SchedulesOverviewComponent', () => {
   let component: SchedulesOverviewComponent;
@@ -8,9 +16,22 @@ describe('SchedulesOverviewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SchedulesOverviewComponent ]
+      declarations: [
+        SchedulesOverviewComponent,
+        SchedulesViewComponent
+      ],
+      imports: [
+        RootStoreModule,
+        RouterTestingModule,
+        ApiModule.forRoot(apiConfigFactory),
+        HttpClientModule,
+        AppDialogModule,
+        BrowserAnimationsModule
+      ],
+      providers: [
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

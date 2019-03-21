@@ -5,7 +5,7 @@ import 'brace/mode/yaml';
 import 'brace/theme/monokai';
 import {YamlDataService} from '../../../services/yaml-data.service';
 import {ToastService} from '../../../app-dialog/services/toast.service';
-import {ToastType} from '../../../model/toast';
+import {ToastType} from '../../../app-dialog/model/toast';
 import {JobDataService} from '../../../services/job-data.service';
 import {EditorService} from '../../../services/editor.service';
 import {filter, take} from 'rxjs/operators';

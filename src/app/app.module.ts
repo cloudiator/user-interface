@@ -25,6 +25,7 @@ import { NodeGraphComponent } from './components/editor/node-graph/node-graph.co
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { SchedulesOverviewComponent } from './components/schedules/schedules-overview/schedules-overview.component';
 import { SchedulesViewComponent } from './components/schedules/schedules-view/schedules-view.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -68,7 +69,8 @@ export class BottomSheetHammerConfig extends HammerGestureConfig {
     FormsModule,
     ReactiveFormsModule,
     CdkTableModule,
-    AppDialogModule
+    AppDialogModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     { provide: HAMMER_GESTURE_CONFIG, useClass: BottomSheetHammerConfig}

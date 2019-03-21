@@ -24,21 +24,25 @@ import {Change} from '@ngrx/store/schematics-core';
       state('closed', style(
         {
           transform: 'translateY(16.5em)',
-          backgroundColor: '#92acbe'
+          backgroundColor: '#92acbe',
+          color: 'white'
         })),
       state('open', style(
         {
           transform: '*',
-          backgroundColor: '*'
+          backgroundColor: '*',
+          color: '*'
         })),
       transition('open => closed', [
         group([
           query('@buttonOpenClose', animateChild()),
+          query('@headerOpenClose', animateChild()),
           animate('0.2s')])
       ]),
       transition('closed => open', [
         group([
           query('@buttonOpenClose', animateChild()),
+          query('@headerOpenClose', animateChild()),
           animate('0.25s')])
       ])
     ]),
@@ -51,6 +55,18 @@ import {Change} from '@ngrx/store/schematics-core';
       state('open', style(
         {
           transform: 'rotate(0deg)',
+          color: 'lightgray'
+        })),
+      transition('open => closed', [animate('0.20s')]),
+      transition('closed => open', [animate('0.25s')])
+    ]),
+    trigger('headerOpenClose', [
+      state('closed', style(
+        {
+          color: 'white'
+        })),
+      state('open', style(
+        {
           color: 'black'
         })),
       transition('open => closed', [animate('0.20s')]),
@@ -65,9 +81,22 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
 
   @Input() scheduleView: ScheduleView;
 
-  sheetOpenClose: 'open' | 'closed' = 'open';
-
   isLoading = true;
+
+  _selected = null;
+  get selected() {
+    return this._selected;
+  }
+  set selected(value) {
+    this._selected = value;
+    if (value) {
+      this.sheetOpenClose = 'open';
+    } else {
+      this.sheetOpenClose = 'closed';
+    }
+  }
+
+  sheetOpenClose: 'open' | 'closed' = this.selected ? 'open' : 'closed';
 
   // y: number = 0;
   // startY: number = 0;
@@ -84,8 +113,15 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
       'background-color': '#00447a',
       'text-outline-color': '#00447a',
       'text-outline-width': '1px',
+      'text-wrap': 'wrap',
       'color': '#fff',
       'z-index': '10'
+    }
+  }, {
+    'selector': 'node:selected',
+    'style': {
+      'background-color': 'lightgray',
+      'text-outline-color': 'gray'
     }
   }, {
     'selector': 'edge',
@@ -96,9 +132,15 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
       'overlay-padding': '3px'
     }
   }, {
-    'selector': 'edge.unhighlighted',
+    'selector': 'edge:active',
     'style': {
-      'opacity': '0.05'
+      // 'line-color': 'white',
+      // 'border-color': 'transparent'
+    }
+  }, {
+    'selector': 'edge:selected',
+    'style': {
+      'line-color': 'lightgray'
     }
   }];
 
@@ -128,10 +170,14 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
       this.cy.maxZoom(this.maxZoom);
       this.cy.minZoom(this.minZoom);
       this.cy.layout(this.circLayout).run();
-      this.cy.elements('node').forEach(ele => ele.ungrabify());
-      this.cy.elements('node').forEach(ele => ele.unselectify());
+      // this.cy.elements('node').forEach(ele => ele.ungrabify());
+      this.cy.elements('node').forEach(ele => ele.selectify());
       this.cy.on('resize', () => {
         this.cy.center();
+        this.cy.panBy({x: 0, y: -100});
+      });
+      this.cy.on('select', event => {
+        this.selected = event.target._private.data;
       });
       this.cy.center();
     }
@@ -149,9 +195,11 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
     // make sure that graph is clear when no schedule view is selected, to prevent flickering on selection
     if (!this.scheduleView && this._cy) {
       this._cy.remove(this.cy.$(() => true));
+      this.selected = null;
     }
 
     if (this.scheduleView) {
+      this.selected = null;
       this.updategraph();
     }
   }
@@ -185,7 +233,7 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
           this.cy.add(graph);
           this.cy.layout(this.circLayout).run();
           this.isLoading = false;
-          this.cy.fit();
+          this.cy.panBy({x: 0, y: -100});
         }, 0);
       });
   }

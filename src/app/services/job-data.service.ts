@@ -4,7 +4,7 @@ import {RuntimeConfigService} from './runtime-config.service';
 import {ToastService} from '../app-dialog/services/toast.service';
 import {Job, JobService} from 'cloudiator-rest-api';
 import {Observable} from 'rxjs';
-import {ToastType} from '../model/toast';
+import {ToastType} from '../app-dialog/model/toast';
 import {JobDataActions, JobDataSelectors, RootStoreState, RuntimeConfigSelectors} from '../root-store';
 import {find, first, map} from 'rxjs/operators';
 

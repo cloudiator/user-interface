@@ -20,6 +20,7 @@ import {apiConfigFactory} from '../../app.module';
 import {HttpClientModule} from '@angular/common/http';
 import {AppDialogModule} from '../../app-dialog/app-dialog.module';
 import {SchedulesOverviewComponent} from '../schedules/schedules-overview/schedules-overview.component';
+import {SchedulesViewComponent} from '../schedules/schedules-view/schedules-view.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -37,7 +38,8 @@ describe('AppComponent', () => {
         YamlGraphComponent,
         EditorGraphViewComponent,
         NodeGraphComponent,
-        SchedulesOverviewComponent
+        SchedulesOverviewComponent,
+        SchedulesViewComponent
       ],
       imports: [
         RootStoreModule,

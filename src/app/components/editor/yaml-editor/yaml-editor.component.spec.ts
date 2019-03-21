@@ -10,7 +10,7 @@ import {apiConfigFactory} from '../../../app.module';
 import {EditorService} from '../../../services/editor.service';
 import {of, throwError} from 'rxjs';
 import * as testData from '../../../../../testing/test-data';
-import {ToastType} from '../../../model/toast';
+import {ToastType} from '../../../app-dialog/model/toast';
 import {take} from 'rxjs/operators';
 import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
 import {RootStoreModule} from '../../../root-store';

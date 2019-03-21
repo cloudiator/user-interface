@@ -6,7 +6,7 @@ import {map} from 'rxjs/operators';
 import {HttpResponse} from '@angular/common/http';
 import {RuntimeConfigService} from './runtime-config.service';
 import {ToastService} from '../app-dialog/services/toast.service';
-import {ToastType} from '../model/toast';
+import {ToastType} from '../app-dialog/model/toast';
 import {CloudDataActions, CloudDataSelectors, RootStoreState, RuntimeConfigSelectors} from '../root-store';
 
 /**

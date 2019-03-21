@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Toast} from '../../model/toast';
+import {Toast} from '../model/toast';
 import {DialogService} from './dialog.service';
 import {ToastComponent} from '../dialogs/toast/toast.component';
-import {DialogRef} from '../../model/dialogRef';
+import {DialogRef} from '../model/dialogRef';
 import {interval, Subscription} from 'rxjs';
 import {environment} from '../../../environments/environment';
 
