@@ -41,7 +41,7 @@ html {
   overflow: hidden;
 }
 
-$app-container-height: calc(100vh - #{$navbar-height});
+$app-container-height: calc(100% - #{$navbar-height});
 
 // notification z-index
 .notification {
@@ -49,6 +49,8 @@ $app-container-height: calc(100vh - #{$navbar-height});
 }
 
 .app-container {
+  position: absolute;
+  width: 100vw;
   height: $app-container-height;
   overflow-y: auto;
 }

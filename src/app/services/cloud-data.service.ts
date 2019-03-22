@@ -7,7 +7,7 @@ import {HttpResponse} from '@angular/common/http';
 import {RuntimeConfigService} from './runtime-config.service';
 import {ToastService} from '../app-dialog/services/toast.service';
 import {ToastType} from '../model/toast';
-import {CloudDataActions, CloudDataSelectors, RootStoreState, RuntimeConfigSelectors} from '../root-store';
+import {CloudDataActions, CloudDataSelectors, RootStoreState, RuntimeConfigSelectors, AuthSelectors} from '../root-store';
 
 /**
  * Local layer between the cloud swagger service and Components, handles the redux store management of clouds.
@@ -22,13 +22,6 @@ export class CloudDataService {
               private runtimeConfigService: RuntimeConfigService,
               private store: Store<RootStoreState.State>,
               private toastService: ToastService) {
-    // Sets CloudService settings according to RuntimeConfig.
-    store.pipe(select(RuntimeConfigSelectors.selectConfig)).subscribe(config => {
-      cloudApiService.basePath = config.apiPath;
-      if (cloudApiService.configuration) {
-        cloudApiService.configuration.apiKeys['X-API-Key'] = config.xApiKey;
-      }
-    });
   }
 
   /* CLOUDS */

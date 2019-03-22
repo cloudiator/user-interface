@@ -8,9 +8,9 @@ export const environment = {
   production: false,
   useRuntimeConfig: false,
   href: '/',
-  apiPath: 'http://134.60.64.119:9000',
-  authMode: AuthMode.SINGLE,
-  xApiKey: 'secureUI',
+  apiPath: 'http://134.60.152.98:9000',
+  authMode: AuthMode.MULTI,
+  xApiKey: 'secures',
   notificationDuration: 10000
 };
 

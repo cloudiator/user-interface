@@ -1,4 +1,4 @@
-<nav class="navbar is-fixed-top has-shadow" role="navigation" aria-label="main navigation"
+<nav *ngIf="showNav" class="navbar is-fixed-top has-shadow" role="navigation" aria-label="main navigation"
      [class.has-low-opacity]="!showBurgerMenu">
 
   <div class="navbar-brand">
@@ -43,7 +43,7 @@
       <div class="navbar-item">
         <div class="field is-grouped">
           <p class="control">
-            <a class="button is-secondary is-inverted">
+            <a class="button is-secondary is-inverted" (click)="authservice.logOut()">
               <span class="icon">
                 <i class="fas fa-sign-out-alt"></i>
               </span>
@@ -57,6 +57,6 @@
 
 </nav>
 
-<div class="app-container" style="position: absolute; width: 100vw;">
+<div class="app-container" [class.no-nav-app-container]="!showNav">
   <router-outlet></router-outlet>
 </div>

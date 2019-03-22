@@ -25,13 +25,6 @@ export class QueueDataService {
   constructor(public queueApiService: QueueService,
               public store: Store<RootStoreState.State>,
               public toastService: ToastService) {
-    // Sets queueService settings according to RuntimeConfig.
-    store.pipe(select(RuntimeConfigSelectors.selectConfig)).subscribe(config => {
-      queueApiService.basePath = config.apiPath;
-      if (queueApiService.configuration) {
-        queueApiService.configuration.apiKeys['X-API-Key'] = config.xApiKey;
-      }
-    });
   }
 
 

@@ -18,13 +18,6 @@ export class ProcessDataService {
   /** @ignore */
   constructor(private processApiService: ProcessService,
               private store: Store<RootStoreState.State>) {
-    // Sets Processervice settings according to RuntimeConfig.
-    store.pipe(select(RuntimeConfigSelectors.selectConfig)).subscribe(config => {
-      processApiService.basePath = config.apiPath;
-      if (processApiService.configuration) {
-        processApiService.configuration.apiKeys['X-API-Key'] = config.xApiKey;
-      }
-    });
   }
 
   /**

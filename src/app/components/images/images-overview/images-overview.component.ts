@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Hardware, Image} from 'cloudiator-rest-api';
 import {BehaviorSubject, combineLatest} from 'rxjs';
@@ -20,7 +20,8 @@ export class ImagesOverviewComponent implements OnInit {
   sortDirection = new BehaviorSubject<string>('');
 
   constructor(private activatedRoute: ActivatedRoute,
-    public cloudDataService: CloudDataService) { }
+              public cloudDataService: CloudDataService) {
+  }
 
   ngOnInit() {
     this.adjustSort('name');
@@ -52,7 +53,6 @@ export class ImagesOverviewComponent implements OnInit {
 
 
     this.searchFormControl.setValue('');
-
 
     this.activatedRoute.queryParams.subscribe(params => {
       if (params.id) {

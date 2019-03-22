@@ -17,12 +17,6 @@ export class YamlDataService {
               public runtimeConfigService: RuntimeConfigService,
               public store: Store<RootStoreState.State>,
               public toastService: ToastService) {
-    store.pipe(select(RuntimeConfigSelectors.selectConfig)).subscribe(config => {
-      yamlApiService.basePath = config.apiPath;
-      if (yamlApiService.configuration && yamlApiService.configuration.apiKeys) {
-        yamlApiService.configuration.apiKeys['X-API-Key'] = config.xApiKey;
-      }
-    });
   }
 
   public parseYaml(yaml: string): Observable<Job> {

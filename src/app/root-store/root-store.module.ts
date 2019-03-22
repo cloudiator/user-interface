@@ -5,6 +5,7 @@ import { RuntimeConfigStoreModule } from './runtime-config-store/runtime-config-
 import { CloudDataStoreModule } from './cloud-data-store/cloud-data-store.module';
 import { EditorStoreModule } from './editor-store/editor-store.module';
 import { JobDataStoreModule } from './job-data-store/job-data-store.module';
+import { AuthStoreModule } from './auth-store/auth-store.module';
 
 @NgModule({
   declarations: [],
@@ -14,7 +15,8 @@ import { JobDataStoreModule } from './job-data-store/job-data-store.module';
     RuntimeConfigStoreModule,
     CloudDataStoreModule,
     EditorStoreModule,
-    JobDataStoreModule
+    JobDataStoreModule,
+    AuthStoreModule
   ]
 })
 export class RootStoreModule { }

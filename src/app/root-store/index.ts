@@ -4,4 +4,5 @@ export * from './runtime-config-store';
 export * from './cloud-data-store';
 export * from './editor-store';
 export * from './job-data-store';
+export * from './auth-store';
 export {RootStoreState, RootStoreModule};

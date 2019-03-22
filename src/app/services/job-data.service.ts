@@ -16,12 +16,6 @@ export class JobDataService {
               private runtimeConfigService: RuntimeConfigService,
               private store: Store<RootStoreState.State>,
               private toastService: ToastService) {
-    store.pipe(select(RuntimeConfigSelectors.selectConfig)).subscribe(config => {
-      jobApiService.basePath = config.apiPath;
-      if (jobApiService.configuration && jobApiService.configuration.apiKeys) {
-        jobApiService.configuration.apiKeys['X-API-Key'] = config.xApiKey;
-      }
-    });
   }
 
   public findJobs(): Observable<Job[]> {
