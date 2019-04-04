@@ -19,7 +19,6 @@
 .logo {
   //top: calc(20vw - 150px);
   object-fit: cover;
-  //background-color: #0c5593;
   width: 300px;
   height: 200px;
   top: -50px;
@@ -54,29 +53,24 @@
   }
   .login-card {
     width: 25%;
-    //height: 20%;
+    max-width: 500px;
   }
 }
 
-@media only screen and (max-device-height: 500px) {
-  .logo {
-    top: -50px;
-    left: 20px
-  }
-  .login-card-container {
-    justify-content: flex-end;
-    padding: 5em;
+@media only screen and (orientation: landscape) and (max-device-height: 1000px) {
+
+  .view-container {
+    background-size: auto 1000px;
   }
 }
-//@media only screen and (min-device-height: 1000px)  {
-//  .view-container {
-//    background-size: cover;
-//  }
-//}
 
-@media only screen and (orientation: landscape) and (min-device-height: 600px) {
+@media only screen and (orientation: landscape) {
   .login-card-container {
     flex-direction: row;
+  }
+  .logo {
+    margin-bottom: 0;
+    margin-right: 3rem;
   }
 
 }
