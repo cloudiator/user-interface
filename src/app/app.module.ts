@@ -1,5 +1,6 @@
-import {BrowserModule} from '@angular/platform-browser';
+import {BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import * as Hammer from 'hammerjs';
 
 import {AppComponent} from './components/app/app.component';
 import {AppRoutingModule} from './app-routing.module';
@@ -22,6 +23,10 @@ import {RootStoreModule} from './root-store';
 import { EditorGraphViewComponent } from './components/editor/editor-graph-view/editor-graph-view.component';
 import { NodeGraphComponent } from './components/editor/node-graph/node-graph.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { SchedulesOverviewComponent } from './components/schedules/schedules-overview/schedules-overview.component';
+import { SchedulesViewComponent } from './components/schedules/schedules-view/schedules-view.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { SchedulesBottomSheetComponent } from './components/schedules/schedules-bottom-sheet/schedules-bottom-sheet.component';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -29,6 +34,13 @@ export function apiConfigFactory(): Configuration {
     basePath: environment.apiPath,
   };
   return new Configuration(params);
+}
+
+export class BottomSheetHammerConfig extends HammerGestureConfig {
+  overrides = <any> {
+    pan: { direction: Hammer.DIRECTION_VERTICAL },
+    swipe: { direction: Hammer.DIRECTION_VERTICAL },
+  };
 }
 
 @NgModule({
@@ -45,6 +57,9 @@ export function apiConfigFactory(): Configuration {
     YamlGraphComponent,
     EditorGraphViewComponent,
     NodeGraphComponent,
+    SchedulesOverviewComponent,
+    SchedulesViewComponent,
+    SchedulesBottomSheetComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,9 +71,12 @@ export function apiConfigFactory(): Configuration {
     FormsModule,
     ReactiveFormsModule,
     CdkTableModule,
-    AppDialogModule
+    AppDialogModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [],
+  providers: [
+    { provide: HAMMER_GESTURE_CONFIG, useClass: BottomSheetHammerConfig}
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

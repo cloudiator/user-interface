@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfirmNewCloudDialogComponent } from './confirm-new-cloud-dialog.component';
-import {DialogRef} from '../../../model/dialogRef';
+import {DialogRef} from '../../model/dialogRef';
 import {DIALOG_DATA} from '../../services/dialog.service';
 
 describe('ConfirmNewCloudDialogComponent', () => {

@@ -5,8 +5,9 @@ addons:
 node_js:
 - node
 branches:
-  except:
-  - gh-pages
+  only:
+  - master
+  - development
 before_script:
 - npm install -g @angular/cli
 script:

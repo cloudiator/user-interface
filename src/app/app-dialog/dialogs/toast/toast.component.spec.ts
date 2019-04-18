@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ToastComponent } from './toast.component';
-import {DialogRef} from '../../../model/dialogRef';
+import {DialogRef} from '../../model/dialogRef';
 import {DIALOG_DATA} from '../../services/dialog.service';
 
 describe('ToastComponent', () => {

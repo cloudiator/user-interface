@@ -1,7 +1,7 @@
 import {Injectable, InjectionToken, Injector} from '@angular/core';
 import {ComponentType, Overlay, OverlayConfig, OverlayRef} from '@angular/cdk/overlay';
 import {ComponentPortal, PortalInjector} from '@angular/cdk/portal';
-import {DialogRef} from '../../model/dialogRef';
+import {DialogRef} from '../model/dialogRef';
 
 /**
  * Describes the Dialog Configurations that are accessible from outside
