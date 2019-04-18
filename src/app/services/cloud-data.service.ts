@@ -12,17 +12,17 @@ import {CloudDataActions, CloudDataSelectors, RootStoreState, RuntimeConfigSelec
 /**
  * Local layer between the cloud swagger service and Components, handles the redux store management of clouds.
  */
-
 @Injectable({
   providedIn: 'root'
 })
 export class CloudDataService {
 
+  /** @ignore **/
   constructor(private cloudApiService: CloudService,
               private runtimeConfigService: RuntimeConfigService,
               private store: Store<RootStoreState.State>,
               private toastService: ToastService) {
-
+    // Sets CloudService settings according to RuntimeConfig.
     store.pipe(select(RuntimeConfigSelectors.selectConfig)).subscribe(config => {
       cloudApiService.basePath = config.apiPath;
       if (cloudApiService.configuration) {
@@ -55,7 +55,7 @@ export class CloudDataService {
    */
   public findCloud(id: string): Observable<Cloud> {
     this.fetchClouds();
-    return this.store.pipe(select(CloudDataSelectors.selectClouds), map(cloud => cloud.find(c => c.id === id)));
+    return this.store.pipe(select(CloudDataSelectors.selectClouds), map(clouds => clouds.find(c => c.id === id)));
   }
 
   /**
@@ -70,7 +70,11 @@ export class CloudDataService {
   }
 
   /* HARDWARE */
-
+  /**
+   * Searches for all Hardware containing the given id string.
+   * @param {string} id  Id to be searched for.
+   * @return {Observable<Hardware[]>} Observable of resulting hardware array.
+   */
   public findHardware(id?: string): Observable<Hardware[]> {
     this.fetchHardware();
 
@@ -84,6 +88,11 @@ export class CloudDataService {
 
   /* IMAGES */
 
+  /**
+   * Searches for all Images containing the given id string.
+   * @param {string} id Id to be searched for.
+   * @return {Observable<Image[]>} Observable of resulting Images array.
+   */
   public findImages(id?: string): Observable<Image[]> {
     this.fetchImages();
 
@@ -96,6 +105,11 @@ export class CloudDataService {
       select(CloudDataSelectors.selectImages));
   }
 
+  /**
+   * Searches for all Locations containing the fiven id string.
+   * @param {string} id Id to be searched for.
+   * @return {Observable<Location[]>} Observable of resulting Locations array.
+   */
   public findLocations(id?: string): Observable<Location[]> {
     this.fetchLocations();
 
@@ -127,6 +141,9 @@ export class CloudDataService {
     });
   }
 
+  /**
+   * Fetches Hardware from server and puts it into the Redux store.
+   */
   private fetchHardware() {
     this.runtimeConfigService.awaitConfigLoad().then(() => {
       // ToDo: seperate api requests to clearly handle notifications;
@@ -142,6 +159,9 @@ export class CloudDataService {
     });
   }
 
+  /**
+   * Feteches Images from the server and puts them into the Redux store.
+   */
   private fetchImages() {
     this.runtimeConfigService.awaitConfigLoad().then(() => {
       // fetch Images
@@ -156,6 +176,9 @@ export class CloudDataService {
     });
   }
 
+  /**
+   * Fetches Locations form the server and puts them into the Redux store.
+   */
   private fetchLocations() {
     this.runtimeConfigService.awaitConfigLoad().then(() => {
       // fetch Images

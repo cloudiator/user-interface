@@ -37,3 +37,15 @@ export function expectLocation(l1: Location, l2: Location): void {
 
   Object.keys(l1).forEach(key => expect(l1[key]).toBe(l2[key]));
 }
+
+export function resolveAfterXSeconds(x: number): Promise<any> {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve();
+    }, x * 1000);
+  });
+}
+
+export function resolveAfter3Seconds(): Promise<any> {
+  return resolveAfterXSeconds(3);
+}

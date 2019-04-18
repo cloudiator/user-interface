@@ -2,6 +2,7 @@
   "extends": "src/tsconfig.app.json",
   "exclude": [
     "**/*.actions.ts",
-    "**/*.reducer.ts"
+    "**/*.reducer.ts",
+    "testing/**"
   ]
 }

@@ -6,7 +6,6 @@ import {Subscription} from 'rxjs';
 /**
  * Overview of all clouds given as a set of horizontally flowing cards.
  */
-
 @Component({
   selector: 'app-cloud-overview',
   templateUrl: './cloud-overview.component.html',
@@ -14,13 +13,23 @@ import {Subscription} from 'rxjs';
 })
 export class CloudOverviewComponent implements OnInit, OnDestroy {
 
+  /**
+   * Array of all Clouds.
+   * @type {any[]}
+   */
   public clouds: Cloud[] = [];
 
+  /**
+   * All Subscriptions of this Component.
+   * @type {any[]}
+   */
   private subscriptions: Subscription[] = [];
 
+  /** @ignore */
   constructor(private cloudDataService: CloudDataService) {
   }
 
+  /** @ignore */
   ngOnInit() {
 
     const s0 = this.cloudDataService.findClouds().subscribe(clouds => {
@@ -30,6 +39,7 @@ export class CloudOverviewComponent implements OnInit, OnDestroy {
     this.subscriptions.push(s0);
   }
 
+  /** @ignore */
   ngOnDestroy() {
     this.subscriptions.forEach(s => s.unsubscribe());
   }

@@ -12,8 +12,8 @@ before_script:
 - npm install -g @angular/cli
 script:
 - npm run travis-test
-- ng build --prod
 after_success:
+- ng build --prod
 - ci/publish_docker.sh
 env:
   global:

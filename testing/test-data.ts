@@ -176,6 +176,7 @@ export const imageOne = <Image>{
     parent: null
   }
 };
+
 export const imageTwo = <Image>{
   id: '02f7f6ab33e4a94d0f441947972668ef~RegionOne/4805c873-a637-42cb-a58d-027958a10235',
   name: 'cirros',
@@ -223,7 +224,7 @@ export const allImages: Image[] = [
 ];
 
 /* JOBS */
-export const job = {
+export const job: Job = {
   id: '445bdb66-3c87-44ca-bc51-3670b008643e',
   name: 'mediawiki',
   tasks: [
@@ -235,7 +236,7 @@ export const job = {
           name: 'WIKIPROV',
           port: 80
         },
-        {
+        <PortRequired>{
           type: 'PortRequired',
           name: 'WIKIREQMARIADB',
           updateAction: null,
@@ -243,7 +244,7 @@ export const job = {
         }
       ],
       interfaces: [
-        {
+        <LanceInterface>{
           type: 'LanceInterface',
           containerType: 'DOCKER',
           init: null,
@@ -264,7 +265,7 @@ export const job = {
       ],
       optimization: null,
       requirements: [
-        {
+        <OclRequirement>{
           type: 'OclRequirement',
           constraint: 'nodes->forAll(location.providerId = \'nova\')'
         },
@@ -293,7 +294,7 @@ export const job = {
         }
       ],
       interfaces: [
-        {
+        <LanceInterface>{
           type: 'LanceInterface',
           containerType: 'DOCKER',
           init: null,
@@ -314,7 +315,7 @@ export const job = {
       ],
       optimization: null,
       requirements: [
-        {
+        <OclRequirement>{
           type: 'OclRequirement',
           constraint: 'nodes->forAll(location.providerId = \'nova\')'
         },
@@ -336,7 +337,7 @@ export const job = {
     {
       name: 'loadbalancer',
       ports: [
-        {
+        <PortRequired>{
           type: 'PortRequired',
           name: 'LOADBALANCERREQWIKI',
           updateAction: './mediawiki-tutorial/scripts/lance/nginx.sh configure',
@@ -349,7 +350,7 @@ export const job = {
         }
       ],
       interfaces: [
-        {
+        <LanceInterface>{
           type: 'LanceInterface',
           containerType: 'DOCKER',
           init: null,
