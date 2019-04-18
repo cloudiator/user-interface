@@ -10,6 +10,7 @@ import {YamlEditorComponent} from './components/editor/yaml-editor/yaml-editor.c
 import {LoginComponent} from './components/login/login.component';
 import {AuthGuard} from './guards/auth.guard';
 import {LoginGuard} from './guards/login.guard';
+import {SchedulesOverviewComponent} from './components/schedules/schedules-overview/schedules-overview.component';
 
 const routes: Routes = [
 
@@ -26,6 +27,12 @@ const routes: Routes = [
   {path: 'locations', component: LocationsOverviewComponent, canActivate: [AuthGuard]},
 
   {path: 'editor', component: YamlEditorComponent, canActivate: [AuthGuard]},
+
+  {path: 'schedules', component: SchedulesOverviewComponent},
+  {path: 'schedules/:id', component: SchedulesOverviewComponent},
+
+  {path: 'clouds', component: CloudOverviewComponent},
+  {path: '', component: CloudOverviewComponent},
 
   {path: 'clouds', component: CloudOverviewComponent, canActivate: [AuthGuard]},
   {path: '', component: CloudOverviewComponent, canActivate: [AuthGuard]},

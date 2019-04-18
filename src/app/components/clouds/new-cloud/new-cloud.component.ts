@@ -5,7 +5,7 @@ import {Router} from '@angular/router';
 import {DialogService} from '../../../app-dialog/services/dialog.service';
 import {ConfirmNewCloudDialogComponent} from '../../../app-dialog/dialogs/confirm-new-cloud-dialog/confirm-new-cloud-dialog.component';
 import {ToastService} from '../../../app-dialog/services/toast.service';
-import {ToastType} from '../../../model/toast';
+import {ToastType} from '../../../app-dialog/model/toast';
 
 /**
  * A Form to add a new Cloud.

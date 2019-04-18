@@ -2,12 +2,12 @@ import {Injectable} from '@angular/core';
 import {Cloud, CloudService, Hardware, Image, NewCloud, Location} from 'cloudiator-rest-api';
 import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
-import {map} from 'rxjs/operators';
+import {map, timeout} from 'rxjs/operators';
 import {HttpResponse} from '@angular/common/http';
 import {RuntimeConfigService} from './runtime-config.service';
 import {ToastService} from '../app-dialog/services/toast.service';
-import {ToastType} from '../model/toast';
-import {CloudDataActions, CloudDataSelectors, RootStoreState, RuntimeConfigSelectors, AuthSelectors} from '../root-store';
+import {ToastType} from '../app-dialog/model/toast';
+import {CloudDataActions, CloudDataSelectors, RootStoreState, RuntimeConfigSelectors} from '../root-store';
 
 /**
  * Local layer between the cloud swagger service and Components, handles the redux store management of clouds.
@@ -94,7 +94,8 @@ export class CloudDataService {
         select(CloudDataSelectors.selectImages),
         map(images => images.filter(image => image.id.includes(id))));
     }
-    return this.store.pipe(select(CloudDataSelectors.selectImages));
+    return this.store.pipe(
+      select(CloudDataSelectors.selectImages));
   }
 
   /**

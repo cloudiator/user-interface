@@ -4,7 +4,7 @@ import {Action} from '@ngrx/store';
 
 export const SET_JOBS = '[Jobdata] set jobs';
 
-export class SetJobsActiom implements Action {
+export class SetJobsAction implements Action {
   readonly type = SET_JOBS;
 
   constructor(public jobs: Job[]) {
@@ -12,4 +12,4 @@ export class SetJobsActiom implements Action {
 }
 
 
-export type All = SetJobsActiom;
+export type All = SetJobsAction;

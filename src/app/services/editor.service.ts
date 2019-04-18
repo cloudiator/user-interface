@@ -87,7 +87,6 @@ export class EditorService {
   }
 
   public uploadFile(files: FileList): Promise<any> {
-    console.log(files);
     if (files instanceof FileList && files.length > 0) {
       const reader = new FileReader();
       const file = files[0];

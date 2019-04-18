@@ -6,7 +6,7 @@ import {EditorActions, RootStoreState} from '../root-store';
 import {interval, Observable, of, Subject, Subscription} from 'rxjs';
 import {mergeMap, takeUntil} from 'rxjs/operators';
 import {ToastService} from '../app-dialog/services/toast.service';
-import {ToastType} from '../model/toast';
+import {ToastType} from '../app-dialog/model/toast';
 
 /**
  * Service responsible for handling interactions with the Queue Api.

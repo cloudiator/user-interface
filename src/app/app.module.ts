@@ -1,5 +1,6 @@
-import {BrowserModule} from '@angular/platform-browser';
+import {BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import * as Hammer from 'hammerjs';
 
 import {AppComponent} from './components/app/app.component';
 import {AppRoutingModule} from './app-routing.module';
@@ -24,6 +25,10 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {LoginComponent} from './components/login/login.component';
 import {HttpErrorInterceptor} from './guards/http-error.interceptor';
 import {HttpAuthInterceptor} from './guards/http-auth.interceptor';
+import { SchedulesOverviewComponent } from './components/schedules/schedules-overview/schedules-overview.component';
+import { SchedulesViewComponent } from './components/schedules/schedules-view/schedules-view.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { SchedulesBottomSheetComponent } from './components/schedules/schedules-bottom-sheet/schedules-bottom-sheet.component';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -32,6 +37,13 @@ export function apiConfigFactory(): Configuration {
     basePath: '${api_path}',
   };
   return new Configuration(params);
+}
+
+export class BottomSheetHammerConfig extends HammerGestureConfig {
+  overrides = <any> {
+    pan: { direction: Hammer.DIRECTION_VERTICAL },
+    swipe: { direction: Hammer.DIRECTION_VERTICAL },
+  };
 }
 
 @NgModule({
@@ -49,6 +61,9 @@ export function apiConfigFactory(): Configuration {
     EditorGraphViewComponent,
     NodeGraphComponent,
     LoginComponent,
+    SchedulesOverviewComponent,
+    SchedulesViewComponent,
+    SchedulesBottomSheetComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,7 +75,8 @@ export function apiConfigFactory(): Configuration {
     FormsModule,
     ReactiveFormsModule,
     CdkTableModule,
-    AppDialogModule
+    AppDialogModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     {
@@ -71,8 +87,9 @@ export function apiConfigFactory(): Configuration {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,
       multi: true
-    }
-  ],
+    },
+    { provide: HAMMER_GESTURE_CONFIG, useClass: BottomSheetHammerConfig}
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

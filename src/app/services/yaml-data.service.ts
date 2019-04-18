@@ -5,7 +5,7 @@ import {Job, YamlService} from 'cloudiator-rest-api';
 import {Observable, of, throwError} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {RootStoreState, RuntimeConfigSelectors} from '../root-store';
-import {ToastType} from '../model/toast';
+import {ToastType} from '../app-dialog/model/toast';
 import {catchError} from 'rxjs/operators';
 
 @Injectable({

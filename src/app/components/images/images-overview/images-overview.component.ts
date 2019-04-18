@@ -4,6 +4,7 @@ import {Hardware, Image} from 'cloudiator-rest-api';
 import {BehaviorSubject, combineLatest} from 'rxjs';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import {ActivatedRoute} from '@angular/router';
+import {tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-images-overview',
@@ -19,14 +20,22 @@ export class ImagesOverviewComponent implements OnInit {
   sortKey = new BehaviorSubject<string>('');
   sortDirection = new BehaviorSubject<string>('');
 
+  isLoading = true;
+
   constructor(private activatedRoute: ActivatedRoute,
               public cloudDataService: CloudDataService) {
   }
 
   ngOnInit() {
+
     this.adjustSort('name');
 
-    combineLatest(this.cloudDataService.findImages(), this.searchFormControl.valueChanges, this.sortKey, this.sortDirection)
+    combineLatest(
+      this.cloudDataService.findImages().pipe(tap(() => this.isLoading = false)),
+      this.searchFormControl.valueChanges,
+      this.sortKey,
+      this.sortDirection
+    )
       .subscribe(([changedHardwareData, searchTerm, sortKey, sortDirection]) => {
         const imagesArray = Object.values(changedHardwareData);
 

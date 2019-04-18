@@ -2,15 +2,16 @@ import {
   Api,
   Cloud,
   CloudConfiguration,
-  CloudCredential,
+  CloudCredential, CloudiatorProcess,
   Hardware,
   Image,
   Job,
   LanceInterface,
   Location, OclRequirement,
   OperatingSystem, PortRequired,
-  Queue
+  Queue, Schedule, SingleProcess
 } from 'cloudiator-rest-api';
+import {ScheduleView} from '../src/app/model/ScheduleView';
 
 /* CLOUDS */
 export const allClouds: Cloud[] = [
@@ -94,6 +95,7 @@ export const cloudTwo: Cloud = <Cloud>{
   }
 };
 
+/* HARDWARE */
 export const hardwareOne: Hardware = <Hardware>{
   id: '02f7f6ab33e4a94d0f441947972668ef~RegionOne/931b887e-e747-4a66-b643-0cc5c0caa1cd',
   name: 'small',
@@ -148,22 +150,21 @@ export const hardwareTree: Hardware = <Hardware>{
   }
 };
 
-/* HARDWARE */
 export const allHardware: Hardware[] = [
   hardwareOne,
   hardwareTwo,
   hardwareTree
 ];
 
+/* IMAGES */
 export const imageOne = <Image>{
   id: '02f7f6ab33e4a94d0f441947972668ef~RegionOne/faa7fa7b-ddb3-4af5-aae3-f5d2d568c1c9',
   name: 'molpro-image-v2.8',
   providerId: 'faa7fa7b-ddb3-4af5-aae3-f5d2d568c1c9',
   operatingSystem: <OperatingSystem>{
-    operatingSystemType: 'UNKOWN',
     operatingSystemFamily: 'UNKOWN_OS_FAMILY',
     operatingSystemArchitecture: 'UNKOWN',
-    operatingSystemVersion: '-1'
+    operatingSystemVersion: -1
   },
   location: <Location>{
     id: '02f7f6ab33e4a94d0f441947972668ef~RegionOne',
@@ -181,10 +182,9 @@ export const imageTwo = <Image>{
   name: 'cirros',
   providerId: '4805c873-a637-42cb-a58d-027958a10235',
   operatingSystem: <OperatingSystem>{
-    operatingSystemType: 'UNKOWN',
     operatingSystemFamily: 'UNKOWN_OS_FAMILY',
     operatingSystemArchitecture: 'UNKOWN',
-    operatingSystemVersion: '-1'
+    operatingSystemVersion: -1
   },
   location: <Location>{
     id: '02f7f6ab33e4a94d0f441947972668ef~RegionOne',
@@ -196,15 +196,15 @@ export const imageTwo = <Image>{
     parent: null
   }
 };
+
 export const imageThree = <Image>{
   id: '02f7f6ab33e4a94d0f441947972668ef~RegionOne/baaca739-89b9-4d86-826f-c281e03a8c19',
   name: 'Ubuntu Server 14.04.2 AMD64 LTS',
   providerId: 'baaca739-89b9-4d86-826f-c281e03a8c19',
   operatingSystem: <OperatingSystem>{
-    operatingSystemType: 'UNKOWN',
     operatingSystemFamily: 'UBUNTU',
     operatingSystemArchitecture: 'AMD64',
-    operatingSystemVersion: '-1'
+    operatingSystemVersion: -1
   },
   location: <Location>{
     id: '02f7f6ab33e4a94d0f441947972668ef~RegionOne',
@@ -217,8 +217,6 @@ export const imageThree = <Image>{
   }
 };
 
-
-/* IMAGES */
 export const allImages: Image[] = [
   imageOne,
   imageTwo,
@@ -464,4 +462,431 @@ export const queueCompleted: Queue = {
 export const queueFailed: Queue = {
   id: '445bdb66-3c87-44ca-bc51-3670b008643e',
   status: 'FAILED'
+};
+
+/* Schedule */
+export const schedules: Array<Schedule> = [
+  {
+    job: 'string',
+    instantiation: 'AUTOMATIC',
+    id: 'string',
+    processes: [
+      <CloudiatorProcess>{
+        id: 'string',
+        processType: 'string',
+        type: 'LANCE',
+        schedule: 'string',
+        task: 'string'
+      }
+    ]
+  }
+];
+
+export const ScheduleViewOne: ScheduleView = {
+  schedule: {
+    job: '5c5a0389-6a23-48f3-8937-50f50f7bc904',
+    instantiation: 'AUTOMATIC',
+    id: '8731d862-561c-42d5-b019-c1be413612b0',
+    owner: 'admin',
+    processes: null
+  },
+  job: <Job>{
+    name: 'simple_db',
+    tasks: [
+      {
+        name: 'database',
+        ports: [
+          {
+            type: 'PortProvided',
+            name: 'MARIADBPROV',
+            port: 3306
+          }
+        ],
+        interfaces: [
+          <LanceInterface>{
+            type: 'LanceInterface',
+            containerType: 'DOCKER',
+            init: null,
+            preInstall:
+              'sudo apt-get -y update && sudo apt-get -y install git && git clone https://github.com/dbaur/mediawiki-tutorial.git',
+            install: './mediawiki-tutorial/scripts/lance/mariaDB.sh install',
+            postInstall: './mediawiki-tutorial/scripts/lance/mariaDB.sh configure',
+            preStart: null,
+            start: './mediawiki-tutorial/scripts/lance/mariaDB.sh startBlocking',
+            startDetection: null,
+            stopDetection: null,
+            postStart: null,
+            preStop: null,
+            stop: null,
+            postStop: null,
+            shutdown: null
+          }
+        ],
+        optimization: null,
+        requirements: [
+          <OclRequirement>{
+            type: 'OclRequirement',
+            constraint: 'nodes->forAll(hardware.providerId = \'t2.micro\')'
+          },
+          {
+            type: 'OclRequirement',
+            constraint: 'nodes->forAll(location.providerId = \'eu-central-1\')'
+          },
+          {
+            type: 'OclRequirement',
+            constraint: 'nodes->forAll(image.providerId = \'ami-0bb24d586ad9956e7\')'
+          }
+        ],
+        taskType: 'BATCH'
+      }
+    ],
+    communications: null,
+    requirements: null,
+    optimization: null,
+    id: '5c5a0389-6a23-48f3-8937-50f50f7bc904',
+    owner: 'admin'
+  }
+};
+export const ScheduleViewTwo: ScheduleView = {
+  schedule: {
+    job: '5c5a0389-6a23-48f3-8937-50f50f7bc904',
+    instantiation: 'AUTOMATIC',
+    id: '25d46d12-ed3b-49b7-aae2-bc43dd2db1f8',
+    owner: 'admin',
+    processes: [
+      <SingleProcess>{
+        processType: 'SingleProcess',
+        id: '8c94223e-febf-47a6-95de-f5c406fde8fe',
+        state: 'RUNNING',
+        type: 'LANCE',
+        schedule: '25d46d12-ed3b-49b7-aae2-bc43dd2db1f8',
+        task: 'database',
+        diagnostic: null,
+        reason: null,
+        owner: 'admin',
+        node: '9a3d61ca-34b8-47a7-b602-8c7458e7835e'
+      }
+    ]
+  },
+  job: <Job>{
+    name: 'simple_db',
+    tasks: [
+      {
+        name: 'database',
+        ports: [
+          {
+            type: 'PortProvided',
+            name: 'MARIADBPROV',
+            port: 3306
+          }
+        ],
+        interfaces: [
+          <LanceInterface>{
+            type: 'LanceInterface',
+            containerType: 'DOCKER',
+            init: null,
+            preInstall:
+              'sudo apt-get -y update && sudo apt-get -y install git && git clone https://github.com/dbaur/mediawiki-tutorial.git',
+            install: './mediawiki-tutorial/scripts/lance/mariaDB.sh install',
+            postInstall: './mediawiki-tutorial/scripts/lance/mariaDB.sh configure',
+            preStart: null,
+            start: './mediawiki-tutorial/scripts/lance/mariaDB.sh startBlocking',
+            startDetection: null,
+            stopDetection: null,
+            postStart: null,
+            preStop: null,
+            stop: null,
+            postStop: null,
+            shutdown: null
+          }
+        ],
+        optimization: null,
+        requirements: [
+          <OclRequirement>{
+            type: 'OclRequirement',
+            constraint: 'nodes->forAll(hardware.providerId = \'t2.micro\')'
+          },
+          {
+            type: 'OclRequirement',
+            constraint: 'nodes->forAll(location.providerId = \'eu-central-1\')'
+          },
+          {
+            type: 'OclRequirement',
+            constraint: 'nodes->forAll(image.providerId = \'ami-0bb24d586ad9956e7\')'
+          }
+        ],
+        taskType: 'BATCH'
+      }
+    ],
+    communications: null,
+    requirements: null,
+    optimization: null,
+    id: '5c5a0389-6a23-48f3-8937-50f50f7bc904',
+    owner: 'admin'
+  }
+};
+export const ScheduleViewThree: ScheduleView = {
+  schedule: {
+    job: '62c34636-a1bf-401c-b96f-2fb0eb0de25c',
+    instantiation: 'AUTOMATIC',
+    id: '4f1cf465-d420-4d63-a456-88f65981c3cd',
+    owner: 'admin',
+    processes: [
+      <SingleProcess>{
+        processType: 'SingleProcess',
+        id: '807a878a-4fc5-449f-96c1-62d95ea4cf52',
+        state: 'RUNNING',
+        type: 'LANCE',
+        schedule: '4f1cf465-d420-4d63-a456-88f65981c3cd',
+        task: 'loadbalancer',
+        diagnostic: null,
+        reason: null,
+        owner: 'admin',
+        node: '71e24122-3450-4a3d-a16b-f8d8b71f6157'
+      },
+      {
+        processType: 'SingleProcess',
+        id: '7216a097-0247-422d-ae50-3f2876626c98',
+        state: 'RUNNING',
+        type: 'LANCE',
+        schedule: '4f1cf465-d420-4d63-a456-88f65981c3cd',
+        task: 'wiki',
+        diagnostic: null,
+        reason: null,
+        owner: 'admin',
+        node: 'd70f529b-15ff-41f6-a45c-9c6197b37502'
+      },
+      {
+        processType: 'SingleProcess',
+        id: 'e44faa07-84a6-474a-89c5-46de2f8ea2be',
+        state: 'RUNNING',
+        type: 'LANCE',
+        schedule: '4f1cf465-d420-4d63-a456-88f65981c3cd',
+        task: 'database',
+        diagnostic: null,
+        reason: null,
+        owner: 'admin',
+        node: 'c1822049-58f3-40fe-9597-9050468ed14a'
+      }
+    ]
+  },
+  job: <Job>{
+    name: 'mediawiki',
+    tasks: [
+      {
+        name: 'loadbalancer',
+        ports: [
+          <PortRequired>{
+            type: 'PortRequired',
+            name: 'LOADBALANCERREQWIKI',
+            updateAction: './mediawiki-tutorial/scripts/lance/nginx.sh configure',
+            isMandatory: false
+          },
+          {
+            type: 'PortProvided',
+            name: 'LBPROV',
+            port: 80
+          }
+        ],
+        interfaces: [
+          <LanceInterface>{
+            type: 'LanceInterface',
+            containerType: 'DOCKER',
+            init: null,
+            preInstall:
+              'sudo apt-get -y update && sudo apt-get -y install git && git clone https://github.com/dbaur/mediawiki-tutorial.git',
+            install: './mediawiki-tutorial/scripts/lance/nginx.sh install',
+            postInstall: null,
+            preStart: null,
+            start: './mediawiki-tutorial/scripts/lance/nginx.sh startBlocking',
+            startDetection: null,
+            stopDetection: null,
+            postStart: null,
+            preStop: null,
+            stop: null,
+            postStop: null,
+            shutdown: null
+          }
+        ],
+        optimization: null,
+        requirements: [
+          <OclRequirement>{
+            type: 'OclRequirement',
+            constraint: 'nodes->forAll(hardware.providerId = \'t2.micro\')'
+          },
+          {
+            type: 'OclRequirement',
+            constraint: 'nodes->forAll(location.providerId = \'eu-central-1\')'
+          },
+          {
+            type: 'OclRequirement',
+            constraint: 'nodes->forAll(image.providerId = \'ami-0bb24d586ad9956e7\')'
+          }
+        ],
+        taskType: 'BATCH'
+      },
+      {
+        name: 'wiki',
+        ports: [
+          {
+            type: 'PortProvided',
+            name: 'WIKIPROV',
+            port: 80
+          },
+          <PortRequired>{
+            type: 'PortRequired',
+            name: 'WIKIREQMARIADB',
+            updateAction: null,
+            isMandatory: true
+          }
+        ],
+        interfaces: [
+          <LanceInterface>{
+            type: 'LanceInterface',
+            containerType: 'DOCKER',
+            init: null,
+            preInstall:
+              'sudo apt-get -y update && sudo apt-get -y install git && git clone https://github.com/dbaur/mediawiki-tutorial.git',
+            install: './mediawiki-tutorial/scripts/lance/mediawiki.sh install',
+            postInstall: './mediawiki-tutorial/scripts/lance/mediawiki.sh configure',
+            preStart: null,
+            start: './mediawiki-tutorial/scripts/lance/mediawiki.sh startBlocking',
+            startDetection: null,
+            stopDetection: null,
+            postStart: null,
+            preStop: null,
+            stop: null,
+            postStop: null,
+            shutdown: null
+          }
+        ],
+        optimization: null,
+        requirements: [
+          <OclRequirement>{
+            type: 'OclRequirement',
+            constraint: 'nodes->forAll(hardware.providerId = \'t2.micro\')'
+          },
+          {
+            type: 'OclRequirement',
+            constraint: 'nodes->forAll(location.providerId = \'eu-central-1\')'
+          },
+          {
+            type: 'OclRequirement',
+            constraint: 'nodes->forAll(image.providerId = \'ami-0bb24d586ad9956e7\')'
+          }
+        ],
+        taskType: 'BATCH'
+      },
+      {
+        name: 'database',
+        ports: [
+          {
+            type: 'PortProvided',
+            name: 'MARIADBPROV',
+            port: 3306
+          }
+        ],
+        interfaces: [
+          <LanceInterface>{
+            type: 'LanceInterface',
+            containerType: 'DOCKER',
+            init: null,
+            preInstall:
+              'sudo apt-get -y update && sudo apt-get -y install git && git clone https://github.com/dbaur/mediawiki-tutorial.git',
+            install: './mediawiki-tutorial/scripts/lance/mariaDB.sh install',
+            postInstall: './mediawiki-tutorial/scripts/lance/mariaDB.sh configure',
+            preStart: null,
+            start: './mediawiki-tutorial/scripts/lance/mariaDB.sh startBlocking',
+            startDetection: null,
+            stopDetection: null,
+            postStart: null,
+            preStop: null,
+            stop: null,
+            postStop: null,
+            shutdown: null
+          }
+        ],
+        optimization: null,
+        requirements: [
+          {
+            type: 'OclRequirement',
+            constraint: 'nodes->forAll(hardware.providerId = \'t2.micro\')'
+          },
+          {
+            type: 'OclRequirement',
+            constraint: 'nodes->forAll(location.providerId = \'eu-central-1\')'
+          },
+          {
+            type: 'OclRequirement',
+            constraint: 'nodes->forAll(image.providerId = \'ami-0bb24d586ad9956e7\')'
+          }
+        ],
+        taskType: 'BATCH'
+      }
+    ],
+    communications: [
+      {
+        portRequired: 'LOADBALANCERREQWIKI',
+        portProvided: 'WIKIPROV'
+      },
+      {
+        portRequired: 'WIKIREQMARIADB',
+        portProvided: 'MARIADBPROV'
+      }
+    ],
+    requirements: null,
+    optimization: null,
+    id: '62c34636-a1bf-401c-b96f-2fb0eb0de25c',
+    owner: 'admin'
+  }
+};
+export const allScheduleViews: ScheduleView[] = [
+  ScheduleViewOne,
+  ScheduleViewTwo,
+  ScheduleViewThree
+];
+
+export const SchedulesGraph: any = {
+  processes: [
+    {
+      data: {
+        id: '807a878a-4fc5-449f-96c1-62d95ea4cf52',
+        task: 'loadbalancer',
+        state: 'RUNNING',
+        ip: '35.157.4.7'
+      }
+    },
+    {
+      data: {
+        id: '7216a097-0247-422d-ae50-3f2876626c98',
+        task: 'wiki',
+        state: 'RUNNING',
+        ip: '35.157.121.235'
+      }
+    },
+    {
+      data: {
+        id: 'e44faa07-84a6-474a-89c5-46de2f8ea2be',
+        task: 'database',
+        state: 'RUNNING',
+        ip: '18.184.45.152'
+      }
+    }
+  ],
+  edges: [
+    {
+      data: {
+        id: '404ba6a5cb2dea64b9c1922c922bd818',
+        source: '7216a097-0247-422d-ae50-3f2876626c98',
+        target: '807a878a-4fc5-449f-96c1-62d95ea4cf52'
+      }
+    },
+    {
+      data: {
+        id: '23b927c0481fc28edbcdb9d1c6d73c1b',
+        source: 'e44faa07-84a6-474a-89c5-46de2f8ea2be',
+        target: '7216a097-0247-422d-ae50-3f2876626c98'
+      }
+    }
+  ]
 };
