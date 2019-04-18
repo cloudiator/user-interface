@@ -21,6 +21,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {AppDialogModule} from '../../app-dialog/app-dialog.module';
 import {SchedulesOverviewComponent} from '../schedules/schedules-overview/schedules-overview.component';
 import {SchedulesViewComponent} from '../schedules/schedules-view/schedules-view.component';
+import {SchedulesBottomSheetComponent} from '../schedules/schedules-bottom-sheet/schedules-bottom-sheet.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -39,7 +40,8 @@ describe('AppComponent', () => {
         EditorGraphViewComponent,
         NodeGraphComponent,
         SchedulesOverviewComponent,
-        SchedulesViewComponent
+        SchedulesViewComponent,
+        SchedulesBottomSheetComponent
       ],
       imports: [
         RootStoreModule,

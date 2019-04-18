@@ -1,78 +1,17 @@
 import {
-  AfterViewInit,
   Component,
-  ElementRef,
-  EventEmitter,
   Input,
   OnChanges,
   OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild
+  SimpleChanges
 } from '@angular/core';
 import {ScheduleView} from '../../../model/ScheduleView';
-import {animate, animateChild, AnimationBuilder, group, query, state, style, transition, trigger} from '@angular/animations';
 import * as cytoscape from 'cytoscape';
 import {ProcessDataService} from '../../../services/process-data.service';
 import {take} from 'rxjs/operators';
-import {Change} from '@ngrx/store/schematics-core';
 
 @Component({
   selector: 'app-schedules-view',
-  animations: [
-    trigger('sheetOpenClose', [
-      state('closed', style(
-        {
-          transform: 'translateY(16.5em)',
-          backgroundColor: '#92acbe',
-          color: 'white'
-        })),
-      state('open', style(
-        {
-          transform: '*',
-          backgroundColor: '*',
-          color: '*'
-        })),
-      transition('open => closed', [
-        group([
-          query('@buttonOpenClose', animateChild()),
-          query('@headerOpenClose', animateChild()),
-          animate('0.2s')])
-      ]),
-      transition('closed => open', [
-        group([
-          query('@buttonOpenClose', animateChild()),
-          query('@headerOpenClose', animateChild()),
-          animate('0.25s')])
-      ])
-    ]),
-    trigger('buttonOpenClose', [
-      state('closed', style(
-        {
-          transform: 'rotate(180deg)',
-          color: 'white'
-        })),
-      state('open', style(
-        {
-          transform: 'rotate(0deg)',
-          color: 'lightgray'
-        })),
-      transition('open => closed', [animate('0.20s')]),
-      transition('closed => open', [animate('0.25s')])
-    ]),
-    trigger('headerOpenClose', [
-      state('closed', style(
-        {
-          color: 'white'
-        })),
-      state('open', style(
-        {
-          color: 'black'
-        })),
-      transition('open => closed', [animate('0.20s')]),
-      transition('closed => open', [animate('0.25s')])
-    ])
-  ],
   providers: [],
   templateUrl: './schedules-view.component.html',
   styleUrls: ['./schedules-view.component.scss']
@@ -83,20 +22,7 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
 
   isLoading = true;
 
-  _selected = null;
-  get selected() {
-    return this._selected;
-  }
-  set selected(value) {
-    this._selected = value;
-    if (value) {
-      this.sheetOpenClose = 'open';
-    } else {
-      this.sheetOpenClose = 'closed';
-    }
-  }
-
-  sheetOpenClose: 'open' | 'closed' = this.selected ? 'open' : 'closed';
+  selected: any = null;
 
   // y: number = 0;
   // startY: number = 0;
@@ -106,7 +32,7 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
     'style': {
       'width': '50%',
       'height': '50%',
-      'content': 'data(name)',
+      'content': 'data(task)',
       'font-size': '12px',
       'text-valign': 'center',
       'text-halign': 'center',
@@ -176,8 +102,25 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
         this.cy.center();
         this.cy.panBy({x: 0, y: -100});
       });
-      this.cy.on('select', event => {
-        this.selected = event.target._private.data;
+      this.cy.on('select', 'edge', event => {
+        const target = event.target._private;
+        this.selected = {
+          group: 'edges',
+          data: {
+            id: target.data.id,
+            source: target.source._private.data,
+            target: target.target._private.data
+          }
+        };
+      });
+      this.cy.on('select', 'node', event => {
+        this.selected = {
+          group: 'nodes',
+          data: event.target._private.data
+        };
+      });
+      this.cy.on('unselect', () => {
+        this.selected = null;
       });
       this.cy.center();
     }
@@ -213,14 +156,6 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
   //   event.preventDefault();
   //   this.y = this.startY + event.deltaY;
   // }
-
-  switchOpenState() {
-    this.sheetOpenClose = (this.sheetOpenClose === 'open') ? 'closed' : 'open';
-  }
-
-  onSheetClick() {
-
-  }
 
   updategraph() {
     this.isLoading = true;

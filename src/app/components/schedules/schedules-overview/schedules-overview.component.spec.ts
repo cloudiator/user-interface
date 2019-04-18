@@ -9,6 +9,7 @@ import {apiConfigFactory} from '../../../app.module';
 import {RootStoreModule} from '../../../root-store';
 import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {SchedulesBottomSheetComponent} from '../schedules-bottom-sheet/schedules-bottom-sheet.component';
 
 describe('SchedulesOverviewComponent', () => {
   let component: SchedulesOverviewComponent;
@@ -18,7 +19,8 @@ describe('SchedulesOverviewComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         SchedulesOverviewComponent,
-        SchedulesViewComponent
+        SchedulesViewComponent,
+        SchedulesBottomSheetComponent
       ],
       imports: [
         RootStoreModule,

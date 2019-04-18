@@ -26,6 +26,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { SchedulesOverviewComponent } from './components/schedules/schedules-overview/schedules-overview.component';
 import { SchedulesViewComponent } from './components/schedules/schedules-view/schedules-view.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { SchedulesBottomSheetComponent } from './components/schedules/schedules-bottom-sheet/schedules-bottom-sheet.component';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -58,6 +59,7 @@ export class BottomSheetHammerConfig extends HammerGestureConfig {
     NodeGraphComponent,
     SchedulesOverviewComponent,
     SchedulesViewComponent,
+    SchedulesBottomSheetComponent,
   ],
   imports: [
     BrowserModule,

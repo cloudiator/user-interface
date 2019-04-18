@@ -3,9 +3,7 @@ import {ProcessDataService} from '../../../services/process-data.service';
 import {Subscription} from 'rxjs';
 import {ScheduleView} from '../../../model/ScheduleView';
 import {JobDataService} from '../../../services/job-data.service';
-import {map, take, takeUntil, tap} from 'rxjs/operators';
-import {set} from '../../../lodashUtils';
-import * as _ from 'lodash';
+import {map} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
@@ -25,6 +23,9 @@ export class SchedulesOverviewComponent implements OnInit, OnDestroy {
   private jobSubscriptions: Subscription[] = [];
 
   private subscriptions: Subscription[] = [];
+
+  isLoading = false;
+  jobLoad = false;
 
   constructor(private route: ActivatedRoute,
               public jobDataService: JobDataService,
@@ -62,7 +63,9 @@ export class SchedulesOverviewComponent implements OnInit, OnDestroy {
           // add new findJob subscriptions
           this.jobSubscriptions = this.scheduleViews.map(sv =>
             this.jobDataService.findJob(sv.schedule.job)
-              .subscribe(job => sv.job = job)
+              .subscribe(job => {
+                sv.job = job;
+              })
           );
 
           this.updateActiveScheduleView();
@@ -81,6 +84,7 @@ export class SchedulesOverviewComponent implements OnInit, OnDestroy {
   private updateActiveScheduleView() {
     if (this.activeViewId) {
       this.activeScheduleView = this.scheduleViews.find(sv => sv.schedule.id === this.activeViewId);
+      console.log(this.scheduleViews)
     }
   }
 }

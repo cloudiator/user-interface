@@ -68,8 +68,13 @@ export class ProcessDataService {
   }
 
   scheduleGraph(id: string): Observable<any> {
-    // return this.processApiService.scheduleGraph(id);
-    return of(testData.graphData);
+    return this.processApiService.scheduleGraph(id).pipe(map(graph => {
+      return {
+        edges: graph.edges,
+        nodes: graph.processes
+      };
+    }));
+    // return of(testData.graphData);
   }
 
 
