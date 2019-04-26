@@ -15,6 +15,8 @@ export class LoginComponent implements OnInit {
     password: ''
   };
 
+  isLoggingIn = false;
+
   constructor(private authService: AuthService,
               private router: Router) {
   }
@@ -23,7 +25,9 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin() {
+    this.isLoggingIn = true;
     this.authService.logIn(this.login).subscribe(success => {
+      this.isLoggingIn = false;
       if (success) {
         this.router.navigate(['/']);
       }

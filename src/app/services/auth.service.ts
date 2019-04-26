@@ -7,7 +7,7 @@ import {Observable, of} from 'rxjs';
 import {catchError, map, take} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {ToastService} from '../app-dialog/services/toast.service';
-import {ToastType} from '../model/toast';
+import {ToastType} from '../app-dialog/model/toast';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +25,11 @@ export class AuthService {
     return this.store.pipe(select(AuthSelectors.selectLoggedIn));
   }
 
+  /**
+   *
+   * @param {Login} login
+   * @return {Observable<boolean>}
+   */
   public logIn(login: Login): Observable<boolean> {
     return this.userApiService.login(login).pipe(
       take(1),

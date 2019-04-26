@@ -31,8 +31,8 @@ const routes: Routes = [
   {path: 'schedules', component: SchedulesOverviewComponent},
   {path: 'schedules/:id', component: SchedulesOverviewComponent},
 
-  {path: 'clouds', component: CloudOverviewComponent},
-  {path: '', component: CloudOverviewComponent},
+  {path: 'clouds', component: CloudOverviewComponent, canActivate: [AuthGuard]},
+  {path: '', component: CloudOverviewComponent, canActivate: [AuthGuard]},
 
   {path: 'clouds', component: CloudOverviewComponent, canActivate: [AuthGuard]},
   {path: '', component: CloudOverviewComponent, canActivate: [AuthGuard]},

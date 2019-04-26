@@ -4,7 +4,7 @@ import {catchError} from 'rxjs/operators';
 import {Observable, of, throwError} from 'rxjs';
 import {AuthService} from '../services/auth.service';
 import {ToastService} from '../app-dialog/services/toast.service';
-import {ToastType} from '../model/toast';
+import {ToastType} from '../app-dialog/model/toast';
 
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
@@ -21,6 +21,9 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               console.log('access denied: Log Out...');
               this.toastService.show({text: 'session timeout', type: ToastType.WARNING});
               this.authService.logOut();
+              break;
+            case 504:
+              this.toastService.show({text: 'Gateway timeout', type: ToastType.DANGER});
               break;
             default:
              return throwError(err);

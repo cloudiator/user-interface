@@ -8,14 +8,16 @@
       <form (ngSubmit)="onLogin()" #loginForm="ngForm">
         <div class="field">
           <p class="control has-icons-left has-icons-right">
-            <input class="input"
-                   type="email"
-                   placeholder="Email"
-                   required
-                   [(ngModel)]="login.email"
-                   name="email"
-                   #name="ngModel"
-                   [class.is-danger]="!name.valid && (name.dirty || name.touched)">
+            <label>
+              <input class="input"
+                     type="email"
+                     placeholder="Email"
+                     required
+                     [(ngModel)]="login.email"
+                     name="email"
+                     #name="ngModel"
+                     [class.is-danger]="!name.valid && (name.dirty || name.touched)">
+            </label>
             <span class="icon is-small is-left">
               <i class="fas fa-envelope"></i>
             </span>
@@ -27,14 +29,16 @@
         </div>
         <div class="field">
           <p class="control has-icons-left has-icons-right">
-            <input class="input"
-                   type="text"
-                   placeholder="Tenant"
-                   required
-                   [(ngModel)]="login.tenant.tenant"
-                   name="tenant"
-                   #tenant='ngModel'
-                   [class.is-danger]="!tenant.valid && (tenant.dirty || tenant.touched)">
+            <label>
+              <input class="input"
+                     type="text"
+                     placeholder="Tenant"
+                     required
+                     [(ngModel)]="login.tenant.tenant"
+                     name="tenant"
+                     #tenant='ngModel'
+                     [class.is-danger]="!tenant.valid && (tenant.dirty || tenant.touched)">
+            </label>
             <span class="icon is-small is-left">
               <i class="fas fa-home"></i>
             </span>
@@ -46,14 +50,16 @@
         </div>
         <div class="field">
           <p class="control has-icons-left has-icons-right">
-            <input class="input"
-                   type="password"
-                   placeholder="Password"
-                   required
-                   [(ngModel)]="login.password"
-                   name="password"
-                   #password='ngModel'
-                   [class.is-danger]="!password.valid && (password.dirty || password.touched)">
+            <label>
+              <input class="input"
+                     type="password"
+                     placeholder="Password"
+                     required
+                     [(ngModel)]="login.password"
+                     name="password"
+                     #password='ngModel'
+                     [class.is-danger]="!password.valid && (password.dirty || password.touched)">
+            </label>
             <span class="icon is-small is-left">
                <i class="fas fa-lock"></i>
             </span>
@@ -65,7 +71,7 @@
         </div>
         <div class="field">
           <p class="control">
-            <button type="submit" class="button is-success">
+            <button type="submit" class="button is-success" [class.is-loading]="isLoggingIn" [disabled]="isLoggingIn">
               Login
             </button>
           </p>

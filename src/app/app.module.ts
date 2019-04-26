@@ -29,6 +29,7 @@ import { SchedulesOverviewComponent } from './components/schedules/schedules-ove
 import { SchedulesViewComponent } from './components/schedules/schedules-view/schedules-view.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { SchedulesBottomSheetComponent } from './components/schedules/schedules-bottom-sheet/schedules-bottom-sheet.component';
+import {environment} from '../environments/environment';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
