@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {ProcessDataService} from '../../../services/process-data.service';
 import {Subscription} from 'rxjs';
 import {ScheduleView} from '../../../model/ScheduleView';

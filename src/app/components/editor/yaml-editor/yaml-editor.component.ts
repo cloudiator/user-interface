@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostBinding, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import * as ace from 'brace';
 import {Editor} from 'brace';
 import 'brace/mode/yaml';
@@ -15,7 +15,8 @@ import {Subscription} from 'rxjs';
 @Component({
   selector: 'app-yaml-editor',
   templateUrl: './yaml-editor.component.html',
-  styleUrls: ['./yaml-editor.component.scss']
+  styleUrls: ['./yaml-editor.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class YamlEditorComponent implements OnInit, OnDestroy {
 

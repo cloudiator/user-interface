@@ -49,7 +49,7 @@ export class HttpAuthInterceptor implements HttpInterceptor, OnDestroy {
 
   private changeRequest(request: HttpRequest<any>): HttpRequest<any> {
 
-    // add base path to request url. request path starts with
+    // add base path to request url
     const url = request.url.replace('${api_path}', this.apiPath);
 
     // add token

@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Cloud, CloudService, Hardware, Image, NewCloud, Location} from 'cloudiator-rest-api';
-import {Observable} from 'rxjs';
+import {Observable, pipe} from 'rxjs';
 import {select, Store} from '@ngrx/store';
-import {map, timeout} from 'rxjs/operators';
+import {map, take, timeout} from 'rxjs/operators';
 import {HttpResponse} from '@angular/common/http';
 import {RuntimeConfigService} from './runtime-config.service';
 import {ToastService} from '../app-dialog/services/toast.service';
@@ -120,70 +120,65 @@ export class CloudDataService {
    */
   private fetchClouds() {
 
-    this.runtimeConfigService.awaitConfigLoad().then(() => {
-
-      // fetch Clouds
-      this.cloudApiService.findClouds().toPromise()
-        .then(clouds => {
+    // fetch Clouds
+    this.cloudApiService.findClouds()
+      .pipe(take(1))
+      .subscribe(clouds => {
           this.store.dispatch(new CloudDataActions.SetCloudsAction(clouds));
-        })
-        .catch(() => {
+        },
+        () => {
           console.error('could not fetch clouds');
           this.toastService.show({text: 'could not fetch clouds', type: ToastType.DANGER}, false);
         });
-    });
   }
 
   /**
    * Fetches Hardware from server and puts it into the Redux store.
    */
   private fetchHardware() {
-    this.runtimeConfigService.awaitConfigLoad().then(() => {
-      // ToDo: seperate api requests to clearly handle notifications;
-      // fetch Hardware
-      this.cloudApiService.findHardware().toPromise()
-        .then(hardware => {
+    // ToDo: seperate api requests to clearly handle notifications;
+    // fetch Hardware
+    this.cloudApiService.findHardware()
+      .pipe(take(1))
+      .subscribe(hardware => {
           this.store.dispatch(new CloudDataActions.SetHardwareAction(hardware));
-        })
-        .catch(() => {
+        },
+        () => {
           console.error('could not fetch Hardware');
           this.toastService.show({text: 'could not fetch Hardware', type: ToastType.DANGER}, false);
         });
-    });
   }
 
   /**
    * Feteches Images from the server and puts them into the Redux store.
    */
   private fetchImages() {
-    this.runtimeConfigService.awaitConfigLoad().then(() => {
-      // fetch Images
-      this.cloudApiService.findImages().toPromise()
-        .then(images => {
+    // fetch Images
+    this.cloudApiService.findImages()
+      .pipe(take(1))
+      .subscribe(images => {
           this.store.dispatch(new CloudDataActions.SetImagesAction(images));
-        })
-        .catch(() => {
+        },
+        () => {
           console.error('could not fetch Images');
           this.toastService.show({text: 'could not fetch Images', type: ToastType.DANGER}, false);
         });
-    });
   }
 
   /**
    * Fetches Locations form the server and puts them into the Redux store.
    */
   private fetchLocations() {
-    this.runtimeConfigService.awaitConfigLoad().then(() => {
-      // fetch Images
-      this.cloudApiService.findLocations().toPromise()
-        .then(locations => {
+    // fetch Images
+    this.cloudApiService.findLocations()
+      .pipe(take(1))
+      .subscribe(locations => {
           this.store.dispatch(new CloudDataActions.SetLocationsAction(locations));
-        })
-        .catch(() => {
+        },
+        () => {
           console.error('could not fetch Images');
           this.toastService.show({text: 'could not fetch Images', type: ToastType.DANGER}, false);
         });
-    });
   }
 
   /**

@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   };
 
   isLoggingIn = false;
+  logInError = false;
 
   constructor(private authService: AuthService,
               private router: Router) {
@@ -30,6 +31,8 @@ export class LoginComponent implements OnInit {
       this.isLoggingIn = false;
       if (success) {
         this.router.navigate(['/']);
+      } else {
+        this.logInError = true;
       }
     });
   }

@@ -42,7 +42,7 @@ $list-radius: 0px;
 // custom classes
 
 html {
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 $app-container-height: calc(100% - #{$navbar-height});
@@ -52,11 +52,21 @@ $app-container-height: calc(100% - #{$navbar-height});
   z-index: 201;
 }
 
+.cdk-header-cell {
+  z-index: 0 !important;
+}
+
 .app-container {
   position: absolute;
   width: 100vw;
+  height: $app-container-height;
   // height: $app-container-height;
-  // overflow-y: auto;
+   overflow-y: auto;
+}
+
+.fullsize-container {
+  position: fixed;
+  height: $app-container-height !important;
 }
 
 

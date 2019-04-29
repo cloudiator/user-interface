@@ -71,7 +71,11 @@
         </div>
         <div class="field">
           <p class="control">
-            <button type="submit" class="button is-success" [class.is-loading]="isLoggingIn" [disabled]="isLoggingIn">
+            <button type="submit"
+                    class="button is-success"
+                    [class.is-loading]="isLoggingIn"
+                    [class.is-danger]="logInError"
+                    [disabled]="isLoggingIn">
               Login
             </button>
           </p>

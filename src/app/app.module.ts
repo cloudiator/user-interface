@@ -30,6 +30,7 @@ import { SchedulesViewComponent } from './components/schedules/schedules-view/sc
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { SchedulesBottomSheetComponent } from './components/schedules/schedules-bottom-sheet/schedules-bottom-sheet.component';
 import {environment} from '../environments/environment';
+import {FlexLayoutModule} from '@angular/flex-layout';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -77,6 +78,7 @@ export class BottomSheetHammerConfig extends HammerGestureConfig {
     ReactiveFormsModule,
     CdkTableModule,
     AppDialogModule,
+    FlexLayoutModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [

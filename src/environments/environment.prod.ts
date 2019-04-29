@@ -4,6 +4,7 @@ export const environment = {
   useRuntimeConfig: true,
   href: '/',
   apiPath: '',
+  skipAuth: false,
   authMode: null,
   xApiKey: '',
   notificationDuration: 10000
