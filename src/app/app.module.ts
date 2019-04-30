@@ -86,7 +86,8 @@ export class BottomSheetHammerConfig extends HammerGestureConfig {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpAuthInterceptor,
       multi: true
-    }, {
+    },
+    {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,
       multi: true

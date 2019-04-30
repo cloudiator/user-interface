@@ -22,6 +22,7 @@ import {AppDialogModule} from '../../app-dialog/app-dialog.module';
 import {SchedulesOverviewComponent} from '../schedules/schedules-overview/schedules-overview.component';
 import {SchedulesViewComponent} from '../schedules/schedules-view/schedules-view.component';
 import {SchedulesBottomSheetComponent} from '../schedules/schedules-bottom-sheet/schedules-bottom-sheet.component';
+import {LoginComponent} from '../login/login.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -41,7 +42,8 @@ describe('AppComponent', () => {
         NodeGraphComponent,
         SchedulesOverviewComponent,
         SchedulesViewComponent,
-        SchedulesBottomSheetComponent
+        SchedulesBottomSheetComponent,
+        LoginComponent
       ],
       imports: [
         RootStoreModule,

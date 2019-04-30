@@ -56,10 +56,14 @@ export class CloudDataService {
    * @param id {string} id of cloud to be deleted
    */
   public deleteCloud(id: string) {
-    this.cloudApiService.deleteCloud(id).toPromise().catch(err => {
-      console.error('could not delete Cloud');
-      this.toastService.show({text: 'could not delete Cloud', type: ToastType.DANGER}, true);
-    });
+    this.cloudApiService.deleteCloud(id).subscribe(
+      () => {
+      },
+      err => {
+        console.error('could not delete Cloud');
+        this.toastService.show({text: 'could not delete Cloud', type: ToastType.DANGER}, true);
+      }
+    );
   }
 
   /* HARDWARE */
