@@ -4,7 +4,7 @@ import {CloudOverviewComponent} from './cloud-overview.component';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import {CloudCardComponent} from '../cloud-card/cloud-card.component';
 import {RouterTestingModule} from '@angular/router/testing';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {RootStoreModule} from '../../../root-store';
 
 describe('CloudOverviewComponent', () => {
@@ -12,7 +12,7 @@ describe('CloudOverviewComponent', () => {
   let fixture: ComponentFixture<CloudOverviewComponent>;
 
   const mockCloudDataService = jasmine.createSpyObj('CloudDataService', {
-    'findClouds': Observable.create([])
+    'findClouds': of([])
   });
 
   beforeEach(async(() => {

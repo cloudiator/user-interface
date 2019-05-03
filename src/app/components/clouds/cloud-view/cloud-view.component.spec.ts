@@ -10,13 +10,14 @@ import {Api, CloudCredential, CloudType} from 'cloudiator-rest-api';
 import {CdkTableModule} from '@angular/cdk/table';
 import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
 import {RootStoreModule} from '../../../root-store';
+import {of} from 'rxjs/internal/observable/of';
 
 describe('CloudViewComponent', () => {
   let component: CloudViewComponent;
   let fixture: ComponentFixture<CloudViewComponent>;
 
   const MockCloudDataService = jasmine.createSpyObj('CloudDataService', {
-    'findCloud': {
+    'findCloud': of({
       cloudType: CloudType,
       api: <Api> {providerName: ''},
       credential: <CloudCredential> {secret: '', user: ''},
@@ -24,7 +25,9 @@ describe('CloudViewComponent', () => {
        * Unique identifier for the cloud
        */
       id: '1',
-    }
+    }),
+    'findHardware': of([]),
+    'findImages': of([])
   });
 
   beforeEach(async(() => {
@@ -42,7 +45,7 @@ describe('CloudViewComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            paramMap: Observable.create(convertToParamMap({id: 1}))
+            paramMap: of(convertToParamMap({id: 1}))
           }
         },
         {provide: Overlay, useValue: null},
