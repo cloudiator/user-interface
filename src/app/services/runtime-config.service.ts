@@ -8,11 +8,15 @@ import {environment} from '../../environments/environment';
 import {RootStoreState, RuntimeConfigActions, RuntimeConfigSelectors} from '../root-store';
 import {filter, take} from 'rxjs/operators';
 
+/**
+ * Responsible for fetching and setting up run options.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class RuntimeConfigService {
 
+  /** @ignore */
   constructor(private http: HttpClient,
               private store: Store<RootStoreState.State>,
               @Optional() private configuration: Configuration) {
@@ -29,6 +33,9 @@ export class RuntimeConfigService {
     }
   }
 
+  /**
+   * fetches production config from assets.
+   */
   private fetchConfig() {
     this.http.get<RuntimeConfig>(`${environment.href}assets/appConfig.json`).toPromise().then(value => {
       this.store.dispatch(new RuntimeConfigActions.SetRuntimeConfigAction(<RuntimeConfig>value));
@@ -41,6 +48,10 @@ export class RuntimeConfigService {
     });
   }
 
+  /**
+   * Returns a Promise that resolves to true as soon as the runtimeconfig is set up.
+   * @return {Promise<any>}
+   */
   public awaitConfigLoad(): Promise<any> {
     return new Promise(resolve =>
       this.store
@@ -51,14 +62,26 @@ export class RuntimeConfigService {
         .subscribe(() => resolve(true)));
   }
 
+  /**
+   * Returns apiPath from store.
+   * @return {Observable<String>}
+   */
   getApiPath(): Observable<String> {
     return this.store.pipe(select(RuntimeConfigSelectors.selectApiPath));
   }
 
+  /**
+   * Returns XApiKey from store.
+   * @return {Observable<String>}
+   */
   getXApiKey(): Observable<String> {
     return this.store.pipe(select(RuntimeConfigSelectors.selectXApiKey));
   }
 
+  /**
+   * Returns complete runtimeConfig from store.
+   * @return {Observable<RuntimeConfig>}
+   */
   getRuntimeConfig(): Observable<RuntimeConfig> {
     return this.store.pipe(select(RuntimeConfigSelectors.selectConfig));
   }

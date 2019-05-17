@@ -32,6 +32,10 @@ import { SchedulesBottomSheetComponent } from './components/schedules/schedules-
 import {environment} from '../environments/environment';
 import {FlexLayoutModule} from '@angular/flex-layout';
 
+/**
+ * Default configuration required by the swagger API Module.
+ * @return {Configuration}
+ */
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
     apiKeys: {'X-API-Key': ''},
@@ -41,13 +45,20 @@ export function apiConfigFactory(): Configuration {
   return new Configuration(params);
 }
 
+/**
+ * Configuration for HammerJS.
+ */
 export class BottomSheetHammerConfig extends HammerGestureConfig {
+  /** @ignore */
   overrides = <any> {
     pan: { direction: Hammer.DIRECTION_VERTICAL },
     swipe: { direction: Hammer.DIRECTION_VERTICAL },
   };
 }
 
+/**
+ * APp Main Module.
+ */
 @NgModule({
   declarations: [
     AppComponent,

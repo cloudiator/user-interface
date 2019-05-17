@@ -5,7 +5,7 @@ import {CloudDataService} from '../../../services/cloud-data.service';
 import {CloudCardComponent} from '../cloud-card/cloud-card.component';
 import {RouterTestingModule} from '@angular/router/testing';
 import {RootStoreModule} from '../../../root-store';
-import {of} from 'rxjs/internal/observable/of';
+import {of} from 'rxjs';
 
 describe('CloudOverviewComponent', () => {
   let component: CloudOverviewComponent;

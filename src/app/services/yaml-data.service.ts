@@ -8,17 +8,26 @@ import {RootStoreState, RuntimeConfigSelectors} from '../root-store';
 import {ToastType} from '../app-dialog/model/toast';
 import {catchError} from 'rxjs/operators';
 
+/**
+ * Service responsible for parsing yamls.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class YamlDataService {
 
+  /** @ignore */
   constructor(public yamlApiService: YamlService,
               public runtimeConfigService: RuntimeConfigService,
               public store: Store<RootStoreState.State>,
               public toastService: ToastService) {
   }
 
+  /**
+   * sends a yaml parse request and handles potential errors.
+   * @param {string} yaml
+   * @return {Observable<Job>}
+   */
   public parseYaml(yaml: string): Observable<Job> {
       return this.yamlApiService.parseYAML(yaml)
         .pipe(catchError(err => {

@@ -1,51 +1,87 @@
 import {Injectable} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import saveAs from 'file-saver';
-import {Observable, Subscription} from 'rxjs';
+import {Observable} from 'rxjs';
 import {filter, mergeMap, take} from 'rxjs/operators';
 import {EditorActions, EditorSelectors, RootStoreState} from '../root-store';
 import {JobDataService} from './job-data.service';
 import {Job, Queue} from 'cloudiator-rest-api';
 import {QueueDataService} from './queue-data.service';
 
+/**
+ * Service handling all Functionallity of the Editor View.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class EditorService {
 
+  /** @ignore */
   constructor(public store: Store<RootStoreState.State>,
               public jobDataService: JobDataService,
               public queueDataService: QueueDataService) {
   }
 
+  /**
+   * returns redux store Observable of current Editor Content.
+   * @return {Observable<string>}
+   */
   public getEditorValue(): Observable<string> {
     return this.store.pipe(select(EditorSelectors.selectValue));
   }
 
+  /**
+   * dispatches new Editor value to redux store.
+   * @param {string} value
+   */
   public setEditorValue(value: string) {
     this.store.dispatch(new EditorActions.SetValueAction(value));
   }
 
+  /**
+   * Returns redux store Observable of te editors current filename.
+   * @return {Observable<string>}
+   */
   public getFilename(): Observable<string> {
     return this.store.pipe(select(EditorSelectors.selectFilename));
   }
 
+  /**
+   * Dispatches new editor filename to store.
+   * @param {string} filename
+   */
   public setFilename(filename: string) {
     this.store.dispatch(new EditorActions.SetFilenameAction(filename));
   }
 
+  /**
+   * Returns redux store Observable of the current Job displayed.
+   * @return {Observable<Job>}
+   */
   getEditorJob(): Observable<Job> {
     return this.store.pipe(select(EditorSelectors.selectJob));
   }
 
+  /**
+   * Sets redux store value of current Editor Job.
+   * @param {Job} job
+   */
   setEditorJob(job: Job) {
     this.store.dispatch(new EditorActions.SetEditorJobAction(job));
   }
 
+  /**
+   * Returns current Queue Object of The Editor from Redux Store.
+   * @return {Observable<Queue>}
+   */
   getEditorQueue(): Observable<Queue> {
     return this.store.pipe(select(EditorSelectors.selectQueue));
   }
 
+  /**
+   * Updates store Object of the current Editor queue.
+   * @param {Queue} queue
+   */
   setEditorQueue(queue: Queue) {
     if (queue) {
     this.queueDataService.listenToQueueTaskStatus(queue.id);
@@ -63,14 +99,26 @@ export class EditorService {
     );
   }
 
+  /**
+   * sets current editor job graph in Store.
+   * @param {any | null} graphData
+   */
   public setEditorGraph(graphData: any | null) {
     this.store.dispatch(new EditorActions.SetEditorGraphAction(graphData));
   }
 
+  /**
+   * Redux store flag if Data is currently saved.
+   * @return {Observable<boolean>}
+   * @constructor
+   */
   public HasUnsaveChanges(): Observable<boolean> {
     return this.store.pipe(select(EditorSelectors.selectHasUnsavedChanges));
   }
 
+  /**
+   * saves the current editor conent the local maschine.
+   */
   public downloadFile() {
     // toDo: error handling
     this.store.pipe(
@@ -86,6 +134,11 @@ export class EditorService {
       });
   }
 
+  /**
+   * loads the selected file into the editor.
+   * @param {FileList} files
+   * @return {Promise<any>}
+   */
   public uploadFile(files: FileList): Promise<any> {
     if (files instanceof FileList && files.length > 0) {
       const reader = new FileReader();

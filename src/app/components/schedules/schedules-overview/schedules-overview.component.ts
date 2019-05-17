@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ProcessDataService} from '../../../services/process-data.service';
 import {Subscription} from 'rxjs';
 import {ScheduleView} from '../../../model/ScheduleView';
@@ -6,15 +6,31 @@ import {JobDataService} from '../../../services/job-data.service';
 import {map} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
 
+/**
+ * Overview of Schedules. Hosts a list containing all Schedules and the SchedulesView.
+ */
 @Component({
   selector: 'app-schedules-overview',
   templateUrl: './schedules-overview.component.html',
   styleUrls: ['./schedules-overview.component.scss']
 })
 export class SchedulesOverviewComponent implements OnInit, OnDestroy {
+
+  /**
+   * list of all Scheduleviews.
+   * @type {any[]}
+   */
   scheduleViews: ScheduleView[] = [];
 
+  /**
+   * Id string of current active Schedule, obtained from the url
+   * @type {null}
+   */
   activeViewId: string = null;
+  /**
+   * actual active ScheduleView Object.
+   * @type {null}
+   */
   activeScheduleView: ScheduleView = null;
 
   /**
@@ -22,17 +38,29 @@ export class SchedulesOverviewComponent implements OnInit, OnDestroy {
    */
   private jobSubscriptions: Subscription[] = [];
 
+  /**
+   * all subscriptions of the site
+   * @type {any[]}
+   */
   private subscriptions: Subscription[] = [];
 
+  /**
+   * indicates load state of Schedules
+   * @type {boolean}
+   */
   isLoading = false;
+
+  /** @ignore */
   jobLoad = false;
 
+  /** @ignore */
   constructor(private route: ActivatedRoute,
               public jobDataService: JobDataService,
               public processDataService: ProcessDataService,
               private router: Router) {
   }
 
+  /** @ignore */
   ngOnInit() {
 
     this.subscriptions.push(
@@ -46,6 +74,7 @@ export class SchedulesOverviewComponent implements OnInit, OnDestroy {
         })
     );
 
+    // composing scheduleViews
     this.subscriptions.push(
       this.processDataService.getSchedules()
         .subscribe(schedules => {
@@ -73,18 +102,18 @@ export class SchedulesOverviewComponent implements OnInit, OnDestroy {
     );
   }
 
+  /** @ignore */
   ngOnDestroy() {
     this.subscriptions.forEach(s => s.unsubscribe());
+    this.jobSubscriptions.forEach(s => s.unsubscribe());
   }
 
-  test() {
-    console.log(this.scheduleViews);
-  }
-
+  /**
+   * Updates the activeScheduleView porperty by finding the ScheduleView matching the activeViewId.
+   */
   private updateActiveScheduleView() {
     if (this.activeViewId) {
       this.activeScheduleView = this.scheduleViews.find(sv => sv.schedule.id === this.activeViewId);
-      console.log(this.scheduleViews)
     }
   }
 }

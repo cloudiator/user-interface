@@ -10,6 +10,9 @@ import * as cytoscape from 'cytoscape';
 import {ProcessDataService} from '../../../services/process-data.service';
 import {take} from 'rxjs/operators';
 
+/**
+ * View of a selected Schedule, containing a Cytoscape and a bottomsheet for further information
+ */
 @Component({
   selector: 'app-schedules-view',
   providers: [],
@@ -18,15 +21,29 @@ import {take} from 'rxjs/operators';
 })
 export class SchedulesViewComponent implements OnInit, OnChanges {
 
+  /**
+   * ScheduleView to be shown.
+   */
   @Input() scheduleView: ScheduleView;
 
+  /**
+   * Indicates if graph data is still being requested.
+   * @type {boolean}
+   */
   isLoading = true;
 
+  /**
+   * Current selected Node.
+   * @type {null}
+   */
   selected: any = null;
 
   // y: number = 0;
   // startY: number = 0;
 
+  /**
+   * Style of graph.
+   */
   readonly style = [{
     'selector': 'node',
     'style': {
@@ -70,6 +87,9 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
     }
   }];
 
+  /**
+   * Graph Sorter.
+   */
   readonly circLayout = {
     name: 'circle',
     fit: true,
@@ -82,9 +102,20 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
     startAngle: 3 / 2 * Math.PI
   };
 
+  /**
+   * Max zoom limiter of graph.
+   * @type {number}
+   */
   readonly maxZoom = 2;
+  /**
+   * Min zoom limiter of graph.
+   * @type {number}
+   */
   readonly minZoom = 0.5;
 
+  /**
+   * Cytoscape object
+   */
   private _cy;
   get cy() {
     // setting up cy in getter, because onChanges seems to be called before onInit
@@ -128,12 +159,15 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
     return this._cy;
   }
 
+  /** @ignore */
   constructor(private processDataService: ProcessDataService) {
   }
 
+  /** @ignore */
   ngOnInit() {
   }
 
+  /** @ignore */
   ngOnChanges(changes: SimpleChanges) {
     // make sure that graph is clear when no schedule view is selected, to prevent flickering on selection
     if (!this.scheduleView && this._cy) {
@@ -157,19 +191,26 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
   //   this.y = this.startY + event.deltaY;
   // }
 
+  /**
+   * requests new Schedule graph and updates the graph View.
+   */
   updategraph() {
     this.isLoading = true;
     this.processDataService.scheduleGraph(this.scheduleView.schedule.id)
       .pipe(take(1))
       .subscribe(graph => {
-        // timeout as hack to fix wrong positioning of graph when data arrives to early in mobile view
-        setTimeout(() => {
-          this.cy.remove(this.cy.$(() => true));
-          this.cy.add(graph);
-          this.cy.layout(this.circLayout).run();
+          // timeout as hack to fix wrong positioning of graph when data arrives to early in mobile view
+          setTimeout(() => {
+            this.cy.remove(this.cy.$(() => true));
+            this.cy.add(graph);
+            this.cy.layout(this.circLayout).run();
+            this.isLoading = false;
+            this.cy.panBy({x: 0, y: -100});
+          }, 0);
+        },
+        () => {
           this.isLoading = false;
-          this.cy.panBy({x: 0, y: -100});
-        }, 0);
-      });
+        }
+      );
   }
 }

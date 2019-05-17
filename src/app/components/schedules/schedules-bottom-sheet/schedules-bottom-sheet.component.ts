@@ -1,6 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {animate, animateChild, group, query, state, style, transition, trigger} from '@angular/animations';
 
+/**
+ * Bottomsheet component of the ScheduleView.
+ */
 @Component({
   selector: 'app-schedules-bottom-sheet',
   animations: [
@@ -76,16 +79,21 @@ import {animate, animateChild, group, query, state, style, transition, trigger} 
 export class SchedulesBottomSheetComponent implements OnInit {
 
 
+  /** @ignore */
+  _selected: Selected = null;
   /**
    * selected node/edge of graph
    * @type {null}
    * @private
    */
-  _selected: Selected = null;
   get selected(): Selected {
     return this._selected;
   }
 
+  /**
+   * sets bottomsheet visibility when selected is changed.
+   * @param {Selected} value
+   */
   @Input() set selected(value: Selected) {
     this._selected = value;
     // open/hide bottomsheet depending if something is selected
@@ -96,26 +104,44 @@ export class SchedulesBottomSheetComponent implements OnInit {
     }
   }
 
+  /**
+   * containes visibility state of bottom scheet
+   * @type {string}
+   */
   sheetOpenClose: 'open' | 'closed' | 'hidden' = this.selected ? 'open' : 'hidden';
 
+  /** @ignore */
   constructor() {
   }
 
+  /** @ignore */
   ngOnInit() {
   }
 
-
+  /**
+   * Switches Open state of sheet.
+   */
   switchOpenState() {
     this.sheetOpenClose = (this.sheetOpenClose === 'open') ? 'closed' : 'open';
   }
 
+  /** @ignore */
   onSheetClick() {
-
   }
 
 }
 
+/**
+ * Interface describing selected Object.
+ */
 export interface Selected {
+  /**
+   * data of Object.
+   */
   data: any;
+
+  /**
+   * type of Object
+   */
   group: 'nodes' | 'edges';
 }

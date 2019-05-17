@@ -1,11 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {Hardware, Image} from 'cloudiator-rest-api';
+import {Image} from 'cloudiator-rest-api';
 import {BehaviorSubject, combineLatest} from 'rxjs';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import {ActivatedRoute} from '@angular/router';
 import {tap} from 'rxjs/operators';
 
+/**
+ * Overview of all Images available.
+ */
 @Component({
   selector: 'app-images-overview',
   templateUrl: './images-overview.component.html',
@@ -13,19 +16,41 @@ import {tap} from 'rxjs/operators';
 })
 export class ImagesOverviewComponent implements OnInit {
 
+  /**
+   * Datasource for table.
+   * @type {BehaviorSubject<Image[]>}
+   */
   dataSource = new BehaviorSubject<Image[]>([]);
 
+  /**
+   * Searchbar object.
+   * @type {FormControl}
+   */
   searchFormControl = new FormControl();
 
+  /**
+   * Key That is sorted by.
+   * @type {BehaviorSubject<string>}
+   */
   sortKey = new BehaviorSubject<string>('');
+  /**
+   * Sort direction.
+   * @type {BehaviorSubject<string>}
+   */
   sortDirection = new BehaviorSubject<string>('');
 
+  /**
+   * indicates if data is being loaded right now.
+   * @type {boolean}
+   */
   isLoading = true;
 
+  /** @ignore */
   constructor(private activatedRoute: ActivatedRoute,
               public cloudDataService: CloudDataService) {
   }
 
+  /** @ignore */
   ngOnInit() {
 
     this.adjustSort('name');
@@ -72,6 +97,10 @@ export class ImagesOverviewComponent implements OnInit {
     });
   }
 
+  /**
+   * Adjusts sort key and direction.
+   * @param {string} key
+   */
   adjustSort(key: string) {
     if (this.sortKey.value === key) {
       if (this.sortDirection.value === 'asc') {

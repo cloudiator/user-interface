@@ -126,12 +126,11 @@ export class CloudDataService {
 
     // fetch Clouds
     this.cloudApiService.findClouds()
-      .pipe(take(1))
       .subscribe(clouds => {
           this.store.dispatch(new CloudDataActions.SetCloudsAction(clouds));
         },
-        () => {
-          console.error('could not fetch clouds');
+        err => {
+          console.error('could not fetch clouds', err);
           this.toastService.show({text: 'could not fetch clouds', type: ToastType.DANGER}, false);
         });
   }
@@ -140,10 +139,8 @@ export class CloudDataService {
    * Fetches Hardware from server and puts it into the Redux store.
    */
   private fetchHardware() {
-    // ToDo: seperate api requests to clearly handle notifications;
     // fetch Hardware
     this.cloudApiService.findHardware()
-      .pipe(take(1))
       .subscribe(hardware => {
           this.store.dispatch(new CloudDataActions.SetHardwareAction(hardware));
         },
@@ -159,7 +156,6 @@ export class CloudDataService {
   private fetchImages() {
     // fetch Images
     this.cloudApiService.findImages()
-      .pipe(take(1))
       .subscribe(images => {
           this.store.dispatch(new CloudDataActions.SetImagesAction(images));
         },
