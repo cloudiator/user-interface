@@ -1,19 +1,21 @@
-import {TestBed} from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
 import {YamlDataService} from './yaml-data.service';
 import {ApiModule} from 'cloudiator-rest-api';
-import {HttpClientModule} from '@angular/common/http';
-import {apiConfigFactory} from '../app.module';
 import {AppDialogModule} from '../app-dialog/app-dialog.module';
 import {RootStoreModule} from '../root-store';
+import * as testData from 'testing/test-data';
+import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {testApiFactory} from 'testing/test-data';
+import {ToastService} from '../app-dialog/services/toast.service';
 
 describe('YamlDataService', () => {
 
   beforeEach(() => TestBed.configureTestingModule({
     imports: [
       RootStoreModule,
-      ApiModule.forRoot(apiConfigFactory),
-      HttpClientModule,
+      ApiModule.forRoot(testApiFactory),
+      HttpClientTestingModule,
       AppDialogModule
     ],
     providers: []
@@ -24,19 +26,43 @@ describe('YamlDataService', () => {
     expect(service).toBeTruthy();
   });
 
-  // ToDO: finish when parseYaml is working correctly
-  // it('onValidate should filter server caused errors', async () => {
-  //   const service: YamlDataService = TestBed.get(YamlDataService);
-  //
-  //   spyOn(service.toastService, 'show').and.callThrough();
-  //   const mockApi = spyOn(service.yamlApiService, 'parseYAML').and.returnValue(testData.job);
-  //
-  //   service.parseYaml('')
-  //     .pipe(take(1))
-  //     .subscribe(value => expect(value).toEqual(testData.job));
-  //
-  //   mockApi.and.returnValue(throwError(<HttpErrorResponse>{status: 500}));
-  //   await service.parseYaml('');
-  //   expect(service.toastService.show).toHaveBeenCalledWith({})
-  // });
+  it('should return parsed Parsed Job', inject(
+    [YamlDataService, HttpTestingController],
+    (service: YamlDataService, httpMock: HttpTestingController) => {
+      const apiPath = testApiFactory().basePath;
+      return new Promise(async resolve => {
+        await service.parseYaml(testData.jobYaml)
+          .subscribe(res => {
+            expect(res).toEqual(testData.jobOne);
+            resolve();
+          });
+
+        const req = httpMock.expectOne(`${apiPath}/yaml`);
+        expect(req.request.body).toEqual(testData.jobYaml);
+        req.flush(testData.jobOne);
+      });
+    }
+  ));
+
+  it('should catch Bad Requests', inject(
+    [ToastService, YamlDataService, HttpTestingController],
+    (toastService: ToastService, service: YamlDataService, httpMock: HttpTestingController) => {
+      const apiPath = testApiFactory().basePath;
+
+      return new Promise(async resolve => {
+        await service.parseYaml('').subscribe(
+          () => fail('request should fail'),
+          err => {
+            expect(err).toBeTruthy();
+            httpMock.verify();
+            resolve();
+          }
+        );
+
+        const req = httpMock.expectOne(`${apiPath}/yaml`);
+
+        req.flush({}, {status: 400, statusText: 'Bad Request'});
+      });
+    }
+  ));
 });

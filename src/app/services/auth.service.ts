@@ -66,7 +66,6 @@ export class AuthService {
         return true;
       }),
       catchError(err => {
-        console.log(err);
         switch (err.error.status) {
           case 400:
             this.toastService.show({text: err.error.message, type: ToastType.DANGER});

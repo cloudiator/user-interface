@@ -4,7 +4,7 @@ import {Observable, Subscription} from 'rxjs';
 import {AuthService} from '../services/auth.service';
 import {RuntimeConfigService} from '../services/runtime-config.service';
 import {AuthMode} from '../model/RuntimeConfig';
-import {mergeMap} from 'rxjs/operators';
+import {mergeMap, tap} from 'rxjs/operators';
 
 /**
  * sets correct api path and authentication headers for all requests.

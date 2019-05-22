@@ -2,16 +2,38 @@ import {
   Api,
   Cloud,
   CloudConfiguration,
-  CloudCredential, CloudiatorProcess,
+  CloudCredential, Configuration, ConfigurationParameters,
   Hardware,
   Image,
   Job,
   LanceInterface,
-  Location, Login, OclRequirement,
-  OperatingSystem, PortRequired,
-  Queue, Schedule, SingleProcess, Token
+  Location,
+  Login,
+  OclRequirement,
+  OperatingSystem,
+  PortRequired,
+  Queue,
+  Schedule,
+  SingleProcess,
+  Token
 } from 'cloudiator-rest-api';
 import {ScheduleView} from '../src/app/model/ScheduleView';
+import {AuthMode, RuntimeConfig} from '../src/app/model/RuntimeConfig';
+
+export function testApiFactory(): Configuration {
+  const params: ConfigurationParameters = {
+    apiKeys: {'X-API-Key': ''},
+    basePath: 'testpath',
+  };
+  return new Configuration(params);
+}
+
+/* RUNTIME CONFIG */
+export const runtimeConfigOne: RuntimeConfig = {
+  apiPath: 'testpath',
+  xApiKey: 'testKey',
+  authMode: AuthMode.SINGLE
+};
 
 /* CLOUDS */
 export const allClouds: Cloud[] = [
@@ -224,7 +246,60 @@ export const allImages: Image[] = [
 ];
 
 /* JOBS */
-export const job: Job = {
+export const jobOne: Job = {
+  name: 'simple_db',
+  tasks: [
+    // {
+    //   name: 'database',
+    //   ports: [
+    //     {
+    //       type: 'PortProvided',
+    //       name: 'MARIADBPROV',
+    //       port: 3306
+    //     }
+    //   ],
+    //   interfaces: [
+    //     <DockerInterface>{
+    //       type: 'LanceInterface',
+    //       containerType: 'DOCKER',
+    //       init: null,
+    //       preInstall:
+    //       'sudo apt-get -y update && sudo apt-get -y install git && git clone https://github.com/dbaur/mediawiki-tutorial.git',
+    //       install: './mediawiki-tutorial/scripts/lance/mariaDB.sh install',
+    //       postInstall: './mediawiki-tutorial/scripts/lance/mariaDB.sh configure',
+    //       preStart: null,
+    //       start: './mediawiki-tutorial/scripts/lance/mariaDB.sh startBlocking',
+    //       startDetection: null,
+    //       stopDetection: null,
+    //       postStart: null,
+    //       preStop: null,
+    //       stop: null,
+    //       postStop: null,
+    //       shutdown: null,
+    //       updateAction: null
+    //     }
+    //   ],
+    //   optimization: null,
+    //   requirements: [
+    //     <OclRequirement>{
+    //       type: 'OclRequirement',
+    //       constraint: 'nodes->forAll(hardware.providerId = \'t2.micro\')'
+    //     }
+    //   ],
+    //   behaviour: {
+    //     type: 'ServiceBehaviour',
+    //     restart: true
+    //   }
+    // }
+  ],
+  communications: null,
+  requirements: null,
+  // optimization: null,
+  id: '8726f456-4c19-4cda-9188-b027ad98362e',
+  owner: 'admin'
+};
+
+export const jobTwo: Job = {
   id: '445bdb66-3c87-44ca-bc51-3670b008643e',
   name: 'mediawiki',
   tasks: [
@@ -404,6 +479,32 @@ export const job: Job = {
   requirements: null
 };
 
+/* JOB YAML */
+export const jobYaml =
+  '---\n' +
+  'job:\n' +
+  '  name: simple_db\n' +
+  '  tasks:\n' +
+  '  - name: database\n' +
+  '    behaviour: \n' +
+  '      type: ServiceBehaviour\n' +
+  '      restart: true\n' +
+  '    ports:\n' +
+  '    - type: PortProvided\n' +
+  '      name: MARIADBPROV\n' +
+  '      port: 3306\n' +
+  '    interfaces:\n' +
+  '    - type: LanceInterface\n' +
+  '      containerType: DOCKER\n' +
+  '      preInstall: sudo apt-get -y update && sudo apt-get -y install git && git clone\n' +
+  '        https://github.com/dbaur/mediawiki-tutorial.git\n' +
+  '      install: "./mediawiki-tutorial/scripts/lance/mariaDB.sh install"\n' +
+  '      postInstall: "./mediawiki-tutorial/scripts/lance/mariaDB.sh configure"\n' +
+  '      start: "./mediawiki-tutorial/scripts/lance/mariaDB.sh startBlocking"\n' +
+  '    requirements:\n' +
+  '    - constraint: nodes->forAll(hardware.providerId = \'t2.micro\')\n' +
+  '      type: OclRequirement';
+
 /* GRAPH */
 export const graphData: any = {
   nodes: [
@@ -464,7 +565,7 @@ export const queueFailed: Queue = {
   status: 'FAILED'
 };
 
-/* Job */
+/* JOB */
 export const jobIdOne = '5c5a0389-6a23-48f3-8937-50f50f7bc904';
 export const jobIdTwo = '06dc7e52-ca5d-408b-8783-b25f3264d87e';
 export const jobIdThree = '62c34636-a1bf-401c-b96f-2fb0eb0de25c';
@@ -757,7 +858,7 @@ export const allJobs: Job[] = [
   JobThree
 ];
 
-/* Schedule */
+/* SCHEDULE */
 export const scheduleOne: Schedule = {
   job: jobIdOne,
   instantiation: 'AUTOMATIC',
@@ -836,7 +937,7 @@ export const allSchedules: Array<Schedule> = [
   scheduleThree
 ];
 
-/* ScheduleViews */
+/* SCHEDULE VIEWS */
 
 export const ScheduleViewOne: ScheduleView = {
   schedule: scheduleOne,
@@ -901,7 +1002,7 @@ export const SchedulesGraph: any = {
   ]
 };
 
-/* Login */
+/* LOGIN */
 
 export const loginOne: Login = {
   email: 'testuser@example.com',

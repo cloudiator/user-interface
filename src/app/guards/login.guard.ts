@@ -13,8 +13,8 @@ import {catchError, map, take} from 'rxjs/operators';
 export class LoginGuard implements CanActivate {
 
   /** @ignore */
-  constructor(private authService: AuthService,
-              private router: Router) {
+  constructor(public authService: AuthService,
+              public router: Router) {
   }
 
   /** @ignore */

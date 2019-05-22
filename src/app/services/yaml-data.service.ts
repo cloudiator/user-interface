@@ -30,15 +30,5 @@ export class YamlDataService {
    */
   public parseYaml(yaml: string): Observable<Job> {
       return this.yamlApiService.parseYAML(yaml)
-        .pipe(catchError(err => {
-          switch (err.status) {
-            case 400:
-            case 504:
-              this.toastService.show({text: 'Server had an internal Error', type: ToastType.DANGER}, true);
-              return throwError(err);
-            default:
-              return throwError(err);
-          }
-        }));
   }
 }

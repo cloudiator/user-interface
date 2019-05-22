@@ -20,8 +20,8 @@ describe('EditorGraphViewComponent', () => {
 
 
   const mockJobService = jasmine.createSpyObj('JobService', {
-    'findJob': of(testData.job),
-    'findJobs': of([testData.job]),
+    'findJob': of(testData.jobTwo),
+    'findJobs': of([testData.jobTwo]),
     'jobGraph': of(testData.graphData),
   });
 
@@ -71,7 +71,7 @@ describe('EditorGraphViewComponent', () => {
     await component.editorService.setEditorQueue(testData.queueFailed);
     expect(component.queueStatus).toEqual('FAILED');
 
-    await component.editorService.setEditorJob(testData.job);
+    await component.editorService.setEditorJob(testData.jobTwo);
     expect(component.isValid).toBeTruthy();
   });
 
