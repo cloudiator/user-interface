@@ -5,12 +5,12 @@ import {ApiModule} from 'cloudiator-rest-api';
 import {RootStoreModule} from '../root-store';
 import {RouterTestingModule} from '@angular/router/testing';
 import {AppDialogModule} from '../app-dialog/app-dialog.module';
-import {of} from 'rxjs/internal/observable/of';
 import * as testData from 'testing/test-data';
 import {RuntimeConfigService} from '../services/runtime-config.service';
 import {HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
 import {AuthService} from '../services/auth.service';
 import {apiConfigFactory} from '../app.module';
+import {MockRuntimeConfigService} from '../../../testing/test.util';
 
 describe('HttpAuthInterceptor', () => {
 
@@ -27,7 +27,7 @@ describe('HttpAuthInterceptor', () => {
         HttpAuthInterceptor,
         {
           provide: RuntimeConfigService,
-          useClass: MockRuntimeConfig
+          useClass: MockRuntimeConfigService
         },
         {
           provide: AuthService,
@@ -117,17 +117,3 @@ describe('HttpAuthInterceptor', () => {
   );
 
 });
-
-class MockRuntimeConfig {
-  awaitConfigLoad() {
-    return new Promise(r => r(true));
-  }
-
-  getRuntimeConfig() {
-    return of(testData.runtimeConfigOne);
-  }
-
-  getApiPath() {
-    return of(testData.runtimeConfigOne.apiPath);
-  }
-}
