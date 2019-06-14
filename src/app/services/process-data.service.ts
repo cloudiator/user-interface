@@ -1,16 +1,16 @@
 import {Injectable} from '@angular/core';
-import {forkJoin, merge, Observable, of, zip} from 'rxjs';
+import {forkJoin, Observable} from 'rxjs';
 import {Job, ProcessService, Queue, Schedule} from 'cloudiator-rest-api';
 import {select, Store} from '@ngrx/store';
-import * as RuntimeConfigSelectors from '../root-store/runtime-config-store/selectors';
-import * as RootStoreState from '../root-store/root-state';
 import {EditorSelectors} from '../root-store/editor-store';
-import {concatAll, concatMap, delay, filter, first, map, mergeAll, mergeMap, take, tap} from 'rxjs/operators';
+import {map, mergeMap} from 'rxjs/operators';
 import {ProcessDataActions, ProcessDataSelectors} from '../root-store/process-data-store';
 import {RuntimeConfigService} from './runtime-config.service';
 import {JobDataService} from './job-data.service';
 import {ScheduleView} from '../model/ScheduleView';
-import * as testData from 'testing/test-data';
+import {RootStoreState} from '../root-store';
+import {ToastService} from '../app-dialog/services/toast.service';
+import {ToastType} from '../app-dialog/model/toast';
 
 /**
  * Service handling the Process api.
@@ -24,14 +24,8 @@ export class ProcessDataService {
   constructor(private jobDataService: JobDataService,
               private processApiService: ProcessService,
               private runtimeConfigService: RuntimeConfigService,
+              private toastService: ToastService,
               private store: Store<RootStoreState.State>) {
-    // Sets Processervice settings according to RuntimeConfig.
-    store.pipe(select(RuntimeConfigSelectors.selectConfig)).subscribe(config => {
-      processApiService.basePath = config.apiPath;
-      if (processApiService.configuration) {
-        processApiService.configuration.apiKeys['X-API-Key'] = config.xApiKey;
-      }
-    });
   }
 
   /**
@@ -44,54 +38,43 @@ export class ProcessDataService {
       mergeMap((job: Job) => this.processApiService.addSchedule({job: job.id, instantiation: 'AUTOMATIC'})));
   }
 
+  /**
+   * fetches Schedules and returns a store link to them.
+   * @return {Observable<Schedule[]>}
+   */
   public getSchedules(): Observable<Schedule[]> {
     this.fetchSchedules();
     return this.store.pipe(select(ProcessDataSelectors.selectSchedules));
   }
 
-  public getScheduleViews() {
-    return this.getSchedules().pipe(
-      map(schedules =>
-        schedules.map(schedule =>
-          this.jobDataService.findJob(schedule.job).pipe(
-            map(job => {
-              return <ScheduleView>{
-                schedule: schedule,
-                job: job
-              };
-            })
-          )
-        )
-      ),
-      map(arr => forkJoin(arr))
-      // flatMap(arr => {
-      //   console.log('in flatmap')
-      //   return mergeAll(arr);
-      // })
-    );
-  }
-
+  /**
+   * Fetches Graph of the given id and maps it to Cytoscape data.
+   * @param {string} id
+   * @return {Observable<any>}
+   */
   scheduleGraph(id: string): Observable<any> {
-    return this.processApiService.scheduleGraph(id).pipe(map(graph => {
-      return {
-        edges: graph.edges,
-        nodes: graph.processes
-      };
-    }));
-    // return of(testData.graphData);
+    return this.processApiService.scheduleGraph(id)
+      .pipe(map(graph => {
+        return {
+          edges: graph.edges,
+          nodes: graph.processes
+        };
+      }));
   }
 
-
+  /**
+   * Fetches schedules from api.
+   */
   private fetchSchedules() {
     this.runtimeConfigService.awaitConfigLoad()
       .then(() => {
         this.processApiService.getSchedules()
-          .pipe(take(1))
           .subscribe(
             schedules => {
               this.store.dispatch(new ProcessDataActions.SetSchedulesAction(schedules));
             },
             () => {
+              this.toastService.show({text: 'Could not fetch Schedules', type: ToastType.DANGER});
               console.error('could not fetch Schedules');
             });
       });

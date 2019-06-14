@@ -21,5 +21,5 @@ export interface RuntimeConfig {
  */
 export enum AuthMode {
   SINGLE = 'SINGLE',
-  STANDARD  = 'STANDARD'
+  MULTI  = 'MULTI'
 }

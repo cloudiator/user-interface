@@ -3,6 +3,11 @@
   "exclude": [
     "**/*.actions.ts",
     "**/*.reducer.ts",
-    "testing/**"
+    "testing/**",
+    "src/test.ts",
+    "src/environments/**",
+    "src/app/root-store/**",
+    "e2e/**",
+    "src/app/app-dialog/dialogs/**",
   ]
 }

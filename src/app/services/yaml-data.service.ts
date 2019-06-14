@@ -8,34 +8,27 @@ import {RootStoreState, RuntimeConfigSelectors} from '../root-store';
 import {ToastType} from '../app-dialog/model/toast';
 import {catchError} from 'rxjs/operators';
 
+/**
+ * Service responsible for parsing yamls.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class YamlDataService {
 
+  /** @ignore */
   constructor(public yamlApiService: YamlService,
               public runtimeConfigService: RuntimeConfigService,
               public store: Store<RootStoreState.State>,
               public toastService: ToastService) {
-    store.pipe(select(RuntimeConfigSelectors.selectConfig)).subscribe(config => {
-      yamlApiService.basePath = config.apiPath;
-      if (yamlApiService.configuration && yamlApiService.configuration.apiKeys) {
-        yamlApiService.configuration.apiKeys['X-API-Key'] = config.xApiKey;
-      }
-    });
   }
 
+  /**
+   * sends a yaml parse request and handles potential errors.
+   * @param {string} yaml
+   * @return {Observable<Job>}
+   */
   public parseYaml(yaml: string): Observable<Job> {
       return this.yamlApiService.parseYAML(yaml)
-        .pipe(catchError(err => {
-          switch (err.status) {
-            case 400:
-            case 504:
-              this.toastService.show({text: 'Server had an internal Error', type: ToastType.DANGER}, true);
-              return throwError(err);
-            default:
-              return throwError(err);
-          }
-        }));
   }
 }

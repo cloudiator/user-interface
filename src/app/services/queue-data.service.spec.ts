@@ -44,7 +44,7 @@ describe('QueueDataService', () => {
       const findQueueSpy = spyOn(service.queueApiService, 'findQueuedTask')
         .and.returnValues(of(testData.queueRunning), of(testData.queueCompleted));
 
-      service.listenToQueueTaskStatus(testData.job.id);
+      service.listenToQueueTaskStatus(testData.jobTwo.id);
       await resolveAfter3Seconds().then(() => {
         expect(service.queueApiService.findQueuedTask).toHaveBeenCalledTimes(2);
       });
@@ -57,7 +57,7 @@ describe('QueueDataService', () => {
 
 
       findQueueSpy.and.returnValues(of(testData.queueRunning), of(testData.queueFailed), of(testData.queueFailed));
-      service.listenToQueueTaskStatus(testData.job.id);
+      service.listenToQueueTaskStatus(testData.jobTwo.id);
       await resolveAfter3Seconds().then(() => {
         expect(service.queueApiService.findQueuedTask).toHaveBeenCalledTimes(4);
       });
@@ -72,7 +72,7 @@ describe('QueueDataService', () => {
     it('listenToQueueTaskStatus should not terminate', inject([QueueDataService], async (service: QueueDataService) => {
       spyOn(service.queueApiService, 'findQueuedTask').and.returnValue(of(testData.queueRunning));
 
-      service.listenToQueueTaskStatus(testData.job.id);
+      service.listenToQueueTaskStatus(testData.jobTwo.id);
       await resolveAfter3Seconds().then(() => {
         service.store.pipe(
           select(EditorSelectors.selectQueue),

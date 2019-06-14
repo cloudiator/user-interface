@@ -16,12 +16,15 @@ import {RootStoreModule} from '../../root-store';
 import {EditorGraphViewComponent} from '../editor/editor-graph-view/editor-graph-view.component';
 import {NodeGraphComponent} from '../editor/node-graph/node-graph.component';
 import {ApiModule} from 'cloudiator-rest-api';
-import {apiConfigFactory} from '../../app.module';
-import {HttpClientModule} from '@angular/common/http';
 import {AppDialogModule} from '../../app-dialog/app-dialog.module';
 import {SchedulesOverviewComponent} from '../schedules/schedules-overview/schedules-overview.component';
 import {SchedulesViewComponent} from '../schedules/schedules-view/schedules-view.component';
 import {SchedulesBottomSheetComponent} from '../schedules/schedules-bottom-sheet/schedules-bottom-sheet.component';
+import {LoginComponent} from '../login/login.component';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {AuthService} from '../../services/auth.service';
+import {of} from 'rxjs';
+import * as testData from 'testing/test-data';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -41,7 +44,8 @@ describe('AppComponent', () => {
         NodeGraphComponent,
         SchedulesOverviewComponent,
         SchedulesViewComponent,
-        SchedulesBottomSheetComponent
+        SchedulesBottomSheetComponent,
+        LoginComponent
       ],
       imports: [
         RootStoreModule,
@@ -49,16 +53,39 @@ describe('AppComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         CdkTableModule,
-        ApiModule.forRoot(apiConfigFactory),
-        HttpClientModule,
+        ApiModule.forRoot(testData.testApiFactory),
+        HttpClientTestingModule,
         AppDialogModule
       ],
       providers: []
     }).compileComponents();
   }));
+
   it('should create the app', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   }));
+
+  it('should hide nav if logged out', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+
+    const authService: AuthService = TestBed.get(AuthService);
+    spyOn(authService, 'isLoggedIn').and.returnValue(of(false));
+    fixture.detectChanges();
+
+    expect(app.showNav).toBeFalsy();
+  });
+
+  it('should show nav if logged in', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+
+    const authService: AuthService = TestBed.get(AuthService);
+    spyOn(authService, 'isLoggedIn').and.returnValue(of(true));
+    fixture.detectChanges();
+
+    expect(app.showNav).toBeTruthy();
+  });
 });

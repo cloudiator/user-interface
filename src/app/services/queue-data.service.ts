@@ -25,13 +25,6 @@ export class QueueDataService {
   constructor(public queueApiService: QueueService,
               public store: Store<RootStoreState.State>,
               public toastService: ToastService) {
-    // Sets queueService settings according to RuntimeConfig.
-    store.pipe(select(RuntimeConfigSelectors.selectConfig)).subscribe(config => {
-      queueApiService.basePath = config.apiPath;
-      if (queueApiService.configuration) {
-        queueApiService.configuration.apiKeys['X-API-Key'] = config.xApiKey;
-      }
-    });
   }
 
 
@@ -44,10 +37,6 @@ export class QueueDataService {
     return this.queueApiService.findQueuedTask(id, 'body');
   }
 
-
-  public bol = false;
-  private obs: Observable<Queue> = of(<Queue>{status: 'FAILED'});
-
   /**
    * Repeatedly polls the queue task for the given id and returns it's status
    * @param {string} id of Queue to be polled.
@@ -59,14 +48,12 @@ export class QueueDataService {
       this.queueStatusSubscription.unsubscribe();
     }
 
-    this.bol = false;
-
     const destroy = new Subject<boolean>();
     // poll Server every second
     this.queueStatusSubscription =
       interval(1000).pipe(
         takeUntil(destroy),
-        mergeMap(() => this.bol ? this.obs : this.findQueuedTask(id))
+        mergeMap(() => this.findQueuedTask(id))
       ).subscribe((queue: Queue) => {
           this.store.dispatch(new EditorActions.SetEditorQueueAction(queue));
           // if queue finished, stop polling
@@ -75,6 +62,7 @@ export class QueueDataService {
           }
         },
         err => {
+          console.error(err);
           this.toastService.show({text: 'Could not check Queue Status', type: ToastType.DANGER});
         });
   }

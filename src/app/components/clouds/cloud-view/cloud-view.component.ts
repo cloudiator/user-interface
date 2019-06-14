@@ -5,7 +5,7 @@ import {Cloud, Hardware, Image} from 'cloudiator-rest-api';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {DialogService} from '../../../app-dialog/services/dialog.service';
 import {DeleteCloudDialogComponent} from '../../../app-dialog/dialogs/delete-cloud-dialog/delete-cloud-dialog.component';
-import {map, take} from 'rxjs/operators';
+import {filter, map, take} from 'rxjs/operators';
 
 /**
  * Represents the View of a Single Cloud
@@ -50,21 +50,26 @@ export class CloudViewComponent implements OnInit, OnDestroy {
     this.route.paramMap
       .pipe(
         take(1),
-        map(paramsMap => paramsMap.get('id')))
-      .subscribe(id => this.subscriptions
-        .push(this.cloudDataService.findCloud(id)
-          .subscribe(cloud => {
-            this.cloud = cloud;
-            if (cloud) {
-              // find hardware and image information for given Cloud
-              this.subscriptions.push(
-                this.cloudDataService.findHardware(cloud.id).subscribe(hardware =>
-                  this.hardwareDataSource = new BehaviorSubject<Hardware[]>(hardware)),
-                this.cloudDataService.findImages(cloud.id).subscribe(images =>
-                  this.imagesDataSource = new BehaviorSubject<Image[]>(images))
-              );
-            }
-          })));
+        map(paramsMap => paramsMap.get('id')),
+        filter(p => p !== undefined)
+      )
+      .subscribe(id =>
+        this.subscriptions
+          .push(this.cloudDataService.findCloud(id)
+            .subscribe(cloud => {
+              this.cloud = cloud;
+              if (cloud) {
+                // find hardware and image information for given Cloud
+                this.subscriptions.push(
+                  this.cloudDataService.findHardware(cloud.id).subscribe(hardware =>
+                    this.hardwareDataSource = new BehaviorSubject<Hardware[]>(hardware)),
+                  this.cloudDataService.findImages(cloud.id).subscribe(images =>
+                    this.imagesDataSource = new BehaviorSubject<Image[]>(images))
+                );
+              }
+            })
+          )
+      );
   }
 
   /** @ignore */

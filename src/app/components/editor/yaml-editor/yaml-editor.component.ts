@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import * as ace from 'brace';
 import {Editor} from 'brace';
 import 'brace/mode/yaml';
@@ -8,19 +8,29 @@ import {ToastService} from '../../../app-dialog/services/toast.service';
 import {ToastType} from '../../../app-dialog/model/toast';
 import {JobDataService} from '../../../services/job-data.service';
 import {EditorService} from '../../../services/editor.service';
-import {filter, take} from 'rxjs/operators';
+import {take} from 'rxjs/operators';
 import {ProcessDataService} from '../../../services/process-data.service';
 import {Subscription} from 'rxjs';
 
+/**
+ * Main View of the Editor View, Hosting the editor and the Graph View.
+ */
 @Component({
   selector: 'app-yaml-editor',
   templateUrl: './yaml-editor.component.html',
-  styleUrls: ['./yaml-editor.component.scss']
+  styleUrls: ['./yaml-editor.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class YamlEditorComponent implements OnInit, OnDestroy {
 
+  /**
+   * Ace editor instance.
+   */
   public editor: Editor;
 
+  /**
+   * name of current selected file.
+   */
   private _filename: string;
   get filename(): string {
     return this._filename;
@@ -31,12 +41,31 @@ export class YamlEditorComponent implements OnInit, OnDestroy {
     this._filename = filename;
   }
 
+  /**
+   * Indicates if a validation request is currently being made.
+   * @type {boolean}
+   */
   public isValidating = false;
+  /**
+   * Indicates if yaml was successfully validated.
+   * @type {boolean}
+   */
   public isValid = false;
+  /**
+   * Indicates if the generated Job is currently being submitted to the process api.
+   * @type {boolean}
+   */
   public isSubmitting = false;
 
+  /**
+   * Ace editor theme
+   * @type {string}
+   */
   public theme = 'monokai';
 
+  /**
+   * Overall ace setting.
+   */
   private options: any = {
     showPrintMargin: false,
     showInvisibles: false,
@@ -50,8 +79,13 @@ export class YamlEditorComponent implements OnInit, OnDestroy {
     mode: 'ace/mode/yaml'
   };
 
+  /**
+   * Subscriptions of this component.
+   * @type {any[]}
+   */
   private subscriptions: Subscription[] = [];
 
+  /** @ignore */
   constructor(public editorService: EditorService,
               public jobDataService: JobDataService,
               public processDataService: ProcessDataService,
@@ -59,6 +93,7 @@ export class YamlEditorComponent implements OnInit, OnDestroy {
               public yamlDataService: YamlDataService) {
   }
 
+  /** @ignore */
   ngOnInit() {
     this.editor = ace.edit('editor');
     this.editor.getSession().setMode('ace/mode/yaml');
@@ -78,14 +113,22 @@ export class YamlEditorComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.editorService.getEditorJob().subscribe(job => this.isValid = !!job));
   }
 
+  /** @ignore */
   ngOnDestroy() {
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
+  /**
+   * triggers download of editor file.
+   */
   onDownload() {
     this.editorService.downloadFile();
   }
 
+  /**
+   * updates redux store if new file is uploaded.
+   * @param event
+   */
   onUploadChange(event) {
     this.editorService.uploadFile(event.target.files)
       .then(() => {
@@ -95,6 +138,9 @@ export class YamlEditorComponent implements OnInit, OnDestroy {
       .catch();
   }
 
+  /**
+   * Sends a new validation request to the api and saves the returned Job into the Redux store if successfull.
+   */
   onValidate() {
     this.isValidating = true;
     this.yamlDataService.parseYaml(this.editor.getValue())
@@ -121,6 +167,9 @@ export class YamlEditorComponent implements OnInit, OnDestroy {
         });
   }
 
+  /**
+   * Submites the Current Job and saves the returned Queue to the Redux store.
+   */
   onSubmit() {
     this.isSubmitting = true;
     this.processDataService.submitEditorSchedule()

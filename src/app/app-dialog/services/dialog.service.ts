@@ -21,6 +21,10 @@ const DEFAULT_CONFIG = <DialogConfig> {
   data: {}
 };
 
+/**
+ * Injection Token for Dialogs.
+ * @type {InjectionToken<any>}
+ */
 export const DIALOG_DATA = new InjectionToken<any>('DIALOG_DATA');
 
 /**

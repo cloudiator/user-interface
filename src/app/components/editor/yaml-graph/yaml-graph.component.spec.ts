@@ -15,8 +15,8 @@ describe('YamlGraphComponent', () => {
   let fixture: ComponentFixture<YamlGraphComponent>;
 
   const mockJobService = jasmine.createSpyObj('JobService', {
-    'findJob': of(testData.job),
-    'findJobs': of([testData.job]),
+    'findJob': of(testData.jobTwo),
+    'findJobs': of([testData.jobTwo]),
     'jobGraph': of(testData.graphData),
   });
 

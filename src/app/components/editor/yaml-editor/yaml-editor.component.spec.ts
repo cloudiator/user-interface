@@ -119,7 +119,7 @@ describe('YamlEditorComponent', () => {
   it('onValidate should update', async () => {
     fixture.detectChanges();
 
-    spyOn(component.yamlDataService, 'parseYaml').and.returnValue(of(testData.job));
+    spyOn(component.yamlDataService, 'parseYaml').and.returnValue(of(testData.jobTwo));
     spyOn(component.jobDataService, 'jobGraph').and.returnValue(of(testData.graphData));
     spyOn(component.editorService, 'setEditorJob').and.stub();
 

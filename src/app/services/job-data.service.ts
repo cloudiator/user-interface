@@ -8,46 +8,62 @@ import {ToastType} from '../app-dialog/model/toast';
 import {JobDataActions, JobDataSelectors, RootStoreState, RuntimeConfigSelectors} from '../root-store';
 import {find, first, map} from 'rxjs/operators';
 
+/**
+ * Handles al functionality concerning Jobs.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class JobDataService {
 
+  /** @ignore */
   constructor(private jobApiService: JobService,
               private runtimeConfigService: RuntimeConfigService,
               private store: Store<RootStoreState.State>,
               private toastService: ToastService) {
-    store.pipe(select(RuntimeConfigSelectors.selectConfig)).subscribe(config => {
-      jobApiService.basePath = config.apiPath;
-      if (jobApiService.configuration && jobApiService.configuration.apiKeys) {
-        jobApiService.configuration.apiKeys['X-API-Key'] = config.xApiKey;
-      }
-    });
   }
 
+  /**
+   * fetches jobs ad returns redux observable to them.
+   * @return {Observable<Job[]>}
+   */
   public findJobs(): Observable<Job[]> {
     this.fetchJobs();
 
     return this.store.pipe(select(JobDataSelectors.selectJobs));
   }
 
+  /**
+   * returns store observable of specific job.
+   * @param {string} id
+   * @return {Observable<Job>}
+   */
   public findJob(id: string): Observable<Job> {
     return this.findJobs().pipe(map(jobs => jobs.find(job => job.id === id)));
   }
 
+  /**
+   * fetches graph of the given job id from the api.
+   * @param {string} id
+   * @return {Observable<any>}
+   */
   public jobGraph(id: string): Observable<any> {
     return this.jobApiService.jobGraph(id);
   }
 
+  /**
+   * Fetches all jobs.
+   */
   private fetchJobs() {
     this.runtimeConfigService.awaitConfigLoad().then(() => {
-      this.jobApiService.findJobs().toPromise()
-        .then(jobs => {
-          this.store.dispatch(new JobDataActions.SetJobsAction(jobs));
-        })
-        .catch(() => {
-          this.toastService.show({text: 'could not fetch Jobs', type: ToastType.DANGER}, false);
-        });
+      this.jobApiService.findJobs()
+        .subscribe(jobs => {
+            this.store.dispatch(new JobDataActions.SetJobsAction(jobs));
+          },
+          () => {
+            this.toastService.show({text: 'could not fetch Jobs', type: ToastType.DANGER}, false);
+          }
+        );
     });
   }
 }

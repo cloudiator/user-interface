@@ -32,7 +32,7 @@
             <ng-template #link>
               <div class="list-item"
                  [routerLink]="['/schedules', view.schedule.id]"
-                 [class.is-active]="view.schedule.id == activeViewId">
+                 [class.is-active]="view.schedule.id === activeViewId">
                 {{view.job?.name}}
               </div>
             </ng-template>
