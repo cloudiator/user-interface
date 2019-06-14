@@ -10,6 +10,7 @@ import {Api, CloudCredential, CloudType} from 'cloudiator-rest-api';
 import {CdkTableModule} from '@angular/cdk/table';
 import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
 import {RootStoreModule} from '../../../root-store';
+import {of} from 'rxjs/internal/observable/of';
 
 describe('CloudViewComponent', () => {
   let component: CloudViewComponent;
