@@ -37,7 +37,7 @@ export class AuthService {
     // if token stored and not expired, push it into the store
     const storedLogin = this.loadLoginFromLocalStore();
     if (storedLogin) {
-      if (storedLogin.expireTime > Date.now()) {
+      if (storedLogin.expireTime || storedLogin.expireTime > Date.now()) {
         this.store.dispatch(new AuthActions.LogInAction(storedLogin));
       }
     }

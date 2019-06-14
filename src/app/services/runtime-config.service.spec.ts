@@ -21,7 +21,7 @@ describe('RuntimeConfigService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should resolve awaitCOnfigLaod promise correctly', inject(
+  it('should resolve awaitConfigLaod promise correctly', inject(
     [RuntimeConfigService],
     (service: RuntimeConfigService) => {
       spyOn(service, 'awaitConfigLoad').and.callThrough();
