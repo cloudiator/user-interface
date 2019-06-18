@@ -1,5 +1,5 @@
 import {Injectable, Optional} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpBackend, HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {RuntimeConfig} from '../model/RuntimeConfig';
@@ -16,11 +16,20 @@ import {filter, take} from 'rxjs/operators';
 })
 export class RuntimeConfigService {
 
+  /**
+   * custom HttpClient that isn't gated by Interceptors.
+   * The http-auth-inteceptor needs this service,
+   * thus this service has to run befor initializing the interceptors
+   */
+  private httpClient: HttpClient;
+
   /** @ignore */
   constructor(private http: HttpClient,
               private store: Store<RootStoreState.State>,
+              private handler: HttpBackend,
               @Optional() private configuration: Configuration) {
 
+    this.httpClient = new HttpClient(handler);
     if (environment.useRuntimeConfig) {
       this.fetchConfig();
     } else {
@@ -37,15 +46,18 @@ export class RuntimeConfigService {
    * fetches production config from assets.
    */
   private fetchConfig() {
-    this.http.get<RuntimeConfig>(`${environment.href}assets/appConfig.json`).toPromise().then(value => {
-      this.store.dispatch(new RuntimeConfigActions.SetRuntimeConfigAction(<RuntimeConfig>value));
-    }).catch(() => {
-      this.store.dispatch(new RuntimeConfigActions.SetRuntimeConfigAction(<RuntimeConfig>{
-        apiPath: environment.apiPath,
-        authMode: environment.authMode,
-        xApiKey: environment.xApiKey
-      }));
-    });
+    this.httpClient.get<RuntimeConfig>(`${environment.href}assets/appConfig.json`)
+      .subscribe(value => {
+          this.store.dispatch(new RuntimeConfigActions.SetRuntimeConfigAction(<RuntimeConfig>value));
+        },
+        () => {
+          this.store.dispatch(new RuntimeConfigActions.SetRuntimeConfigAction(<RuntimeConfig>{
+            apiPath: environment.apiPath,
+            authMode: environment.authMode,
+            xApiKey: environment.xApiKey
+          }));
+        }
+      );
   }
 
   /**
