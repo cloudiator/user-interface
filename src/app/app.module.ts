@@ -11,10 +11,10 @@ import {NewCloudComponent} from './components/clouds/new-cloud/new-cloud.compone
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CloudViewComponent} from './components/clouds/cloud-view/cloud-view.component';
 import {CloudCardComponent} from './components/clouds/cloud-card/cloud-card.component';
-import {HardwareOverviewComponent} from './components/hardware/hardware-overview/hardware-overview.component';
+import {HardwareOverviewComponent} from './components/overview-tables/hardware-overview/hardware-overview.component';
 import {CdkTableModule} from '@angular/cdk/table';
-import {ImagesOverviewComponent} from './components/images/images-overview/images-overview.component';
-import {LocationsOverviewComponent} from './components/locations/locations-overview/locations-overview.component';
+import {ImagesOverviewComponent} from './components/overview-tables/images-overview/images-overview.component';
+import {LocationsOverviewComponent} from './components/overview-tables/locations-overview/locations-overview.component';
 import {YamlEditorComponent} from './components/editor/yaml-editor/yaml-editor.component';
 import {YamlGraphComponent} from './components/editor/yaml-graph/yaml-graph.component';
 import {AppDialogModule} from './app-dialog/app-dialog.module';
@@ -32,7 +32,7 @@ import { SchedulesBottomSheetComponent } from './components/schedules/schedules-
 import {environment} from '../environments/environment';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {ScrollingModule} from '@angular/cdk/scrolling';
-import { OverviewTableComponent } from './components/overview-table/overview-table.component';
+import { OverviewTableComponent } from './components/overview-tables/overview-table.component';
 
 /**
  * Default configuration required by the swagger API Module.

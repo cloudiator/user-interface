@@ -319,9 +319,17 @@ export class CloudDataService {
             curr.geoLocation.country &&
             operator === '=' &&
             curr.geoLocation.country.toLowerCase() === term.toLowerCase();
+        case 'city':
+          return (curr: Location) =>
+            curr.geoLocation &&
+            curr.geoLocation.city &&
+            operator === '=' &&
+            curr.geoLocation.city.toLowerCase() === term.toLowerCase();
         default:
           return (curr: Location) => {
-            return curr.name.toLowerCase().includes(term.toLowerCase());
+            return curr.name.toLowerCase().includes(term.toLowerCase()) ||
+              (curr.geoLocation && curr.geoLocation.country.toLowerCase().includes(term.toLowerCase())) ||
+              (curr.geoLocation && curr.geoLocation.city.toLowerCase().includes(term.toLowerCase()));
           };
       }
     };
