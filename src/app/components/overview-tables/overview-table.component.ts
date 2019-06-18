@@ -4,6 +4,7 @@ import {Hardware} from 'cloudiator-rest-api';
 import {FormControl} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {CloudDataService} from '../../services/cloud-data.service';
+import {TableColumns} from '../../model/TableColumns';
 
 @Component({
   selector: 'app-overview-table',
