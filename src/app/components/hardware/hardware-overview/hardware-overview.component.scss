@@ -1,3 +1,75 @@
-.table {
-  margin: 5px 0 0 0;
+@import "../../../../styles";
+@import "~bulma/sass/utilities/mixins";
+
+.view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
+
+.table-section {
+  flex: 2;
+  display: flex
+}
+
+.searchbar {
+  max-width: 500px
+}
+
+.table-viewport {
+  height: 100%;
+  border: 1px $grey-lighter solid;
+  border-radius: 5px;
+  scroll-margin: 5px 10px 0 10px;
+  //overflow: hidden;
+}
+
+.table {
+  width: calc(100%);
+}
+
+th {
+  background: white;
+  border: none;
+}
+
+th:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  border-bottom: 3px solid $grey-lighter;
+}
+
+tr {
+  border: none;
+}
+
+.loading-placeholder {
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+
+  > div {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+@include mobile {
+  .section {
+    padding: 0;
+  }
+
+  .searchbar {
+    width: 100%;
+    max-width: none;
+  }
+
+  .loading-placeholder {
+    border-top: 1px solid $grey-lighter;
+    border-radius: 0;
+  }
+}
+

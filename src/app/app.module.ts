@@ -31,6 +31,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { SchedulesBottomSheetComponent } from './components/schedules/schedules-bottom-sheet/schedules-bottom-sheet.component';
 import {environment} from '../environments/environment';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import {ScrollingModule} from '@angular/cdk/scrolling';
+import { OverviewTableComponent } from './components/overview-table/overview-table.component';
 
 /**
  * Default configuration required by the swagger API Module.
@@ -77,6 +79,7 @@ export class BottomSheetHammerConfig extends HammerGestureConfig {
     SchedulesOverviewComponent,
     SchedulesViewComponent,
     SchedulesBottomSheetComponent,
+    OverviewTableComponent,
   ],
   imports: [
     BrowserModule,
@@ -90,7 +93,8 @@ export class BottomSheetHammerConfig extends HammerGestureConfig {
     CdkTableModule,
     AppDialogModule,
     FlexLayoutModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
+    ScrollingModule
   ],
   providers: [
     {

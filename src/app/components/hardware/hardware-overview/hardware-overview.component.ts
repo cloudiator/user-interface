@@ -15,6 +15,8 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class HardwareOverviewComponent implements OnInit, OnDestroy {
 
+  isLoading$ = this.cloudDataService.hardwareIsLoading();
+
   /**
    * Datasource for table.
    * @type {BehaviorSubject<Hardware[]>}
