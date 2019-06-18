@@ -5,6 +5,7 @@ import {CloudDataService} from '../../../services/cloud-data.service';
 import {FormControl} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {OverviewTableComponent} from '../overview-table.component';
+import {map} from 'rxjs/operators';
 
 /**
  * Overview Component showing available Hardware.
