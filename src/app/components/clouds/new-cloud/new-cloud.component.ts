@@ -5,12 +5,11 @@ import {Router} from '@angular/router';
 import {DialogService} from '../../../app-dialog/services/dialog.service';
 import {ConfirmNewCloudDialogComponent} from '../../../app-dialog/dialogs/confirm-new-cloud-dialog/confirm-new-cloud-dialog.component';
 import {ToastService} from '../../../app-dialog/services/toast.service';
-import {ToastType} from '../../../model/toast';
+import {ToastType} from '../../../app-dialog/model/toast';
 
 /**
  * A Form to add a new Cloud.
  */
-
 @Component({
   selector: 'app-new-cloud',
   templateUrl: './new-cloud.component.html',
@@ -18,6 +17,10 @@ import {ToastType} from '../../../model/toast';
 })
 export class NewCloudComponent implements OnInit {
 
+  /**
+   * Object representing the new Cloud that is to be generated
+   * @type {NewCloud}
+   */
   public cloud: NewCloud = {
     endpoint: '',
     cloudType: 'PRIVATE',
@@ -36,6 +39,10 @@ export class NewCloudComponent implements OnInit {
     }
   };
 
+  /**
+   * Array to represent configuration properties as key value pairs.
+   * @type {{key: string; value: string}[]}
+   */
   public properties = [
     {
       key: '',
@@ -43,12 +50,14 @@ export class NewCloudComponent implements OnInit {
     }
   ];
 
+  /** @ignore */
   constructor(private cloudDataService: CloudDataService,
               private dialogService: DialogService,
               private router: Router,
               private toastService: ToastService) {
   }
 
+  /** @ignore */
   ngOnInit() {
   }
 

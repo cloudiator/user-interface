@@ -2,16 +2,36 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { YamlGraphComponent } from './yaml-graph.component';
 import {RootStoreModule} from '../../../root-store';
+import {FormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
+import {ApiModule, JobService} from 'cloudiator-rest-api';
+import {apiConfigFactory} from '../../../app.module';
+import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
+import {of} from 'rxjs';
+import * as testData from '../../../../../testing/test-data';
 
 describe('YamlGraphComponent', () => {
   let component: YamlGraphComponent;
   let fixture: ComponentFixture<YamlGraphComponent>;
 
+  const mockJobService = jasmine.createSpyObj('JobService', {
+    'findJob': of(testData.jobTwo),
+    'findJobs': of([testData.jobTwo]),
+    'jobGraph': of(testData.graphData),
+  });
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ YamlGraphComponent ],
       imports: [
-        RootStoreModule
+        RootStoreModule,
+        FormsModule,
+        HttpClientModule,
+        ApiModule.forRoot(apiConfigFactory),
+        AppDialogModule
+      ],
+      providers: [
+        {provide: JobService, useValue: mockJobService}
       ]
     })
     .compileComponents();

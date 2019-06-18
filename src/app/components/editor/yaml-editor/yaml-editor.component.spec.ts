@@ -5,33 +5,43 @@ import {FormsModule} from '@angular/forms';
 import {YamlGraphComponent} from '../yaml-graph/yaml-graph.component';
 import {YamlDataService} from '../../../services/yaml-data.service';
 import {HttpClientModule, HttpErrorResponse} from '@angular/common/http';
-import {ApiModule} from 'cloudiator-rest-api';
+import {ApiModule, QueueService} from 'cloudiator-rest-api';
 import {apiConfigFactory} from '../../../app.module';
 import {EditorService} from '../../../services/editor.service';
 import {of, throwError} from 'rxjs';
 import * as testData from '../../../../../testing/test-data';
-import {ToastType} from '../../../model/toast';
+import {ToastType} from '../../../app-dialog/model/toast';
 import {take} from 'rxjs/operators';
 import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
 import {RootStoreModule} from '../../../root-store';
+import {EditorGraphViewComponent} from '../editor-graph-view/editor-graph-view.component';
+import {NodeGraphComponent} from '../node-graph/node-graph.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('YamlEditorComponent', () => {
   let component: YamlEditorComponent;
   let fixture: ComponentFixture<YamlEditorComponent>;
 
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [YamlEditorComponent, YamlGraphComponent],
+      declarations: [
+        YamlEditorComponent,
+        YamlGraphComponent,
+        EditorGraphViewComponent,
+        NodeGraphComponent
+      ],
       imports: [
         RootStoreModule,
         FormsModule,
         HttpClientModule,
         ApiModule.forRoot(apiConfigFactory),
-        AppDialogModule
+        AppDialogModule,
+        BrowserAnimationsModule
       ],
       providers: [
         EditorService,
-        YamlDataService
+        YamlDataService,
       ]
 
     })
@@ -41,6 +51,7 @@ describe('YamlEditorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(YamlEditorComponent);
     component = fixture.componentInstance;
+
   });
 
   it('should create', () => {
@@ -108,13 +119,14 @@ describe('YamlEditorComponent', () => {
   it('onValidate should update', async () => {
     fixture.detectChanges();
 
-    spyOn(component.yamlDataService, 'parseYaml').and.returnValue(of(testData.job));
+    spyOn(component.yamlDataService, 'parseYaml').and.returnValue(of(testData.jobTwo));
     spyOn(component.jobDataService, 'jobGraph').and.returnValue(of(testData.graphData));
-    spyOn(component.editorService, 'setEditorGraph').and.stub();
+    spyOn(component.editorService, 'setEditorJob').and.stub();
 
     await component.onValidate();
 
-    expect(component.editorService.setEditorGraph).toHaveBeenCalled();
+    expect(component.editorService.setEditorJob).toHaveBeenCalled();
+    expect(component.isValidating).toBeFalsy();
   });
 
   it('onValidate should handle errors', async () => {
@@ -141,5 +153,22 @@ describe('YamlEditorComponent', () => {
 
     expect(component.toastService.show).toHaveBeenCalledWith({text: 'Unexpected Error', type: ToastType.DANGER}, true);
     expect(component.toastService.show).toHaveBeenCalledTimes(3);
+  });
+
+  it('onSubmit schould call correct  targets', async () => {
+    spyOn(component.processDataService, 'submitEditorSchedule').and.returnValue(of(testData.queueScheduled));
+    spyOn(component.editorService, 'setEditorQueue').and.callThrough();
+
+    await component.onSubmit();
+
+    expect(component.isSubmitting).toBeFalsy();
+    expect(component.processDataService.submitEditorSchedule).toHaveBeenCalledTimes(1);
+    expect(component.editorService.setEditorQueue).toHaveBeenCalledTimes(1);
+
+    component.editorService.getEditorQueue()
+      .pipe(take(1))
+      .subscribe(queue => {
+        expect(queue).toEqual(testData.queueScheduled);
+      });
   });
 });

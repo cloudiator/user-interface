@@ -5,12 +5,11 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import {Overlay} from '@angular/cdk/overlay';
 import {ActivatedRoute, convertToParamMap} from '@angular/router';
-import {Observable} from 'rxjs';
+import {of} from 'rxjs';
 import {Api, CloudCredential, CloudType} from 'cloudiator-rest-api';
 import {CdkTableModule} from '@angular/cdk/table';
 import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
 import {RootStoreModule} from '../../../root-store';
-import {of} from 'rxjs/internal/observable/of';
 
 describe('CloudViewComponent', () => {
   let component: CloudViewComponent;
@@ -27,7 +26,7 @@ describe('CloudViewComponent', () => {
       id: '1',
     }),
     'findHardware': of([]),
-    'findImages': of([])
+    'findImages': of([[]])
   });
 
   beforeEach(async(() => {

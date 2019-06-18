@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {Hardware, Image} from 'cloudiator-rest-api';
+import {Image} from 'cloudiator-rest-api';
 import {BehaviorSubject, combineLatest} from 'rxjs';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import {ActivatedRoute} from '@angular/router';
+import {tap} from 'rxjs/operators';
 
+/**
+ * Overview of all Images available.
+ */
 @Component({
   selector: 'app-images-overview',
   templateUrl: './images-overview.component.html',
@@ -12,20 +16,51 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class ImagesOverviewComponent implements OnInit {
 
+  /**
+   * Datasource for table.
+   * @type {BehaviorSubject<Image[]>}
+   */
   dataSource = new BehaviorSubject<Image[]>([]);
 
+  /**
+   * Searchbar object.
+   * @type {FormControl}
+   */
   searchFormControl = new FormControl();
 
+  /**
+   * Key That is sorted by.
+   * @type {BehaviorSubject<string>}
+   */
   sortKey = new BehaviorSubject<string>('');
+  /**
+   * Sort direction.
+   * @type {BehaviorSubject<string>}
+   */
   sortDirection = new BehaviorSubject<string>('');
 
-  constructor(private activatedRoute: ActivatedRoute,
-    public cloudDataService: CloudDataService) { }
+  /**
+   * indicates if data is being loaded right now.
+   * @type {boolean}
+   */
+  isLoading = true;
 
+  /** @ignore */
+  constructor(private activatedRoute: ActivatedRoute,
+              public cloudDataService: CloudDataService) {
+  }
+
+  /** @ignore */
   ngOnInit() {
+
     this.adjustSort('name');
 
-    combineLatest(this.cloudDataService.findImages(), this.searchFormControl.valueChanges, this.sortKey, this.sortDirection)
+    combineLatest(
+      this.cloudDataService.findImages().pipe(tap(() => this.isLoading = false)),
+      this.searchFormControl.valueChanges,
+      this.sortKey,
+      this.sortDirection
+    )
       .subscribe(([changedHardwareData, searchTerm, sortKey, sortDirection]) => {
         const imagesArray = Object.values(changedHardwareData);
 
@@ -53,7 +88,6 @@ export class ImagesOverviewComponent implements OnInit {
 
     this.searchFormControl.setValue('');
 
-
     this.activatedRoute.queryParams.subscribe(params => {
       if (params.id) {
         this.searchFormControl.patchValue(`id=${params.id}`);
@@ -63,6 +97,10 @@ export class ImagesOverviewComponent implements OnInit {
     });
   }
 
+  /**
+   * Adjusts sort key and direction.
+   * @param {string} key
+   */
   adjustSort(key: string) {
     if (this.sortKey.value === key) {
       if (this.sortDirection.value === 'asc') {

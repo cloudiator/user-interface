@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DeleteCloudDialogComponent } from './delete-cloud-dialog.component';
-import {DialogRef} from '../../../model/dialogRef';
+import {DialogRef} from '../../model/dialogRef';
 import {DIALOG_DATA} from '../../services/dialog.service';
 
 describe('DeleteCloudDialogComponent', () => {

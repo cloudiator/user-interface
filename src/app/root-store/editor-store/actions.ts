@@ -1,9 +1,12 @@
 import {Action} from '@ngrx/store';
+import {Job, Queue} from 'cloudiator-rest-api';
 
 
 export const SET_VALUE = '[Editor] set Value';
 export const SET_FILENAME = '[Editor] set Filename';
 export const SET_EDITOR_GRAPH = '[Editor] set editorGraph';
+export const SET_EDITOR_JOB = '[Editor] set editorJob';
+export const SET_EDITOR_QUEUE = '[Editor] set editorQueue';
 export const UPLOAD_FILE = '[Editor] upload File';
 export const CHANGES_SAVED = '[Editor] changes saved';
 
@@ -28,6 +31,20 @@ export class SetEditorGraphAction implements Action {
   }
 }
 
+export class SetEditorJobAction implements Action {
+  readonly type = SET_EDITOR_JOB;
+
+  constructor(public editorJob: Job) {
+  }
+}
+
+export class SetEditorQueueAction implements Action {
+  readonly type = SET_EDITOR_QUEUE;
+
+  constructor(public editorQueue: Queue) {
+  }
+}
+
 export class UploadFileAction implements Action {
   readonly type = UPLOAD_FILE;
 
@@ -43,4 +60,4 @@ export class ChangesSavedAction implements Action {
   }
 }
 
-export type All = SetValueAction | SetFilenameAction | SetEditorGraphAction | UploadFileAction | ChangesSavedAction;
+export type All = SetValueAction | SetFilenameAction | SetEditorGraphAction | SetEditorJobAction | SetEditorQueueAction | UploadFileAction | ChangesSavedAction;

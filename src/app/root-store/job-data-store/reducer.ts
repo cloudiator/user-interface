@@ -5,8 +5,8 @@ export function jobDataReducer(state = initialState, action: jobActions.All): St
   switch (action.type) {
     case jobActions.SET_JOBS:
       return {
-        jobs: action.jobs,
-        ...state
+        ...state,
+        jobs: action.jobs
       };
     default:
       return state;

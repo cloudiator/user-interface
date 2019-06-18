@@ -5,7 +5,7 @@
 <!--</div>-->
 <!--</div>-->
 <!--</div>-->
-<div class="columns is-gapless is-mobile" style="height:100%; width: 100%; overflow-x: hidden">
+<div class="columns fullsize-container is-gapless is-mobile is-clipped" style="height:100%; width: 100%;">
   <!-- Editor Side -->
   <div class="column is-half">
     <div class="editor-container">
@@ -42,8 +42,9 @@
                    [(ngModel)]="filename"
                    name="filename">
           </div>
-          <div class="level-right">
-            <button class="button is-small is-outlined is-secondary" (click)="onValidate()">validate</button>
+          <div class="level-right buttons">
+            <button class="button is-small is-outlined is-secondary" (click)="onValidate()" [class.is-loading]="isValidating">validate</button>
+            <button class="button is-small is-outlined is-success" (click)="onSubmit()" [class.is-loading]="isSubmitting" [disabled]="!isValid">submit</button>
           </div>
         </div>
       </div>
@@ -55,6 +56,6 @@
   </div>
   <!-- Right Side -->
   <div class="column">
-      <app-yaml-graph></app-yaml-graph>
+    <app-editor-graph-view></app-editor-graph-view>
     </div>
 </div>

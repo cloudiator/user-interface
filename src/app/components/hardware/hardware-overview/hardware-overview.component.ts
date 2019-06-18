@@ -5,6 +5,9 @@ import {CloudDataService} from '../../../services/cloud-data.service';
 import {FormControl} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 
+/**
+ * Overview Component showing available Hardware.
+ */
 @Component({
   selector: 'app-hardware-overview',
   templateUrl: './hardware-overview.component.html',
@@ -12,19 +15,41 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class HardwareOverviewComponent implements OnInit, OnDestroy {
 
+  /**
+   * Datasource for table.
+   * @type {BehaviorSubject<Hardware[]>}
+   */
   dataSource = new BehaviorSubject<Hardware[]>([]);
 
+  /**
+   * Search bar Object.
+   * @type {FormControl}
+   */
   searchFormControl = new FormControl();
 
+  /**
+   * Key the table is sorted by.
+   * @type {BehaviorSubject<string>}
+   */
   sortKey = new BehaviorSubject<string>('');
+  /**
+   * Sort Direction.
+   * @type {BehaviorSubject<string>}
+   */
   sortDirection = new BehaviorSubject<string>('');
 
+  /**
+   * Subscriptions of this Components.
+   * @type {any[]}
+   */
   subscriptions: Subscription[] = [];
 
+  /** @ignore */
   constructor(private activatedRoute: ActivatedRoute,
               public cloudDataService: CloudDataService) {
   }
 
+  /** @ignore */
   ngOnInit() {
     this.adjustSort('cores');
 
@@ -65,10 +90,15 @@ export class HardwareOverviewComponent implements OnInit, OnDestroy {
     });
   }
 
+  /** @ignore */
   ngOnDestroy(): void {
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
+  /**
+   * Adjusts sort key and direction.
+   * @param {string} key
+   */
   adjustSort(key: string) {
     if (this.sortKey.value === key) {
       if (this.sortDirection.value === 'asc') {

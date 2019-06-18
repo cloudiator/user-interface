@@ -4,6 +4,9 @@ import {Location} from 'cloudiator-rest-api';
 import {FormControl} from '@angular/forms';
 import {CloudDataService} from '../../../services/cloud-data.service';
 
+/**
+ * Overview of all Locations available.
+ */
 @Component({
   selector: 'app-locations-overview',
   templateUrl: './locations-overview.component.html',
@@ -11,16 +14,34 @@ import {CloudDataService} from '../../../services/cloud-data.service';
 })
 export class LocationsOverviewComponent implements OnInit {
 
+  /**
+   * Datasource for table.
+   * @type {BehaviorSubject<Location[]>}
+   */
   dataSource = new BehaviorSubject<Location[]>([]);
 
+  /**
+   * Search bar Object.
+   * @type {FormControl}
+   */
   searchFormControl = new FormControl();
 
+  /**
+   * Key the table is sorted by.
+   * @type {BehaviorSubject<string>}
+   */
   sortKey = new BehaviorSubject<string>('');
+  /**
+   * Direction of table sort.
+   * @type {BehaviorSubject<string>}
+   */
   sortDirection = new BehaviorSubject<string>('');
 
+  /** @ignore */
   constructor(public cloudDataService: CloudDataService) {
   }
 
+  /** @ignore */
   ngOnInit() {
     this.adjustSort('name');
 
@@ -52,6 +73,10 @@ export class LocationsOverviewComponent implements OnInit {
     this.searchFormControl.setValue('');
   }
 
+  /**
+   * adjusts Sort key and direction.
+   * @param {string} key
+   */
   adjustSort(key: string) {
     if (this.sortKey.value === key) {
       if (this.sortDirection.value === 'asc') {

@@ -6,6 +6,9 @@ import {ToastService} from './services/toast.service';
 import {ConfirmNewCloudDialogComponent} from './dialogs/confirm-new-cloud-dialog/confirm-new-cloud-dialog.component';
 import {DeleteCloudDialogComponent} from './dialogs/delete-cloud-dialog/delete-cloud-dialog.component';
 
+/**
+ * Main Module handling App DIalogs and Toasts.
+ */
 @NgModule({
   declarations: [
     ToastComponent,

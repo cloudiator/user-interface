@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {DialogRef} from '../../../model/dialogRef';
+import {DialogRef} from '../../model/dialogRef';
 import {DIALOG_DATA} from '../../services/dialog.service';
 
 @Component({
@@ -10,7 +10,8 @@ import {DIALOG_DATA} from '../../services/dialog.service';
 export class DeleteCloudDialogComponent implements OnInit {
 
   constructor(public dialogRef: DialogRef,
-              @Inject(DIALOG_DATA) public data: any) { }
+              @Inject(DIALOG_DATA) public data: any) {
+  }
 
   ngOnInit() {
   }

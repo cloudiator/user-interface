@@ -4,7 +4,6 @@ import {Cloud} from 'cloudiator-rest-api';
 /**
  * A card that represents a single cloud in the CloudOverviewComponent.
  */
-
 @Component({
   selector: 'app-cloud-card',
   templateUrl: './cloud-card.component.html',
@@ -12,12 +11,16 @@ import {Cloud} from 'cloudiator-rest-api';
 })
 export class CloudCardComponent implements OnInit {
 
+  /**
+   * Cloud that is to be represented.
+   */
   @Input() cloud: Cloud;
 
+  /** @ignore */
   constructor() {
   }
 
+  /** @ignore */
   ngOnInit() {
   }
-
 }

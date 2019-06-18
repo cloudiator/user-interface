@@ -1,0 +1,76 @@
+@import "~bulma/sass/utilities/mixins";
+
+.view-container {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  background: url('../../../assets/background-login.svg')  no-repeat center center fixed;
+  background-size: cover;
+}
+
+.login-card-container {
+  height: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+  padding: 3em 0;
+}
+.logo {
+  //top: calc(20vw - 150px);
+  object-fit: cover;
+  width: 300px;
+  height: 200px;
+  top: -50px;
+  left: 50px;
+  margin-bottom: 3vh;
+}
+
+.login-card {
+  padding: 1rem;
+  width: inherit;
+}
+
+@include tablet {
+  .logo {
+    //position: absolute;
+    //top: 80px;
+    //left:  calc(20vh - 150px);
+  }
+
+  .login-card-container {
+    justify-content: center;
+  }
+  .view-container {
+     background-size: cover;
+   }
+}
+
+@include widescreen {
+
+  .view-container {
+    background-size: cover;
+  }
+  .login-card {
+    width: 25%;
+    max-width: 500px;
+  }
+}
+
+@media only screen and (orientation: landscape) and (max-device-height: 1000px) {
+
+  .view-container {
+    background-size: auto 1000px;
+  }
+}
+
+@media only screen and (orientation: landscape) {
+  .login-card-container {
+    flex-direction: row;
+  }
+  .logo {
+    margin-bottom: 0;
+    margin-right: 3rem;
+  }
+
+}

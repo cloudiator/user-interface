@@ -26,7 +26,15 @@ $custom-colors: ("secondary": ($secondary, $secondary-invert));
 
 $modal-z: 200;
 
+$tabs-link-active-color: $secondary;
+$tabs-link-active-border-bottom-color: $secondary;
+
+//$link: $black;
+$list-item-active-background-color: $secondary;
+$list-radius: 0px;
+
 @import "../node_modules/bulma/bulma";
+@import "../node_modules/bulma/sass/utilities/mixins";
 @import "../node_modules/bulma-divider/dist/css/bulma-divider";
 @import "../node_modules/bulma-checkradio/dist/css/bulma-checkradio";
 @import "../node_modules/bulma-badge/dist/css/bulma-badge";
@@ -34,14 +42,31 @@ $modal-z: 200;
 // custom classes
 
 html {
-  overflow: hidden;
+  overflow-y: auto;
 }
 
-$app-container-height: calc(100vh - #{$navbar-height});
+$app-container-height: calc(100% - #{$navbar-height});
+
+// notification z-index
+.notification {
+  z-index: 201;
+}
+
+.cdk-header-cell {
+  z-index: 0 !important;
+}
 
 .app-container {
+  position: absolute;
+  width: 100vw;
   height: $app-container-height;
-  overflow-y: auto;
+  // height: $app-container-height;
+   overflow-y: auto;
+}
+
+.fullsize-container {
+  position: fixed;
+  height: $app-container-height !important;
 }
 
 
@@ -64,4 +89,34 @@ $app-container-height: calc(100vh - #{$navbar-height});
 
 .is-clickable {
   cursor: pointer;
+}
+
+@include mobile {
+  .hidden-mobile {
+    display: none !important;
+  }
+}
+
+//  text placeholder
+@keyframes placeHolderShimmer{
+  0%{
+    background-position: -468px 0
+  }
+  100%{
+    background-position: 468px 0
+  }
+}
+
+.animated-background {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  background: #f6f7f8;
+  background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+  background-size: 800px 104px;
+  border-radius: 3rem;
+  //height: 96px;
+  position: relative;
 }

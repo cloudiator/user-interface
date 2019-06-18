@@ -2,6 +2,12 @@
   "extends": "src/tsconfig.app.json",
   "exclude": [
     "**/*.actions.ts",
-    "**/*.reducer.ts"
+    "**/*.reducer.ts",
+    "testing/**",
+    "src/test.ts",
+    "src/environments/**",
+    "src/app/root-store/**",
+    "e2e/**",
+    "src/app/app-dialog/dialogs/**",
   ]
 }

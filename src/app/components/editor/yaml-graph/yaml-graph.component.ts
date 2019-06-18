@@ -2,7 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import * as cytoscape from 'cytoscape';
 import {EditorService} from '../../../services/editor.service';
 
-
+/**
+ * View showing the GRaph of the Editor job.
+ */
 @Component({
   selector: 'app-yaml-graph',
   templateUrl: './yaml-graph.component.html',
@@ -10,6 +12,9 @@ import {EditorService} from '../../../services/editor.service';
 })
 export class YamlGraphComponent implements OnInit {
 
+  /**
+   * Graph Style.
+   */
   readonly style = [{
     'selector': 'node',
     'style': {
@@ -40,6 +45,9 @@ export class YamlGraphComponent implements OnInit {
     }
   }];
 
+  /**
+   * Layout of graph
+   */
   readonly circLayout = {
     name: 'circle',
     fit: true,
@@ -52,14 +60,27 @@ export class YamlGraphComponent implements OnInit {
     startAngle: 3 / 2 * Math.PI
   };
 
+  /**
+   * Mam zoom of Graph.
+   * @type {number}
+   */
   readonly maxZoom = 2;
+  /**
+   * Min zoom of Graph.
+   * @type {number}
+   */
   readonly minZoom = 0.5;
 
+  /**
+   * Cytoscape Graph object.
+   */
   private cy;
 
+  /** @ignore */
   constructor(private editorService: EditorService) {
   }
 
+  /** @ignore */
   ngOnInit() {
     // cytoscape.use( coseBilkent );
     this.cy = cytoscape({
@@ -71,6 +92,9 @@ export class YamlGraphComponent implements OnInit {
     this.cy.layout(this.circLayout).run();
     this.cy.elements('node').forEach(ele => ele.ungrabify());
     this.cy.elements('node').forEach(ele => ele.unselectify());
+    this.cy.on('resize', () => {
+      this.cy.center();
+    });
 
     this.editorService.getEditorGraph().subscribe(graphData => {
       if (this.cy && graphData) {

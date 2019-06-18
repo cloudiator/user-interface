@@ -1,34 +1,27 @@
 import {Injectable} from '@angular/core';
 import {Cloud, CloudService, Hardware, Image, NewCloud, Location} from 'cloudiator-rest-api';
-import {Observable} from 'rxjs';
+import {Observable, pipe} from 'rxjs';
 import {select, Store} from '@ngrx/store';
-import {map} from 'rxjs/operators';
+import {map, take, timeout} from 'rxjs/operators';
 import {HttpResponse} from '@angular/common/http';
 import {RuntimeConfigService} from './runtime-config.service';
 import {ToastService} from '../app-dialog/services/toast.service';
-import {ToastType} from '../model/toast';
+import {ToastType} from '../app-dialog/model/toast';
 import {CloudDataActions, CloudDataSelectors, RootStoreState, RuntimeConfigSelectors} from '../root-store';
 
 /**
  * Local layer between the cloud swagger service and Components, handles the redux store management of clouds.
  */
-
 @Injectable({
   providedIn: 'root'
 })
 export class CloudDataService {
 
+  /** @ignore **/
   constructor(private cloudApiService: CloudService,
               private runtimeConfigService: RuntimeConfigService,
               private store: Store<RootStoreState.State>,
               private toastService: ToastService) {
-
-    store.pipe(select(RuntimeConfigSelectors.selectConfig)).subscribe(config => {
-      cloudApiService.basePath = config.apiPath;
-      if (cloudApiService.configuration) {
-        cloudApiService.configuration.apiKeys['X-API-Key'] = config.xApiKey;
-      }
-    });
   }
 
   /* CLOUDS */
@@ -55,7 +48,7 @@ export class CloudDataService {
    */
   public findCloud(id: string): Observable<Cloud> {
     this.fetchClouds();
-    return this.store.pipe(select(CloudDataSelectors.selectClouds), map(cloud => cloud.find(c => c.id === id)));
+    return this.store.pipe(select(CloudDataSelectors.selectClouds), map(clouds => clouds.find(c => c.id === id)));
   }
 
   /**
@@ -63,14 +56,22 @@ export class CloudDataService {
    * @param id {string} id of cloud to be deleted
    */
   public deleteCloud(id: string) {
-    this.cloudApiService.deleteCloud(id).toPromise().catch(err => {
-      console.error('could not delete Cloud');
-      this.toastService.show({text: 'could not delete Cloud', type: ToastType.DANGER}, true);
-    });
+    this.cloudApiService.deleteCloud(id).subscribe(
+      () => {
+      },
+      err => {
+        console.error('could not delete Cloud');
+        this.toastService.show({text: 'could not delete Cloud', type: ToastType.DANGER}, true);
+      }
+    );
   }
 
   /* HARDWARE */
-
+  /**
+   * Searches for all Hardware containing the given id string.
+   * @param {string} id  Id to be searched for.
+   * @return {Observable<Hardware[]>} Observable of resulting hardware array.
+   */
   public findHardware(id?: string): Observable<Hardware[]> {
     this.fetchHardware();
 
@@ -84,6 +85,11 @@ export class CloudDataService {
 
   /* IMAGES */
 
+  /**
+   * Searches for all Images containing the given id string.
+   * @param {string} id Id to be searched for.
+   * @return {Observable<Image[]>} Observable of resulting Images array.
+   */
   public findImages(id?: string): Observable<Image[]> {
     this.fetchImages();
 
@@ -92,9 +98,15 @@ export class CloudDataService {
         select(CloudDataSelectors.selectImages),
         map(images => images.filter(image => image.id.includes(id))));
     }
-    return this.store.pipe(select(CloudDataSelectors.selectImages));
+    return this.store.pipe(
+      select(CloudDataSelectors.selectImages));
   }
 
+  /**
+   * Searches for all Locations containing the fiven id string.
+   * @param {string} id Id to be searched for.
+   * @return {Observable<Location[]>} Observable of resulting Locations array.
+   */
   public findLocations(id?: string): Observable<Location[]> {
     this.fetchLocations();
 
@@ -112,61 +124,61 @@ export class CloudDataService {
    */
   private fetchClouds() {
 
-    this.runtimeConfigService.awaitConfigLoad().then(() => {
-
-      // fetch Clouds
-      this.cloudApiService.findClouds().toPromise()
-        .then(clouds => {
+    // fetch Clouds
+    this.cloudApiService.findClouds()
+      .subscribe(clouds => {
           this.store.dispatch(new CloudDataActions.SetCloudsAction(clouds));
-        })
-        .catch(() => {
-          console.error('could not fetch clouds');
+        },
+        err => {
+          console.error('could not fetch clouds', err);
           this.toastService.show({text: 'could not fetch clouds', type: ToastType.DANGER}, false);
         });
-    });
   }
 
+  /**
+   * Fetches Hardware from server and puts it into the Redux store.
+   */
   private fetchHardware() {
-    this.runtimeConfigService.awaitConfigLoad().then(() => {
-      // ToDo: seperate api requests to clearly handle notifications;
-      // fetch Hardware
-      this.cloudApiService.findHardware().toPromise()
-        .then(hardware => {
+    // fetch Hardware
+    this.cloudApiService.findHardware()
+      .subscribe(hardware => {
           this.store.dispatch(new CloudDataActions.SetHardwareAction(hardware));
-        })
-        .catch(() => {
+        },
+        () => {
           console.error('could not fetch Hardware');
           this.toastService.show({text: 'could not fetch Hardware', type: ToastType.DANGER}, false);
         });
-    });
   }
 
+  /**
+   * Feteches Images from the server and puts them into the Redux store.
+   */
   private fetchImages() {
-    this.runtimeConfigService.awaitConfigLoad().then(() => {
-      // fetch Images
-      this.cloudApiService.findImages().toPromise()
-        .then(images => {
+    // fetch Images
+    this.cloudApiService.findImages()
+      .subscribe(images => {
           this.store.dispatch(new CloudDataActions.SetImagesAction(images));
-        })
-        .catch(() => {
+        },
+        () => {
           console.error('could not fetch Images');
           this.toastService.show({text: 'could not fetch Images', type: ToastType.DANGER}, false);
         });
-    });
   }
 
+  /**
+   * Fetches Locations form the server and puts them into the Redux store.
+   */
   private fetchLocations() {
-    this.runtimeConfigService.awaitConfigLoad().then(() => {
-      // fetch Images
-      this.cloudApiService.findLocations().toPromise()
-        .then(locations => {
+    // fetch Images
+    this.cloudApiService.findLocations()
+      .pipe(take(1))
+      .subscribe(locations => {
           this.store.dispatch(new CloudDataActions.SetLocationsAction(locations));
-        })
-        .catch(() => {
+        },
+        () => {
           console.error('could not fetch Images');
           this.toastService.show({text: 'could not fetch Images', type: ToastType.DANGER}, false);
         });
-    });
   }
 
   /**

@@ -1,0 +1,50 @@
+<div class="bottom-sheet card has-shadow"
+     [@sheetOpenClose]="sheetOpenClose"
+     (swipedown)="sheetOpenClose = 'closed'"
+     (swipeup)="sheetOpenClose = 'open'"
+     (click)="onSheetClick()">
+
+  <a class="bottom-sheet-button"
+     (click)="switchOpenState()">
+        <span class="icon" [@buttonOpenClose]="sheetOpenClose">
+          <i class="fas fa-arrow-down"></i>
+        </span>
+  </a>
+  <!-- Node View -->
+  <ng-container *ngIf="selected?.group === 'nodes'">
+    <div class="bottom-sheet-header">
+      <strong [@headerOpenClose]="sheetOpenClose">
+        {{selected.data.task}}
+      </strong>
+    </div>
+    <div class="bottom-sheet-content content container">
+      <div>
+        {{selected?.data.state.toLowerCase()}}
+        <span class="icon">
+        <i *ngIf="selected?.data.state === 'RUNNING'" class="fas fa-circle has-text-success"></i>
+        <i *ngIf="['ERROR', 'FAILED'].includes(selected?.data.state)" class="fas fa-circle has-text-danger"></i>
+      </span>
+      </div>
+      <ul>
+        <li>
+          <u>process id</u>: {{selected?.data.id}}
+        </li>
+        <li>
+          <u>ip adress</u>: {{selected?.data.ip}}
+        </li>
+      </ul>
+    </div>
+  </ng-container>
+  <!-- Edge View -->
+  <ng-container *ngIf="selected?.group === 'edges'">
+    <div class="bottom-sheet-header">
+      <strong [@headerOpenClose]="sheetOpenClose">
+        edge
+      </strong>
+    </div>
+    <div class="bottom-sheet-content content">
+      source: {{selected.data.source.task}} <br>
+      target: {{selected.data.target.task}}
+    </div>
+  </ng-container>
+</div>

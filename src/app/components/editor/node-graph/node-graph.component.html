@@ -1,0 +1,22 @@
+<div class="is-flex" style="height: 100%; justify-content: center; align-items: center">
+  <div *ngIf="queueStatus === 'SCHEDULED' || queueStatus === 'RUNNING'">
+  <span class="icon is-large">
+    <i class="fas fa-3x fa-spinner fa-pulse"></i>
+  </span>
+  </div>
+
+  <div *ngIf="queueStatus === 'COMPLETED'">
+  <span class="icon is-large has-text-success">
+    <i class="fas fa-3x fa-check"></i>
+  </span>
+    Completed
+  </div>
+
+  <div *ngIf="queueStatus === 'FAILED'">
+  <span class="icon is-large has-text-danger">
+    <i class="fas fa-3x fa-times"></i>
+  </span>
+    Failed
+  </div>
+  <!--<button (click)="queueDataService.bol = true">kill</button>-->
+</div>
