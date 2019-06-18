@@ -1,48 +1,58 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {BehaviorSubject, combineLatest, Subscription} from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable, of, Subscription} from 'rxjs';
 import {Hardware} from 'cloudiator-rest-api';
-import {CloudDataService} from '../../../services/cloud-data.service';
 import {FormControl} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
+import {CloudDataService} from '../../services/cloud-data.service';
+import {TableColumns} from '../../model/TableColumns';
 
-/**
- * Overview Component showing available Hardware.
- */
 @Component({
-  selector: 'app-hardware-overview',
-  templateUrl: './hardware-overview.component.html',
-  styleUrls: ['./hardware-overview.component.scss']
+  selector: 'app-overview-table',
+  templateUrl: './overview-table.component.html',
+  styleUrls: ['./overview-table.component.scss']
 })
-export class HardwareOverviewComponent implements OnInit, OnDestroy {
+export class OverviewTableComponent<T> implements OnInit, OnDestroy {
+  title = '';
+
+  columns: TableColumns;
+  columnFields: string[];
+
+  initialSortKey: string;
+
+  isLoading$: Observable<boolean> = of(false);
+
+  filter: (data: T[], searchTerm: string) => T[];
+
+  data: Observable<T[]> = of([]);
 
   /**
    * Datasource for table.
    * @type {BehaviorSubject<Hardware[]>}
    */
-  dataSource = new BehaviorSubject<Hardware[]>([]);
+  protected dataSource = new BehaviorSubject<T[]>([]);
 
   /**
    * Search bar Object.
    * @type {FormControl}
    */
-  searchFormControl = new FormControl();
+  protected searchFormControl = new FormControl();
 
   /**
    * Key the table is sorted by.
    * @type {BehaviorSubject<string>}
    */
-  sortKey = new BehaviorSubject<string>('');
+  protected sortKey = new BehaviorSubject<string>('');
   /**
    * Sort Direction.
    * @type {BehaviorSubject<string>}
    */
-  sortDirection = new BehaviorSubject<string>('');
+  protected sortDirection = new BehaviorSubject<string>('');
 
   /**
    * Subscriptions of this Components.
    * @type {any[]}
    */
-  subscriptions: Subscription[] = [];
+  protected subscriptions: Subscription[] = [];
 
   /** @ignore */
   constructor(private activatedRoute: ActivatedRoute,
@@ -51,21 +61,23 @@ export class HardwareOverviewComponent implements OnInit, OnDestroy {
 
   /** @ignore */
   ngOnInit() {
-    this.adjustSort('cores');
+    this.columnFields = this.columns ? Object.keys(this.columns) : [];
 
-    combineLatest(this.cloudDataService.findHardware(), this.searchFormControl.valueChanges, this.sortKey, this.sortDirection)
-      .subscribe(([changedHardwareData, searchTerm, sortKey, sortDirection]) => {
-        const hardwareArray = Object.values(changedHardwareData);
+    this.adjustSort(this.initialSortKey);
 
-        let filteredHardware = [];
+    combineLatest(this.data, this.searchFormControl.valueChanges, this.sortKey, this.sortDirection)
+      .subscribe(([changedData, searchTerm, sortKey, sortDirection]) => {
+        const dataArray = Object.values(changedData);
+
+        let filteredData = [];
 
         if (!searchTerm) {
-          filteredHardware = hardwareArray;
+          filteredData = dataArray;
         } else {
-          filteredHardware = this.cloudDataService.filterHardware(hardwareArray, searchTerm);
+          filteredData = this.filter(dataArray, searchTerm);
         }
 
-        const sortedHardware = filteredHardware.sort((a, b) => {
+        const sortedData = filteredData.sort((a, b) => {
           if (a[sortKey] > b[sortKey]) {
             return sortDirection === 'asc' ? 1 : -1;
           }
@@ -75,7 +87,7 @@ export class HardwareOverviewComponent implements OnInit, OnDestroy {
           return 0;
         });
 
-        this.dataSource.next(sortedHardware);
+        this.dataSource.next(sortedData);
       });
 
     this.searchFormControl.setValue('');
@@ -86,6 +98,8 @@ export class HardwareOverviewComponent implements OnInit, OnDestroy {
         this.searchFormControl.patchValue(`id=${params.id}`);
       } else if (params.cloud) {
         this.searchFormControl.patchValue(`cloud=${params.cloud}`);
+      } else {
+        this.searchFormControl.patchValue('');
       }
     });
   }
@@ -114,6 +128,3 @@ export class HardwareOverviewComponent implements OnInit, OnDestroy {
   }
 
 }
-
-
-

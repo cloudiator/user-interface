@@ -6,10 +6,10 @@ import {NewCloudComponent} from '../clouds/new-cloud/new-cloud.component';
 import {CloudOverviewComponent} from '../clouds/cloud-overview/cloud-overview.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CloudCardComponent} from '../clouds/cloud-card/cloud-card.component';
-import {HardwareOverviewComponent} from '../hardware/hardware-overview/hardware-overview.component';
+import {HardwareOverviewComponent} from '../overview-tables/hardware-overview/hardware-overview.component';
 import {CdkTableModule} from '@angular/cdk/table';
-import {ImagesOverviewComponent} from '../images/images-overview/images-overview.component';
-import {LocationsOverviewComponent} from '../locations/locations-overview/locations-overview.component';
+import {ImagesOverviewComponent} from '../overview-tables/images-overview/images-overview.component';
+import {LocationsOverviewComponent} from '../overview-tables/locations-overview/locations-overview.component';
 import {YamlEditorComponent} from '../editor/yaml-editor/yaml-editor.component';
 import {YamlGraphComponent} from '../editor/yaml-graph/yaml-graph.component';
 import {RootStoreModule} from '../../root-store';
@@ -25,6 +25,7 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {AuthService} from '../../services/auth.service';
 import {of} from 'rxjs';
 import * as testData from 'testing/test-data';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -55,7 +56,8 @@ describe('AppComponent', () => {
         CdkTableModule,
         ApiModule.forRoot(testData.testApiFactory),
         HttpClientTestingModule,
-        AppDialogModule
+        AppDialogModule,
+        ScrollingModule
       ],
       providers: []
     }).compileComponents();

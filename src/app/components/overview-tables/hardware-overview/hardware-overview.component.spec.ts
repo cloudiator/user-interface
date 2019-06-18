@@ -11,6 +11,7 @@ import {ActivatedRoute, Router, RouterModule} from '@angular/router';
 import {of} from 'rxjs';
 import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
 import {RootStoreModule} from '../../../root-store';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 describe('HardwareOverviewComponent', () => {
   let component: HardwareOverviewComponent;
@@ -29,7 +30,8 @@ describe('HardwareOverviewComponent', () => {
         HttpClientModule,
         ApiModule.forRoot(apiConfigFactory),
         RouterModule,
-        AppDialogModule
+        AppDialogModule,
+        ScrollingModule
       ],
       providers: [
         {provide: Router, useValue: router},

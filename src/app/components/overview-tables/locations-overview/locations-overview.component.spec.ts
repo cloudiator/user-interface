@@ -11,6 +11,7 @@ import {CloudDataService} from '../../../services/cloud-data.service';
 import {of} from 'rxjs';
 import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
 import {RootStoreModule} from '../../../root-store';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 describe('LocationsOverviewComponent', () => {
   let component: LocationsOverviewComponent;
@@ -30,7 +31,8 @@ describe('LocationsOverviewComponent', () => {
         HttpClientModule,
         ApiModule.forRoot(apiConfigFactory),
         RouterModule,
-        AppDialogModule
+        AppDialogModule,
+        ScrollingModule
       ],
       providers: [
         {provide: Router, useValue: router},

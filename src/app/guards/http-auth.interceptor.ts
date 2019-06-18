@@ -4,7 +4,7 @@ import {Observable, Subscription} from 'rxjs';
 import {AuthService} from '../services/auth.service';
 import {RuntimeConfigService} from '../services/runtime-config.service';
 import {AuthMode} from '../model/RuntimeConfig';
-import {mergeMap, tap} from 'rxjs/operators';
+import {mergeMap, take, tap} from 'rxjs/operators';
 
 /**
  * sets correct api path and authentication headers for all requests.
@@ -60,6 +60,7 @@ export class HttpAuthInterceptor implements HttpInterceptor, OnDestroy {
     return new Observable(subscriber => {
       this.runtimeConfigService.awaitConfigLoad().then(() => subscriber.next());
     }).pipe(
+      take(1),
       mergeMap(() => next.handle(this.changeRequest(request)))
     );
   }
