@@ -60,12 +60,10 @@ export class SchedulesOverviewComponent implements OnInit, OnDestroy {
               public jobDataService: JobDataService,
               public processDataService: ProcessDataService,
               private router: Router) {
-    console.log('construct');
   }
 
   /** @ignore */
   ngOnInit() {
-    console.log('init');
 
     this.subscriptions.push(
       this.route.queryParamMap
