@@ -70,7 +70,7 @@ export class SchedulesOverviewComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.route.queryParamMap
         .pipe(
-          map(paramsMap => paramsMap.get('id'))
+          map(paramsMap => paramsMap.get('id') || undefined)
         )
         .subscribe(id => {
           this.activeViewId = id;
@@ -118,6 +118,8 @@ export class SchedulesOverviewComponent implements OnInit, OnDestroy {
   private updateActiveScheduleView() {
     if (this.activeViewId) {
       this.activeScheduleView = this.scheduleViews.find(sv => sv.schedule.id === this.activeViewId);
+    } else {
+      this.activeScheduleView = null;
     }
   }
 
