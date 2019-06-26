@@ -1,10 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ProcessDataService} from '../../../services/process-data.service';
-import {Subscription} from 'rxjs';
+import {merge, Observable, of, Subscription, zip} from 'rxjs';
 import {ScheduleView} from '../../../model/ScheduleView';
 import {JobDataService} from '../../../services/job-data.service';
-import {map} from 'rxjs/operators';
+import {delay, flatMap, map, mergeAll, mergeMap, tap, zipAll} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
+import * as testData from 'testing/test-data';
+import {flatten} from '@angular/compiler';
 
 /**
  * Overview of Schedules. Hosts a list containing all Schedules and the SchedulesView.
@@ -46,9 +48,9 @@ export class SchedulesOverviewComponent implements OnInit, OnDestroy {
 
   /**
    * indicates load state of Schedules
-   * @type {boolean}
+   * @type {Observable<boolean>}
    */
-  isLoading = false;
+  isLoading = this.processDataService.getScheduleIsLoading();
 
   /** @ignore */
   jobLoad = false;

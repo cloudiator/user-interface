@@ -8,6 +8,11 @@ export function processDatareducer(state = initialState, action: processActions.
         ...state,
         schedules: action.schedules
       };
+    case processActions.SET_SCHEDULE_IS_LOADING:
+      return {
+        ...state,
+        scheduleIsLoading: action.isLoading
+      };
     default:
       return state;
   }

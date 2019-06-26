@@ -8,7 +8,8 @@ import {
 import {ScheduleView} from '../../../model/ScheduleView';
 import * as cytoscape from 'cytoscape';
 import {ProcessDataService} from '../../../services/process-data.service';
-import {take} from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
+import * as testData from 'testing/test-data';
 
 /**
  * View of a selected Schedule, containing a Cytoscape and a bottomsheet for further information
@@ -197,7 +198,6 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
   updategraph() {
     this.isLoading = true;
     this.processDataService.scheduleGraph(this.scheduleView.schedule.id)
-      .pipe(take(1))
       .subscribe(graph => {
           // timeout as hack to fix wrong positioning of graph when data arrives to early in mobile view
           setTimeout(() => {

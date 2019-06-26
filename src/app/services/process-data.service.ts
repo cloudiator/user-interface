@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {forkJoin, Observable} from 'rxjs';
+import {forkJoin, Observable, of} from 'rxjs';
 import {Job, ProcessService, Queue, Schedule} from 'cloudiator-rest-api';
 import {select, Store} from '@ngrx/store';
 import {EditorSelectors} from '../root-store/editor-store';
@@ -11,6 +11,7 @@ import {ScheduleView} from '../model/ScheduleView';
 import {RootStoreState} from '../root-store';
 import {ToastService} from '../app-dialog/services/toast.service';
 import {ToastType} from '../app-dialog/model/toast';
+import * as testData from '../../../testing/test-data';
 
 /**
  * Service handling the Process api.
@@ -47,6 +48,11 @@ export class ProcessDataService {
     return this.store.pipe(select(ProcessDataSelectors.selectSchedules));
   }
 
+  public getScheduleIsLoading(): Observable<boolean> {
+    return this.store.pipe(select(ProcessDataSelectors.selectScheduleIsLoading));
+  }
+
+
   /**
    * Fetches Graph of the given id and maps it to Cytoscape data.
    * @param {string} id
@@ -66,17 +72,19 @@ export class ProcessDataService {
    * Fetches schedules from api.
    */
   private fetchSchedules() {
-    this.runtimeConfigService.awaitConfigLoad()
-      .then(() => {
-        this.processApiService.getSchedules()
-          .subscribe(
-            schedules => {
-              this.store.dispatch(new ProcessDataActions.SetSchedulesAction(schedules));
-            },
-            () => {
-              this.toastService.show({text: 'Could not fetch Schedules', type: ToastType.DANGER});
-              console.error('could not fetch Schedules');
-            });
-      });
+    this.store.dispatch(new ProcessDataActions.SetScheduleIsLoading(true));
+    this.processApiService.getSchedules()
+      .subscribe(
+        schedules => {
+          this.store.dispatch(new ProcessDataActions.SetSchedulesAction(schedules));
+        },
+        () => {
+          this.toastService.show({text: 'Could not fetch Schedules', type: ToastType.DANGER});
+          console.error('could not fetch Schedules');
+        },
+        () => {
+          this.store.dispatch(new ProcessDataActions.SetScheduleIsLoading(false));
+        }
+      );
   }
 }
