@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {ProcessDataService} from '../../../services/process-data.service';
 import {merge, Observable, of, Subscription, zip} from 'rxjs';
 import {ScheduleView} from '../../../model/ScheduleView';
@@ -60,13 +60,15 @@ export class SchedulesOverviewComponent implements OnInit, OnDestroy {
               public jobDataService: JobDataService,
               public processDataService: ProcessDataService,
               private router: Router) {
+    console.log('construct');
   }
 
   /** @ignore */
   ngOnInit() {
+    console.log('init');
 
     this.subscriptions.push(
-      this.route.paramMap
+      this.route.queryParamMap
         .pipe(
           map(paramsMap => paramsMap.get('id'))
         )
@@ -118,4 +120,5 @@ export class SchedulesOverviewComponent implements OnInit, OnDestroy {
       this.activeScheduleView = this.scheduleViews.find(sv => sv.schedule.id === this.activeViewId);
     }
   }
+
 }

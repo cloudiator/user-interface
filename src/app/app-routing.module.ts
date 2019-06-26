@@ -29,7 +29,6 @@ const routes: Routes = [
   {path: 'editor', component: YamlEditorComponent, canActivate: [AuthGuard]},
 
   {path: 'schedules', component: SchedulesOverviewComponent},
-  {path: 'schedules/:id', component: SchedulesOverviewComponent},
 
   {path: 'clouds', component: CloudOverviewComponent, canActivate: [AuthGuard]},
   {path: '', component: CloudOverviewComponent, canActivate: [AuthGuard]},
