@@ -3,6 +3,8 @@ import {initialState, State} from './state';
 
 export function editorReducer(state = initialState, action: editorActions.All): State {
   switch (action.type) {
+    case editorActions.SET_STATE:
+      return action.state;
     case editorActions.SET_VALUE:
       return {...state, value: action.value, unsavedChanges: action.value !== state.originalValue};
     case editorActions.SET_FILENAME:
