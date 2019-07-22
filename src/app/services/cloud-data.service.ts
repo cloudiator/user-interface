@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Cloud, CloudService, Hardware, Image, NewCloud, Location} from 'cloudiator-rest-api';
 import {Observable, of, pipe} from 'rxjs';
 import {select, Store} from '@ngrx/store';
-import {finalize, map, take, timeout} from 'rxjs/operators';
+import {catchError, finalize, map, take, timeout} from 'rxjs/operators';
 import {HttpResponse} from '@angular/common/http';
 import {RuntimeConfigService} from './runtime-config.service';
 import {ToastService} from '../app-dialog/services/toast.service';
@@ -162,6 +162,7 @@ export class CloudDataService {
           this.store.dispatch(new CloudDataActions.SetCloudsAction(clouds));
         },
         err => {
+          this.store.dispatch(new CloudDataActions.SetCloudIsLoading(false));
           console.error('could not fetch clouds', err);
           this.toastService.show({text: 'could not fetch clouds', type: ToastType.DANGER}, false);
         },
@@ -183,6 +184,7 @@ export class CloudDataService {
           this.store.dispatch(new CloudDataActions.SetHardwareAction(hardware));
         },
         () => {
+          this.store.dispatch(new CloudDataActions.SetHardwareIsLoading(false));
           console.error('could not fetch Hardware');
           this.toastService.show({text: 'could not fetch Hardware', type: ToastType.DANGER}, false);
         },
@@ -203,6 +205,7 @@ export class CloudDataService {
           this.store.dispatch(new CloudDataActions.SetImagesAction(images));
         },
         () => {
+          this.store.dispatch(new CloudDataActions.SetImageIsLoading(false));
           console.error('could not fetch Images');
           this.toastService.show({text: 'could not fetch Images', type: ToastType.DANGER}, false);
         },
@@ -223,6 +226,7 @@ export class CloudDataService {
           this.store.dispatch(new CloudDataActions.SetLocationsAction(locations));
         },
         () => {
+          this.store.dispatch(new CloudDataActions.SetLocationIsLoading(false));
           console.error('could not fetch Images');
           this.toastService.show({text: 'could not fetch Images', type: ToastType.DANGER}, false);
         },

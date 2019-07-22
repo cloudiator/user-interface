@@ -38,6 +38,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             return of(null);
           }
 
+          console.log('error status')
           this.toastService.show({text: 'Application Error', type: ToastType.DANGER});
           return of(null);
         }));
