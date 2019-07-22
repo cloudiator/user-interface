@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Cloud, CloudService, Hardware, Image, NewCloud, Location} from 'cloudiator-rest-api';
-import {Observable, pipe} from 'rxjs';
+import {Observable, of, pipe} from 'rxjs';
 import {select, Store} from '@ngrx/store';
-import {map, take, timeout} from 'rxjs/operators';
+import {finalize, map, take, timeout} from 'rxjs/operators';
 import {HttpResponse} from '@angular/common/http';
 import {RuntimeConfigService} from './runtime-config.service';
 import {ToastService} from '../app-dialog/services/toast.service';
@@ -66,6 +66,10 @@ export class CloudDataService {
     );
   }
 
+  public cloudIsLoading(): Observable<boolean> {
+    return this.store.pipe(select(CloudDataSelectors.selectCloudIsLoading));
+  }
+
   /* HARDWARE */
   /**
    * Searches for all Hardware containing the given id string.
@@ -81,6 +85,24 @@ export class CloudDataService {
         map(hardware => hardware.filter(hw => hw.id.includes(id))));
     }
     return this.store.pipe(select(CloudDataSelectors.selectHardware));
+    // const lst = [];
+    // let i = 0
+    // while (i < 65000) {
+    //   lst.push({
+    //     id: 's',
+    //     name: 'test',
+    //     cores: 3,
+    //     ram: 20,
+    //     disk: 100
+    //   });
+    //   i++;
+    // }
+    // console.log(lst)
+    //   return of(lst);
+  }
+
+  public hardwareIsLoading(): Observable<boolean> {
+    return this.store.pipe(select(CloudDataSelectors.selectHardwareIsLoading));
   }
 
   /* IMAGES */
@@ -102,6 +124,10 @@ export class CloudDataService {
       select(CloudDataSelectors.selectImages));
   }
 
+  public imageIsLoading(): Observable<boolean> {
+    return this.store.pipe(select(CloudDataSelectors.selectImageIsLoading));
+  }
+
   /**
    * Searches for all Locations containing the fiven id string.
    * @param {string} id Id to be searched for.
@@ -118,6 +144,10 @@ export class CloudDataService {
     return this.store.pipe(select(CloudDataSelectors.selectLocations));
   }
 
+  public locationIsLoading(): Observable<boolean> {
+    return this.store.pipe(select(CloudDataSelectors.selectLocationIsLoading));
+  }
+
   /**
    * Fetches all clouds from the Server and saves them in the Redux store.
    * before sending the request, the config file must be loaded to grant the correct api url
@@ -125,14 +155,20 @@ export class CloudDataService {
   private fetchClouds() {
 
     // fetch Clouds
+    this.store.dispatch(new CloudDataActions.SetCloudIsLoading(true));
     this.cloudApiService.findClouds()
-      .subscribe(clouds => {
+      .subscribe(
+        clouds => {
           this.store.dispatch(new CloudDataActions.SetCloudsAction(clouds));
         },
         err => {
           console.error('could not fetch clouds', err);
           this.toastService.show({text: 'could not fetch clouds', type: ToastType.DANGER}, false);
-        });
+        },
+        () => {
+          this.store.dispatch(new CloudDataActions.SetCloudIsLoading(false));
+        }
+      );
   }
 
   /**
@@ -140,14 +176,19 @@ export class CloudDataService {
    */
   private fetchHardware() {
     // fetch Hardware
+    this.store.dispatch(new CloudDataActions.SetHardwareIsLoading(true));
     this.cloudApiService.findHardware()
-      .subscribe(hardware => {
+      .subscribe(
+        hardware => {
           this.store.dispatch(new CloudDataActions.SetHardwareAction(hardware));
         },
         () => {
           console.error('could not fetch Hardware');
           this.toastService.show({text: 'could not fetch Hardware', type: ToastType.DANGER}, false);
-        });
+        },
+        () =>
+          this.store.dispatch(new CloudDataActions.SetHardwareIsLoading(false))
+      );
   }
 
   /**
@@ -155,14 +196,19 @@ export class CloudDataService {
    */
   private fetchImages() {
     // fetch Images
+    this.store.dispatch(new CloudDataActions.SetImageIsLoading(true));
     this.cloudApiService.findImages()
-      .subscribe(images => {
+      .subscribe(
+        images => {
           this.store.dispatch(new CloudDataActions.SetImagesAction(images));
         },
         () => {
           console.error('could not fetch Images');
           this.toastService.show({text: 'could not fetch Images', type: ToastType.DANGER}, false);
-        });
+        },
+        () =>
+          this.store.dispatch(new CloudDataActions.SetImageIsLoading(false))
+      );
   }
 
   /**
@@ -170,15 +216,18 @@ export class CloudDataService {
    */
   private fetchLocations() {
     // fetch Images
+    this.store.dispatch(new CloudDataActions.SetLocationIsLoading(true));
     this.cloudApiService.findLocations()
-      .pipe(take(1))
-      .subscribe(locations => {
+      .subscribe(
+        locations => {
           this.store.dispatch(new CloudDataActions.SetLocationsAction(locations));
         },
         () => {
           console.error('could not fetch Images');
           this.toastService.show({text: 'could not fetch Images', type: ToastType.DANGER}, false);
-        });
+        },
+        () => this.store.dispatch(new CloudDataActions.SetLocationIsLoading(false))
+      );
   }
 
   /**
@@ -270,9 +319,17 @@ export class CloudDataService {
             curr.geoLocation.country &&
             operator === '=' &&
             curr.geoLocation.country.toLowerCase() === term.toLowerCase();
+        case 'city':
+          return (curr: Location) =>
+            curr.geoLocation &&
+            curr.geoLocation.city &&
+            operator === '=' &&
+            curr.geoLocation.city.toLowerCase() === term.toLowerCase();
         default:
           return (curr: Location) => {
-            return curr.name.toLowerCase().includes(term.toLowerCase());
+            return curr.name.toLowerCase().includes(term.toLowerCase()) ||
+              (curr.geoLocation && curr.geoLocation.country.toLowerCase().includes(term.toLowerCase())) ||
+              (curr.geoLocation && curr.geoLocation.city.toLowerCase().includes(term.toLowerCase()));
           };
       }
     };

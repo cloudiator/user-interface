@@ -3,9 +3,9 @@ import {NgModule} from '@angular/core';
 import {CloudOverviewComponent} from './components/clouds/cloud-overview/cloud-overview.component';
 import {NewCloudComponent} from './components/clouds/new-cloud/new-cloud.component';
 import {CloudViewComponent} from './components/clouds/cloud-view/cloud-view.component';
-import {HardwareOverviewComponent} from './components/hardware/hardware-overview/hardware-overview.component';
-import {ImagesOverviewComponent} from './components/images/images-overview/images-overview.component';
-import {LocationsOverviewComponent} from './components/locations/locations-overview/locations-overview.component';
+import {HardwareOverviewComponent} from './components/overview-tables/hardware-overview/hardware-overview.component';
+import {ImagesOverviewComponent} from './components/overview-tables/images-overview/images-overview.component';
+import {LocationsOverviewComponent} from './components/overview-tables/locations-overview/locations-overview.component';
 import {YamlEditorComponent} from './components/editor/yaml-editor/yaml-editor.component';
 import {LoginComponent} from './components/login/login.component';
 import {AuthGuard} from './guards/auth.guard';
@@ -29,7 +29,6 @@ const routes: Routes = [
   {path: 'editor', component: YamlEditorComponent, canActivate: [AuthGuard]},
 
   {path: 'schedules', component: SchedulesOverviewComponent},
-  {path: 'schedules/:id', component: SchedulesOverviewComponent},
 
   {path: 'clouds', component: CloudOverviewComponent, canActivate: [AuthGuard]},
   {path: '', component: CloudOverviewComponent, canActivate: [AuthGuard]},

@@ -12,7 +12,8 @@ describe('CloudOverviewComponent', () => {
   let fixture: ComponentFixture<CloudOverviewComponent>;
 
   const mockCloudDataService = jasmine.createSpyObj('CloudDataService', {
-    'findClouds': of([])
+    'findClouds': of([]),
+    'cloudIsLoading': of(false)
   });
 
   beforeEach(async(() => {

@@ -1,0 +1,56 @@
+<div class="view">
+  <div class="hero is-secondary">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">{{title}}</h1>
+      </div>
+    </div>
+  </div>
+
+
+  <section class="table-section section container is-center">
+
+
+    <ng-container *ngIf="!(isLoading$ | async); else loader">
+
+      <!-- Search bar -->
+      <p class="searchbar is-fullwidth control has-icons-left is-secondary">
+        <input class="input" type="search" placeholder="Search" [formControl]="searchFormControl">
+        <span class="icon is-left">
+        <i class="fas fa-search"></i>
+      </span>
+      </p>
+      <cdk-virtual-scroll-viewport class="table-viewport" itemSize="0">
+        <table cdk-table class="table is-striped is-hoverable is-clickable"
+               [dataSource]="dataSource.value">
+
+          <!-- Column Definition -->
+          <ng-container *ngFor="let field of columnFields" cdkColumnDef="{{field}}">
+            <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable" (click)="adjustSort(field)">
+              {{columns[field].value}}
+              <span [class.is-opaque]="sortKey.value !== field">
+           <i class="fas fa-arrow-{{ sortDirection.value === 'asc' ? 'up' : 'down' }}"></i>
+          </span>
+            </th>
+            <td cdk-cell *cdkCellDef="let row">
+              {{columns[field].selectionFn
+              ? columns[field].selectionFn(row)
+              : row[field]}}
+            </td>
+          </ng-container>
+
+
+          <!-- Header and Row Declarations -->
+          <tr cdk-header-row *cdkHeaderRowDef="columnFields, sticky:true"></tr>
+          <tr cdk-row *cdkRowDef="let row; columns: columnFields"
+              [routerLink]="['/cloud', cloudDataService.findCloudId(row.id)]"></tr>
+        </table>
+      </cdk-virtual-scroll-viewport>
+    </ng-container>
+    <ng-template #loader>
+      <div class="loading-placeholder has-background-secondary">
+        <div class="big-loading-animation">&#8205;</div>
+      </div>
+    </ng-template>
+  </section>
+</div>

@@ -1,7 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import {Cloud} from 'cloudiator-rest-api';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
+import {map, tap} from 'rxjs/operators';
 
 /**
  * Overview of all clouds given as a set of horizontally flowing cards.
@@ -18,6 +19,8 @@ export class CloudOverviewComponent implements OnInit, OnDestroy {
    * @type {any[]}
    */
   public clouds: Cloud[] = [];
+
+  public cloudIsLoading$: Observable<boolean> = this.cloudDataService.cloudIsLoading();
 
   /**
    * All Subscriptions of this Component.

@@ -10,7 +10,7 @@
       </div>
     </div>
     <!--  list load placeholder-->
-    <div *ngIf="isLoading;else list">
+    <div *ngIf="(isLoading| async) && scheduleViews.length > 0;else list">
       <div class="list list-view is-hoverable" style="width: 100%; height: auto">
         <div *ngFor="let i of [1,2,3,4,5,6,7]" class="list-item" style="padding-right: 5rem">
           <div class="animated-background">
@@ -25,14 +25,15 @@
           <ng-container *ngFor="let view of scheduleViews">
             <!-- job loading placeholder-->
             <div *ngIf="!view.job;else link" class="list-item" style="padding-right: 5rem">
-              <div class="animated-background">
+              <div class="text-loading-animation">
                 &#8205;
               </div>
             </div>
             <ng-template #link>
               <div class="list-item"
-                 [routerLink]="['/schedules', view.schedule.id]"
-                 [class.is-active]="view.schedule.id === activeViewId">
+                   [routerLink]="['/schedules']"
+                   [queryParams]="{ id: view.schedule.id }"
+                   [class.is-active]="view.schedule.id === activeViewId">
                 {{view.job?.name}}
               </div>
             </ng-template>
