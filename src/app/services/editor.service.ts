@@ -170,7 +170,7 @@ export class EditorService {
    * This includes fetching job and queue if existing.
    * @param {EditorStorageState} storedState
    */
-  private composeStorageState(storedState: EditorStorageState) {
+  public composeStorageState(storedState: EditorStorageState) {
     this.store.dispatch(new EditorActions.UploadFileAction(
       storedState.editorValue,
       storedState.filename
@@ -204,12 +204,13 @@ export class EditorService {
 
   private loadEditorState(): EditorStorageState {
     const parsed: EditorStorageState = JSON.parse(localStorage.getItem(this.EDITOR_STORE_KEY));
-    return <EditorStorageState>{
-      editorValue: parsed.editorValue ? parsed.editorValue : '',
-      filename: parsed.filename ? parsed.filename : 'unnamed.yaml',
-      JobId: parsed.JobId ? parsed.JobId : null,
-      queueId: parsed.queueId ? parsed.queueId : null
-    };
+    return parsed ?
+      <EditorStorageState>{
+        editorValue: parsed.editorValue ? parsed.editorValue : '',
+        filename: parsed.filename ? parsed.filename : 'unnamed.yaml',
+        JobId: parsed.JobId ? parsed.JobId : null,
+        queueId: parsed.queueId ? parsed.queueId : null
+      } : null;
   }
 
   private removeEditorState() {

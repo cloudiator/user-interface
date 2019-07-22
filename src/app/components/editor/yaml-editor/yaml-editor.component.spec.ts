@@ -76,7 +76,7 @@ describe('YamlEditorComponent', () => {
     spyOn(component.editorService, 'getFilename').and.callThrough();
 
     component.editor.setValue('test');
-    expect(component.editorService.setEditorValue).toHaveBeenCalledTimes(1);
+    expect(component.editorService.setEditorValue).toHaveBeenCalledTimes(2);
     expect(component.editorService.getEditorValue).not.toHaveBeenCalled();
     component.editorService.getEditorValue()
       .pipe(take(1))

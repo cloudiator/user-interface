@@ -29,6 +29,8 @@ describe('EditorService', () => {
   it('save state should be consistent', async () => {
     const service: EditorService = TestBed.get(EditorService);
 
+    service.store.dispatch(new EditorActions.UploadFileAction('', 'unnamed.yaml'));
+
     service.HasUnsaveChanges()
       .pipe(take(1))
       .subscribe(value => expect(value).toBeFalsy());
