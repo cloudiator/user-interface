@@ -175,10 +175,12 @@ export class EditorService {
       storedState.editorValue,
       storedState.filename
     ));
+
     // fetch job if existing
-    if (storedState.JobId) {
-      this.jobDataService.findJob(storedState.JobId)
-        .pipe(filter(v => v !== undefined),
+    if (storedState.jobId) {
+      this.jobDataService.findJob(storedState.jobId)
+        .pipe(
+          filter(v => v !== undefined),
           take(1))
         .subscribe(job => {
             this.store.dispatch(new EditorActions.SetEditorJobAction(job));
@@ -208,7 +210,7 @@ export class EditorService {
       <EditorStorageState>{
         editorValue: parsed.editorValue ? parsed.editorValue : '',
         filename: parsed.filename ? parsed.filename : 'unnamed.yaml',
-        JobId: parsed.JobId ? parsed.JobId : null,
+        jobId: parsed.jobId ? parsed.jobId : null,
         queueId: parsed.queueId ? parsed.queueId : null
       } : null;
   }

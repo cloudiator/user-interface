@@ -8,6 +8,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {RootStoreModule} from '../../../root-store';
 import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
 import {SchedulesBottomSheetComponent} from '../schedules-bottom-sheet/schedules-bottom-sheet.component';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('SchedulesViewComponent', () => {
   let component: SchedulesViewComponent;
@@ -24,6 +25,8 @@ describe('SchedulesViewComponent', () => {
         BrowserAnimationsModule,
         ApiModule.forRoot(apiConfigFactory),
         HttpClientModule,
+        AppDialogModule,
+        RouterTestingModule,
         AppDialogModule
       ]
     })

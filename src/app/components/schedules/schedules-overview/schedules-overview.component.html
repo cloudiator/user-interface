@@ -33,7 +33,8 @@
               <div class="list-item"
                    [routerLink]="['/schedules']"
                    [queryParams]="{ id: view.schedule.id }"
-                   [class.is-active]="view.schedule.id === activeViewId">
+                   [class.is-active]="view.schedule.id === activeViewId"
+                   style="cursor: pointer">
                 {{view.job?.name}}
               </div>
             </ng-template>

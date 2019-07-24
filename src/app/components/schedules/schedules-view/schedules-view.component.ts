@@ -1,15 +1,12 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges
-} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ScheduleView} from '../../../model/ScheduleView';
 import * as cytoscape from 'cytoscape';
 import {ProcessDataService} from '../../../services/process-data.service';
-import {map, take} from 'rxjs/operators';
-import * as testData from 'testing/test-data';
+import {DialogService} from '../../../app-dialog/services/dialog.service';
+import {ToastService} from '../../../app-dialog/services/toast.service';
+import {ToastType} from '../../../app-dialog/model/toast';
+import {Router} from '@angular/router';
+import {DeleteScheduleDialogComponent} from '../../../app-dialog/dialogs/delete-schedule-dialog/delete-schedule-dialog.component';
 
 /**
  * View of a selected Schedule, containing a Cytoscape and a bottomsheet for further information
@@ -75,17 +72,6 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
       'width': '5px',
       'overlay-padding': '3px'
     }
-  }, {
-    'selector': 'edge:active',
-    'style': {
-      // 'line-color': 'white',
-      // 'border-color': 'transparent'
-    }
-  }, {
-    'selector': 'edge:selected',
-    'style': {
-      'line-color': 'lightgray'
-    }
   }];
 
   /**
@@ -134,17 +120,6 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
         this.cy.center();
         this.cy.panBy({x: 0, y: -100});
       });
-      this.cy.on('select', 'edge', event => {
-        const target = event.target._private;
-        this.selected = {
-          group: 'edges',
-          data: {
-            id: target.data.id,
-            source: target.source._private.data,
-            target: target.target._private.data
-          }
-        };
-      });
       this.cy.on('select', 'node', event => {
         this.selected = {
           group: 'nodes',
@@ -161,7 +136,10 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
   }
 
   /** @ignore */
-  constructor(private processDataService: ProcessDataService) {
+  constructor(private processDataService: ProcessDataService,
+              private dialogSerivce: DialogService,
+              private toastService: ToastService,
+              private router: Router) {
   }
 
   /** @ignore */
@@ -212,5 +190,25 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
           this.isLoading = false;
         }
       );
+  }
+
+  onDelete() {
+    this.dialogSerivce.open(DeleteScheduleDialogComponent, {data: {
+      scheduleName: this.scheduleView.job.name
+      }})
+      .afterClosed()
+      .subscribe(confirmation => {
+        if (confirmation) {
+          this.processDataService.deleteSchedule(this.scheduleView.schedule.id)
+            .subscribe(
+              () => {
+                this.router.navigateByUrl('/schedules');
+              },
+              err => {
+                console.error(err);
+                this.toastService.show({text: 'Could not delete Schedule', type: ToastType.DANGER});
+              });
+        }
+      });
   }
 }

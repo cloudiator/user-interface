@@ -3,10 +3,11 @@ import {select, Store} from '@ngrx/store';
 import {RuntimeConfigService} from './runtime-config.service';
 import {ToastService} from '../app-dialog/services/toast.service';
 import {Job, JobService} from 'cloudiator-rest-api';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {ToastType} from '../app-dialog/model/toast';
 import {JobDataActions, JobDataSelectors, RootStoreState, RuntimeConfigSelectors} from '../root-store';
-import {find, first, map} from 'rxjs/operators';
+import {find, first, map, tap} from 'rxjs/operators';
+import * as testData from 'testing/test-data';
 
 /**
  * Handles al functionality concerning Jobs.
@@ -29,8 +30,8 @@ export class JobDataService {
    */
   public findJobs(): Observable<Job[]> {
     this.fetchJobs();
-
     return this.store.pipe(select(JobDataSelectors.selectJobs));
+    // return of(testData.allJobs)
   }
 
   /**
@@ -39,7 +40,9 @@ export class JobDataService {
    * @return {Observable<Job>}
    */
   public findJob(id: string): Observable<Job> {
-    return this.findJobs().pipe(map(jobs => jobs.find(job => job.id === id)));
+    this.fetchJobs();
+    return this.findJobs().pipe(
+      map(jobs => jobs.find(job => job.id === id)));
   }
 
   /**
