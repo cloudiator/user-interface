@@ -6,7 +6,7 @@ const getStorageState = (state: State): EditorStorageState => {
   return {
     editorValue: state.value,
     filename: state.filename,
-    JobId: state.editorJob ? state.editorJob.id : undefined,
+    jobId: state.editorJob ? state.editorJob.id : undefined,
     queueId: state.editorQueue ? state.editorQueue.id : undefined
   };
 };
