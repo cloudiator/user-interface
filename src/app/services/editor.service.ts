@@ -17,7 +17,7 @@ import {EditorStorageState} from '../model/EditorStorageState';
 })
 export class EditorService {
 
-  private readonly EDITOR_STORE_KEY = 'editor';
+  public readonly EDITOR_STORE_KEY = 'editor';
 
   /** @ignore */
   constructor(public store: Store<RootStoreState.State>,
@@ -176,8 +176,8 @@ export class EditorService {
       storedState.filename
     ));
     // fetch job if existing
-    if (storedState.JobId) {
-      this.jobDataService.findJob(storedState.JobId)
+    if (storedState.jobId) {
+      this.jobDataService.findJob(storedState.jobId)
         .pipe(filter(v => v !== undefined),
           take(1))
         .subscribe(job => {
@@ -186,29 +186,30 @@ export class EditorService {
             this.jobDataService.jobGraph(job.id)
               .subscribe(graph =>
                 this.store.dispatch(new EditorActions.SetEditorGraphAction(graph)));
+
+            // fetch queue if job was found and queue was found in cache
+            if (storedState.queueId) {
+              this.queueDataService.findQueuedTask(storedState.queueId)
+                .subscribe(queue =>
+                  this.setEditorQueue(queue)
+                );
+            }
           }
         );
     }
-    // fetch queue
-    if (storedState.queueId) {
-      this.queueDataService.findQueuedTask(storedState.queueId)
-        .subscribe(queue =>
-          this.store.dispatch(new EditorActions.SetEditorQueueAction(queue))
-        );
-    }
   }
 
-  private saveEditorState(state: EditorStorageState) {
+  public saveEditorState(state: EditorStorageState) {
     localStorage.setItem(this.EDITOR_STORE_KEY, JSON.stringify(state));
   }
 
-  private loadEditorState(): EditorStorageState {
+  public loadEditorState(): EditorStorageState {
     const parsed: EditorStorageState = JSON.parse(localStorage.getItem(this.EDITOR_STORE_KEY));
     return parsed ?
       <EditorStorageState>{
         editorValue: parsed.editorValue ? parsed.editorValue : '',
         filename: parsed.filename ? parsed.filename : 'unnamed.yaml',
-        JobId: parsed.JobId ? parsed.JobId : null,
+        jobId: parsed.jobId ? parsed.jobId : null,
         queueId: parsed.queueId ? parsed.queueId : null
       } : null;
   }

@@ -149,7 +149,6 @@ export class YamlEditorComponent implements OnInit, OnDestroy {
           // job is valid and stored
           this.editorService.setEditorJob(job);
           this.editorService.setEditorQueue(null);
-          this.isValidating = false;
         },
         err => {
           this.isValidating = false;
@@ -164,7 +163,9 @@ export class YamlEditorComponent implements OnInit, OnDestroy {
           } else {
             this.toastService.show({text: 'Unexpected Error', type: ToastType.DANGER}, true);
           }
-        });
+        },
+        () =>
+          this.isValidating = false);
   }
 
   /**
@@ -175,12 +176,13 @@ export class YamlEditorComponent implements OnInit, OnDestroy {
     this.processDataService.submitEditorSchedule()
       .pipe(take(1))
       .subscribe(queue => {
-      this.editorService.setEditorQueue(queue);
-      this.isSubmitting = false;
-    },
-    err => {
-      this.isSubmitting = false;
-      this.toastService.show({text: 'Unexpected Error', type: ToastType.DANGER}, true);
-    });
+          this.editorService.setEditorQueue(queue);
+        },
+        err => {
+          this.isSubmitting = false;
+          this.toastService.show({text: 'Unexpected Error', type: ToastType.DANGER}, true);
+        },
+        () =>
+          this.isSubmitting = false);
   }
 }

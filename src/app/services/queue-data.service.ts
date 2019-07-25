@@ -16,6 +16,8 @@ import {ToastType} from '../app-dialog/model/toast';
 })
 export class QueueDataService {
 
+  private readonly queuePollingInterval = 1000;
+
   /**
    * Subscription of the queueStatus interval.
    */
@@ -51,10 +53,11 @@ export class QueueDataService {
     const destroy = new Subject<boolean>();
     // poll Server every second
     this.queueStatusSubscription =
-      interval(1000).pipe(
-        takeUntil(destroy),
-        mergeMap(() => this.findQueuedTask(id))
-      ).subscribe((queue: Queue) => {
+      interval(this.queuePollingInterval)
+        .pipe(
+          takeUntil(destroy),
+          mergeMap(() => this.findQueuedTask(id))
+        ).subscribe((queue: Queue) => {
           this.store.dispatch(new EditorActions.SetEditorQueueAction(queue));
           // if queue finished, stop polling
           if (queue.status === 'COMPLETED' || queue.status === 'FAILED') {
