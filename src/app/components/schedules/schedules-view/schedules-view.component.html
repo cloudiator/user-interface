@@ -1,15 +1,19 @@
 <div [class.is-opaque]="!scheduleView"
      style="width: 100%; height: 100%">
   <!--view-->
-  <div [class.is-opaque]="isLoading" style="position: absolute; width: 100%; height: 100%;">
+  <div [class.is-opaque]="isLoading"
+       style="position: absolute; width: 100%; height: 100%;">
     <div id="cy" style="width: 100%; height: 100%;"></div>
     <!--bottom sheet-->
     <app-schedules-bottom-sheet [selected]="selected"></app-schedules-bottom-sheet>
-
+  </div>
+  <!-- empty graph view-->
+  <div *ngIf="noData && !isLoading" class="center-container">
+    <span class="is-size-5">Nothing to show yet</span>
+    <span class="is-size-6">(state: {{scheduleView?.schedule?.state}})</span>
   </div>
   <!--loading screen-->
-  <div *ngIf="isLoading" class="is-flex"
-       style="position: absolute; justify-content: center; align-items: center; width: 100%; height: 100%;">
+  <div *ngIf="isLoading" class="center-container">
   <span class="icon is-large">
     <i class="fas fa-3x fa-spinner fa-pulse"></i>
   </span>

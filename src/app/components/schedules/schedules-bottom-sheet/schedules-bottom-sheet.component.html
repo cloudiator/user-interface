@@ -25,14 +25,24 @@
         <i *ngIf="['ERROR', 'FAILED'].includes(selected?.data.state)" class="fas fa-circle has-text-danger"></i>
       </span>
       </div>
-      <ul>
-        <li>
-          <u>process id</u>: {{selected?.data.id}}
-        </li>
-        <li>
-          <u>ip adress</u>: {{selected?.data.ip}}
-        </li>
-      </ul>
+      <table>
+        <tr>
+          <td><u>process id</u>:</td>
+          <td>{{selected?.data.id}}</td>
+        </tr>
+        <ng-container *ngIf="selected?.data?.ipAddresses?.length !== 0">
+          <tr>
+            <td>
+              <div style="margin-right: 0.25em"><u>ip addresses</u>:</div>
+            </td>
+            <td>
+              <div>
+                <div *ngFor="let ip of selected?.data.ipAddresses">{{ip}}<br></div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </table>
     </div>
   </ng-container>
   <!-- Edge View -->

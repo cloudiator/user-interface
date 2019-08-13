@@ -1,5 +1,9 @@
 @import "~bulma/sass/utilities/mixins";
 
+td {
+  border: none !important;
+}
+
 .bottom-sheet {
   position: absolute;
   padding: 1rem;

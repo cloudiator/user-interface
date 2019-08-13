@@ -3,7 +3,7 @@ import {ProcessDataService} from '../../../services/process-data.service';
 import {merge, Observable, of, Subscription, zip} from 'rxjs';
 import {ScheduleView} from '../../../model/ScheduleView';
 import {JobDataService} from '../../../services/job-data.service';
-import {delay, flatMap, map, mergeAll, mergeMap, tap, zipAll} from 'rxjs/operators';
+import {delay, flatMap, map, mergeAll, mergeMap, repeat, repeatWhen, take, tap, zipAll} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as testData from 'testing/test-data';
 import {flatten} from '@angular/compiler';
