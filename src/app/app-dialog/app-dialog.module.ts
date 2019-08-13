@@ -6,6 +6,7 @@ import {ToastService} from './services/toast.service';
 import {ConfirmNewCloudDialogComponent} from './dialogs/confirm-new-cloud-dialog/confirm-new-cloud-dialog.component';
 import {DeleteCloudDialogComponent} from './dialogs/delete-cloud-dialog/delete-cloud-dialog.component';
 import { DeleteScheduleDialogComponent } from './dialogs/delete-schedule-dialog/delete-schedule-dialog.component';
+import { ScheduleDiagnosticDialogComponent } from './dialogs/schedule-diagnostic-dialog/schedule-diagnostic-dialog.component';
 
 /**
  * Main Module handling App DIalogs and Toasts.
@@ -15,7 +16,8 @@ import { DeleteScheduleDialogComponent } from './dialogs/delete-schedule-dialog/
     ToastComponent,
     ConfirmNewCloudDialogComponent,
     DeleteCloudDialogComponent,
-    DeleteScheduleDialogComponent
+    DeleteScheduleDialogComponent,
+    ScheduleDiagnosticDialogComponent
   ],
   imports: [
     OverlayModule
@@ -28,7 +30,8 @@ import { DeleteScheduleDialogComponent } from './dialogs/delete-schedule-dialog/
     ToastComponent,
     ConfirmNewCloudDialogComponent,
     DeleteCloudDialogComponent,
-    DeleteScheduleDialogComponent
+    DeleteScheduleDialogComponent,
+    ScheduleDiagnosticDialogComponent
   ]
 })
 export class AppDialogModule {

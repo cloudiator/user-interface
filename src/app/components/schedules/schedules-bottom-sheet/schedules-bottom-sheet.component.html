@@ -18,13 +18,24 @@
       </strong>
     </div>
     <div class="bottom-sheet-content content container">
+      <!-- state -->
       <div>
         {{selected?.data.state.toLowerCase()}}
-        <span class="icon">
-        <i *ngIf="selected?.data.state === 'RUNNING'" class="fas fa-circle has-text-success"></i>
-        <i *ngIf="['ERROR', 'FAILED'].includes(selected?.data.state)" class="fas fa-circle has-text-danger"></i>
-      </span>
+        <!-- running icon -->
+        <span *ngIf="selected?.data.state === 'RUNNING'" class="icon">
+          <i class="fas fa-circle has-text-success"></i>
+        </span>
+        <!-- error icon and diagnostic button -->
+        <ng-container *ngIf="['ERROR', 'FAILED'].includes(selected?.data.state)">
+          <span class="icon">
+            <i class="fas fa-circle has-text-danger"></i>
+          </span>
+          <span class="icon">
+            <i class="fas fa-info has-text-grey" (click)="openDiagnostic()"></i>
+          </span>
+        </ng-container>
       </div>
+      <!-- information -->
       <table>
         <tr>
           <td><u>process id</u>:</td>
@@ -42,19 +53,15 @@
             </td>
           </tr>
         </ng-container>
+        <tr>
+          <td>
+            process type:
+          </td>
+          <td>
+            {{selected?.process?.type}}
+          </td>
+        </tr>
       </table>
-    </div>
-  </ng-container>
-  <!-- Edge View -->
-  <ng-container *ngIf="selected?.group === 'edges'">
-    <div class="bottom-sheet-header">
-      <strong [@headerOpenClose]="sheetOpenClose">
-        edge
-      </strong>
-    </div>
-    <div class="bottom-sheet-content content">
-      source: {{selected.data.source.task}} <br>
-      target: {{selected.data.target.task}}
     </div>
   </ng-container>
 </div>

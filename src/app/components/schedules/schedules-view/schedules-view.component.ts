@@ -142,9 +142,16 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
         this.cy.panBy({x: 0, y: -100});
       });
       this.cy.on('select', 'node', event => {
+        const data = event.target._private.data;
+        // find corresponding process of data
+        const process = this.scheduleView.schedule.processes ?
+          this.scheduleView.schedule.processes.find(p => p.id === data.id)
+          : null;
+
         this.selected = {
           group: 'nodes',
-          data: event.target._private.data
+          process: process,
+          data: data
         };
       });
       this.cy.on('unselect', () => {
@@ -169,7 +176,7 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
 
   /** @ignore */
   ngOnChanges(changes: SimpleChanges) {
-    console.log(this.scheduleView)
+    console.log(this.scheduleView);
     // make sure that graph is clear when no schedule view is selected, to prevent flickering on selection
     if (!this.scheduleView && this._cy) {
       this._cy.remove(this.cy.$(() => true));
