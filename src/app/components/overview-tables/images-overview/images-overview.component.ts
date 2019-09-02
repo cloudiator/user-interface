@@ -18,12 +18,12 @@ export class ImagesOverviewComponent extends OverviewTableComponent<Image> imple
     super(activatedRoute, cloudDataService);
     this.title = 'Images';
     this.columns = {
-      providerId: {value: 'provider ID'},
       name: {value: 'Name'},
       os: {
         value: 'OS',
         selectionFn: (v: Image) => v.operatingSystem ? v.operatingSystem.operatingSystemFamily : ''
-      }
+      },
+      providerId: {value: 'provider ID'}
     };
     this.initialSortKey = '';
     this.isLoading$ = cloudDataService.imageIsLoading();

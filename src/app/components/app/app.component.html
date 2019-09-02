@@ -44,6 +44,7 @@
 
     <div class="navbar-end">
       <div class="navbar-item">
+        <div class="has-text-secondary">{{user$ | async}}</div>
         <div class="field is-grouped">
           <p class="control">
             <a class="button is-secondary is-inverted" (click)="authservice.logOut()">

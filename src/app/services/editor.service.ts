@@ -175,6 +175,7 @@ export class EditorService {
       storedState.editorValue,
       storedState.filename
     ));
+
     // fetch job if existing
     if (storedState.jobId) {
       this.jobDataService.findJob(storedState.jobId)

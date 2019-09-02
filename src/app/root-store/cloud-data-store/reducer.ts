@@ -44,6 +44,6 @@ export function cloudDataReducer(state = initialState, action: cloudActions.All)
         locationIsLoading: action.isLoading
       };
     default:
-      return initialState;
+      return state;
   }
 }

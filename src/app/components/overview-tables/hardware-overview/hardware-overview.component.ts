@@ -1,11 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {BehaviorSubject, combineLatest, Subscription} from 'rxjs';
 import {Hardware} from 'cloudiator-rest-api';
 import {CloudDataService} from '../../../services/cloud-data.service';
-import {FormControl} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {OverviewTableComponent} from '../overview-table.component';
-import {map} from 'rxjs/operators';
 
 /**
  * Overview Component showing available Hardware.
@@ -24,7 +21,8 @@ export class HardwareOverviewComponent extends OverviewTableComponent<Hardware> 
       name: {value: 'Name'},
       cores: {value: 'Cores'},
       ram: {value: 'Ram'},
-      disk: {value: 'Disk'}
+      disk: {value: 'Disk'},
+      providerId: {value: 'ProviderId'}
     };
     this.initialSortKey = 'cores';
     this.isLoading$ = cloudDataService.hardwareIsLoading();

@@ -12,12 +12,22 @@
   padding: 7px 5px;
 }
 
+.graph-button {
+  border-top-left-radius: 1em;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 0.6rem 1rem 0.6rem 0.8rem;
+  z-index: 20;
+}
+
 #filename-input {
   max-width: 300px;
   background: transparent;
   color: #{$secondary};
   border: 1px #{$grey-darker} solid;
 }
+
 #filename-input:focus {
   background: #{$white};
   color: #{$black};

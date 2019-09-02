@@ -1,5 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {animate, animateChild, group, query, state, style, transition, trigger} from '@angular/animations';
+import {CloudiatorProcess} from 'cloudiator-rest-api';
+import {DialogService} from '../../../app-dialog/services/dialog.service';
+import {ScheduleDiagnosticDialogComponent} from '../../../app-dialog/dialogs';
 
 /**
  * Bottomsheet component of the ScheduleView.
@@ -95,6 +98,7 @@ export class SchedulesBottomSheetComponent implements OnInit {
    * @param {Selected} value
    */
   @Input() set selected(value: Selected) {
+    console.log(value);
     this._selected = value;
     // open/hide bottomsheet depending if something is selected
     if (value) {
@@ -111,7 +115,7 @@ export class SchedulesBottomSheetComponent implements OnInit {
   sheetOpenClose: 'open' | 'closed' | 'hidden' = this.selected ? 'open' : 'hidden';
 
   /** @ignore */
-  constructor() {
+  constructor(private dialogService: DialogService) {
   }
 
   /** @ignore */
@@ -129,6 +133,10 @@ export class SchedulesBottomSheetComponent implements OnInit {
   onSheetClick() {
   }
 
+  openDiagnostic() {
+    this.dialogService.open(ScheduleDiagnosticDialogComponent, {data: this.selected.process});
+  }
+
 }
 
 /**
@@ -139,6 +147,8 @@ export interface Selected {
    * data of Object.
    */
   data: any;
+
+  process: CloudiatorProcess;
 
   /**
    * type of Object

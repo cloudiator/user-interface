@@ -112,6 +112,12 @@ $app-container-height: calc(100% - #{$navbar-height});
   }
 }
 
+@include touch {
+  .hidden-touch {
+    display: none !important;
+  }
+}
+
 //  text placeholder
 @keyframes placeHolderShimmer{
   0%{

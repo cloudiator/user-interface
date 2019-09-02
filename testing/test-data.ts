@@ -10,10 +10,10 @@ import {
   Location,
   Login,
   OclRequirement,
-  OperatingSystem,
+  OperatingSystem, Port, PortProvided,
   PortRequired,
   Queue,
-  Schedule,
+  Schedule, ServiceBehaviour,
   SingleProcess,
   Token
 } from 'cloudiator-rest-api';
@@ -306,7 +306,7 @@ export const jobTwo: Job = {
     {
       name: 'wiki',
       ports: [
-        {
+        <PortProvided>{
           type: 'PortProvided',
           name: 'WIKIPROV',
           port: 80
@@ -357,12 +357,15 @@ export const jobTwo: Job = {
           constraint: 'nodes->forAll(image.providerId = \'f688f98d-7e62-4404-a672-1fc054fcfa6c\')'
         }
       ],
-      taskType: 'BATCH'
+      behaviour: <ServiceBehaviour>{
+        type: 'ServiceBehaviour',
+        restart: true
+      }
     },
     {
       name: 'database',
       ports: [
-        {
+        <PortProvided>{
           type: 'PortProvided',
           name: 'MARIADBPROV',
           port: 3306
@@ -407,7 +410,10 @@ export const jobTwo: Job = {
           constraint: 'nodes->forAll(image.providerId = \'f688f98d-7e62-4404-a672-1fc054fcfa6c\')'
         }
       ],
-      taskType: 'BATCH'
+      behaviour: <ServiceBehaviour>{
+        type: 'ServiceBehaviour',
+        restart: true
+      }
     },
     {
       name: 'loadbalancer',
@@ -418,7 +424,7 @@ export const jobTwo: Job = {
           updateAction: './mediawiki-tutorial/scripts/lance/nginx.sh configure',
           isMandatory: false
         },
-        {
+        <PortProvided>{
           type: 'PortProvided',
           name: 'LBPROV',
           port: 80
@@ -463,7 +469,10 @@ export const jobTwo: Job = {
           constraint: 'nodes->forAll(image.providerId = \'f688f98d-7e62-4404-a672-1fc054fcfa6c\')'
         }
       ],
-      taskType: 'BATCH'
+      behaviour: <ServiceBehaviour>{
+        type: 'ServiceBehaviour',
+        restart: true
+      }
     }
   ],
   communications: [
@@ -576,7 +585,7 @@ export const JobOne: Job = <Job>{
     {
       name: 'database',
       ports: [
-        {
+        <PortProvided>{
           type: 'PortProvided',
           name: 'MARIADBPROV',
           port: 3306
@@ -617,7 +626,10 @@ export const JobOne: Job = <Job>{
           constraint: 'nodes->forAll(image.providerId = \'ami-0bb24d586ad9956e7\')'
         }
       ],
-      taskType: 'BATCH'
+      behaviour: <ServiceBehaviour>{
+        type: 'ServiceBehaviour',
+        restart: true
+      }
     }
   ],
   communications: null,
@@ -632,7 +644,7 @@ export const JobTwo: Job = <Job>{
     {
       name: 'database',
       ports: [
-        {
+        <PortProvided>{
           type: 'PortProvided',
           name: 'MARIADBPROV',
           port: 3306
@@ -673,7 +685,10 @@ export const JobTwo: Job = <Job>{
           constraint: 'nodes->forAll(image.providerId = \'ami-0bb24d586ad9956e7\')'
         }
       ],
-      taskType: 'BATCH'
+      behaviour: <ServiceBehaviour>{
+        type: 'ServiceBehaviour',
+        restart: true
+      }
     }
   ],
   communications: null,
@@ -694,7 +709,7 @@ export const JobThree: Job = <Job>{
           updateAction: './mediawiki-tutorial/scripts/lance/nginx.sh configure',
           isMandatory: false
         },
-        {
+        <PortProvided>{
           type: 'PortProvided',
           name: 'LBPROV',
           port: 80
@@ -735,7 +750,10 @@ export const JobThree: Job = <Job>{
           constraint: 'nodes->forAll(image.providerId = \'ami-0bb24d586ad9956e7\')'
         }
       ],
-      taskType: 'BATCH'
+      behaviour: <ServiceBehaviour>{
+        type: 'ServiceBehaviour',
+        restart: true
+      }
     },
     {
       name: 'wiki',

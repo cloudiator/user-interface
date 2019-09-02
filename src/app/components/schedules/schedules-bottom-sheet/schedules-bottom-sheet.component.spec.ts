@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SchedulesBottomSheetComponent } from './schedules-bottom-sheet.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {AppDialogModule} from '../../../app-dialog/app-dialog.module';
 
 describe('SchedulesBottomSheetComponent', () => {
   let component: SchedulesBottomSheetComponent;
@@ -11,7 +12,8 @@ describe('SchedulesBottomSheetComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ SchedulesBottomSheetComponent ],
       imports: [
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        AppDialogModule
       ]
     })
     .compileComponents();

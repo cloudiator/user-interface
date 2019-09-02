@@ -26,7 +26,8 @@ const routes: Routes = [
 
   {path: 'locations', component: LocationsOverviewComponent, canActivate: [AuthGuard]},
 
-  {path: 'editor', component: YamlEditorComponent, canActivate: [AuthGuard]},
+  {path: 'editor', component: YamlEditorComponent, data: {graphs: false}, canActivate: [AuthGuard]},
+  {path: 'editor/graphs', component: YamlEditorComponent, data: {graphs: true}, canActivate: [AuthGuard]},
 
   {path: 'schedules', component: SchedulesOverviewComponent},
 
