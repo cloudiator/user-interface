@@ -1,6 +1,6 @@
 import {Component, HostListener, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationStart, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {EditorService} from '../../services/editor.service';
 import {AuthService} from '../../services/auth.service';
 
@@ -31,6 +31,8 @@ export class AppComponent implements OnInit, OnDestroy {
    * toggles Badge of Editor tab if Editor has unsaved changes.
    */
   editorHasUnsavedChanges: boolean;
+
+public user$: Observable<string>;
 
   /**
    * All Subscriptions of this Component.
@@ -69,6 +71,8 @@ export class AppComponent implements OnInit, OnDestroy {
     // hide nav when not logged in
     const s2 = this.authservice.isLoggedIn()
       .subscribe(loggedIn => this.showNav = loggedIn);
+
+    this.user$ = this.authservice.getUser();
 
     this.subscriptions.push(s0, s1, s2);
   }

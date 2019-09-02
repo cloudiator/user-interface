@@ -17,6 +17,7 @@ import {RootStoreModule} from '../../../root-store';
 import {EditorGraphViewComponent} from '../editor-graph-view/editor-graph-view.component';
 import {NodeGraphComponent} from '../node-graph/node-graph.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('YamlEditorComponent', () => {
   let component: YamlEditorComponent;
@@ -37,7 +38,8 @@ describe('YamlEditorComponent', () => {
         HttpClientModule,
         ApiModule.forRoot(apiConfigFactory),
         AppDialogModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        RouterTestingModule
       ],
       providers: [
         EditorService,

@@ -12,6 +12,8 @@ import {EditorService} from '../../../services/editor.service';
 })
 export class YamlGraphComponent implements OnInit {
 
+  public isLoading = false;
+
   /**
    * Graph Style.
    */
@@ -96,13 +98,20 @@ export class YamlGraphComponent implements OnInit {
       this.cy.center();
     });
 
-    this.editorService.getEditorGraph().subscribe(graphData => {
-      if (this.cy && graphData) {
-        this.cy.remove(this.cy.$(() => true));
-        this.cy.add(graphData);
-        this.cy.layout(this.circLayout).run();
+    this.isLoading = true;
+    this.editorService.getEditorGraph().subscribe(
+      graphData => {
+        if (this.cy && graphData) {
+          this.cy.remove(this.cy.$(() => true));
+          this.cy.add(graphData);
+          this.cy.layout(this.circLayout).run();
+        }
+        this.isLoading = false;
+      },
+      () => {
+        this.isLoading = false;
       }
-    });
+    );
   }
 
 }

@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {EditorService} from '../../../services/editor.service';
 import {Subscription} from 'rxjs';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {QueueStatus} from 'cloudiator-rest-api';
+import {Job, QueueStatus} from 'cloudiator-rest-api';
 
 /**
  * Enum representing TAbs of this view.
@@ -59,6 +59,8 @@ export class EditorGraphViewComponent implements OnInit, OnDestroy {
    */
   public isValid = false;
 
+  public job: Job;
+
   /**
    * Status of the Editors Queue object. '' if the Queue is null.
    * @type {"" | QueueStatus}
@@ -89,7 +91,10 @@ export class EditorGraphViewComponent implements OnInit, OnDestroy {
 
   /** @ignore */
   ngOnInit() {
-    this.subscriptions.push(this.editorService.getEditorJob().subscribe(job => this.isValid = !!job));
+    this.subscriptions.push(this.editorService.getEditorJob().subscribe(job => {
+      this.isValid = !!job;
+      this.job = job;
+    }));
     this.subscriptions.push(this.editorService.getEditorQueue().subscribe(queue =>
       this.queueStatus = queue ? queue.status : ''));
   }
@@ -109,7 +114,7 @@ export class EditorGraphViewComponent implements OnInit, OnDestroy {
 
   /**
    * Determines if the given Tab is the currentTab.
-    * @param tab {Tab} Tab to be determined.
+   * @param tab {Tab} Tab to be determined.
    * @return {boolean} true if given Tab is currentTab.
    */
   public isTab(tab: Tab): boolean {

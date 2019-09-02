@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import * as ace from 'brace';
 import {Editor} from 'brace';
 import 'brace/mode/yaml';
@@ -8,9 +8,10 @@ import {ToastService} from '../../../app-dialog/services/toast.service';
 import {ToastType} from '../../../app-dialog/model/toast';
 import {JobDataService} from '../../../services/job-data.service';
 import {EditorService} from '../../../services/editor.service';
-import {take} from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
 import {ProcessDataService} from '../../../services/process-data.service';
 import {Subscription} from 'rxjs';
+import {ActivatedRoute, Router, RoutesRecognized} from '@angular/router';
 
 /**
  * Main View of the Editor View, Hosting the editor and the Graph View.
@@ -57,6 +58,8 @@ export class YamlEditorComponent implements OnInit, OnDestroy {
    */
   public isSubmitting = false;
 
+  public showGraphs = this.activatedRoute.data.pipe(map(data => data.graphs));
+
   /**
    * Ace editor theme
    * @type {string}
@@ -73,6 +76,7 @@ export class YamlEditorComponent implements OnInit, OnDestroy {
     highlightActiveLine: false,
     fadeFoldWidgets: true,
     showLineNumbers: true,
+    scrollPastEnd: 0.5,
     fontSize: 14,
     tabSize: 2,
     wrap: true,
@@ -90,11 +94,14 @@ export class YamlEditorComponent implements OnInit, OnDestroy {
               public jobDataService: JobDataService,
               public processDataService: ProcessDataService,
               public toastService: ToastService,
-              public yamlDataService: YamlDataService) {
+              public yamlDataService: YamlDataService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router) {
   }
 
   /** @ignore */
   ngOnInit() {
+
     this.editor = ace.edit('editor');
     this.editor.getSession().setMode('ace/mode/yaml');
     this.editor.setTheme(`ace/theme/${this.theme}`);
@@ -105,11 +112,19 @@ export class YamlEditorComponent implements OnInit, OnDestroy {
       this.editorService.setEditorValue(this.editor.getValue());
     });
 
+    // dirty hack to fix wrong wrapping of editor content in mobile view
+    setTimeout(() => {
+      this.editor.resize(true);
+    }, 0);
 
-    this.editorService.getEditorValue().pipe(take(1)).subscribe(value => this.editor.setValue(value));
+
+    this.editorService.getEditorValue().pipe(take(1)).subscribe(value => {
+      this.editor.setValue(value);
+      this.editor.clearSelection();
+    });
     this.editorService.getFilename().pipe(take(1)).subscribe(filename => this._filename = filename);
 
-    // Set is valid if EditorJob is not null
+    // Set isValid if EditorJob is not null
     this.subscriptions.push(this.editorService.getEditorJob().subscribe(job => this.isValid = !!job));
   }
 
@@ -132,7 +147,10 @@ export class YamlEditorComponent implements OnInit, OnDestroy {
   onUploadChange(event) {
     this.editorService.uploadFile(event.target.files)
       .then(() => {
-        this.editorService.getEditorValue().pipe(take(1)).subscribe(value => this.editor.setValue(value));
+        this.editorService.getEditorValue().pipe(take(1)).subscribe(value => {
+          this.editor.setValue(value);
+          this.editor.clearSelection();
+        });
         this.editorService.getFilename().pipe(take(1)).subscribe(filename => this._filename = filename);
       })
       .catch();
