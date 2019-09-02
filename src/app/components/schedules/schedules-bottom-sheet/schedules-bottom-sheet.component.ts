@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {animate, animateChild, group, query, state, style, transition, trigger} from '@angular/animations';
 import {CloudiatorProcess} from 'cloudiator-rest-api';
 import {DialogService} from '../../../app-dialog/services/dialog.service';
-import {ScheduleDiagnosticDialogComponent} from '../../../app-dialog/dialogs/schedule-diagnostic-dialog/schedule-diagnostic-dialog.component';
+import {ScheduleDiagnosticDialogComponent} from '../../../app-dialog/dialogs';
 
 /**
  * Bottomsheet component of the ScheduleView.
