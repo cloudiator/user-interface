@@ -50,6 +50,11 @@ export class QueueDataService {
       this.queueStatusSubscription.unsubscribe();
     }
 
+    // cancel if id is empty
+    if (!id) {
+      return;
+    }
+
     const destroy = new Subject<boolean>();
     // poll Server every second
     this.queueStatusSubscription =

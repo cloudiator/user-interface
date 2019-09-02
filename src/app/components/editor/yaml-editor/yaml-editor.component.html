@@ -58,7 +58,7 @@
       </div>
     </div>
     <!--  Graphs Button Mobile view  -->
-    <a class="graph-button card title is-6 is-hidden-desktop"
+    <a *ngIf="isValid" class="graph-button card title is-6 is-hidden-desktop"
        routerLink="/editor/graphs">
       Graphs
       <span class="icon">
