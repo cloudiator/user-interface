@@ -8,6 +8,8 @@ import {ToastType} from '../../../app-dialog/model/toast';
 import {Router} from '@angular/router';
 import {DeleteScheduleDialogComponent} from '../../../app-dialog/dialogs/delete-schedule-dialog/delete-schedule-dialog.component';
 import {CloudiatorProcess} from 'cloudiator-rest-api/model/cloudiatorProcess';
+import {Stylesheet} from 'cytoscape';
+import Edge = cytoscape.Css.Edge;
 
 /**
  * View of a selected Schedule, containing a Cytoscape and a bottomsheet for further information
@@ -43,55 +45,59 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
   /**
    * Style of graph.
    */
-  readonly style = [{
-    'selector': 'node',
-    'style': {
-      'width': '50%',
-      'height': '50%',
-      'content': 'data(task)',
-      'font-size': '12px',
-      'text-valign': 'center',
-      'text-halign': 'center',
-      'background-color': '#00447a',
-      'text-outline-color': '#00447a',
-      'text-outline-width': '1px',
-      'text-wrap': 'wrap',
-      'color': '#fff',
-      'z-index': '10'
-    }
-  }, {
-    'selector': 'node:selected',
-    'style': {
-      'background-color': 'lightgray',
-      'text-outline-color': 'gray'
-    }
-  }, {
-    'selector': 'edge',
-    'style': {
-      'opacity': '0.9',
-      'line-color': '#92acbe',
-      'width': '5px',
-      'overlay-padding': '3px'
-    }
-  }, {
-    'selector': '.running',
-    'style': {
-      'background-color': 'hsl(141, 71%,  48%)',
-      'text-outline-color': 'hsl(141, 71%,  48%)',
-    }
-  }, {
-    'selector': '.pending',
-    'style': {
-      'background-color': 'hsl(48,  100%, 67%)',
-      'text-outline-color': 'hsl(48,  100%, 67%)',
-    }
-  }, {
-    'selector': '.error',
-    'style': {
-      'background-color': 'hsl(348, 100%, 61%)',
-      'text-outline-color': 'hsl(348, 100%, 61%)',
-    }
-  }];
+  readonly style: any = [
+    {
+      'selector': 'node',
+      'style': {
+        'shape': 'ellipse',
+        'width': '50',
+        'height': '50',
+        'content': 'data(task)',
+        'font-size': '12px',
+        'text-valign': 'center',
+        'text-halign': 'center',
+        'background-color': '#00447a',
+        'text-outline-color': '#00447a',
+        'text-outline-width': '1px',
+        'text-wrap': 'wrap',
+        'color': '#fff',
+        'z-index': '10'
+      }
+    }, {
+      'selector': 'node:selected',
+      'style': {
+        'background-blacken': '-0.2'
+      }
+    }, {
+      'selector': 'edge',
+      'style': {
+        'curve-style': 'bezier',
+        'opacity': '0.9',
+        'line-color': '#92acbe',
+        'width': '5px',
+        'overlay-opacity': '0',
+        'source-arrow-shape': 'triangle-backcurve',
+        'source-arrow-color': '#92acbe'
+      }
+    }, {
+      'selector': '.running',
+      'style': {
+        'background-color': 'hsl(141, 71%,  48%)',
+        'text-outline-color': 'hsl(141, 71%,  48%)',
+      }
+    }, {
+      'selector': '.pending',
+      'style': {
+        'background-color': 'hsl(48,  100%, 67%)',
+        'text-outline-color': 'hsl(48,  100%, 67%)',
+      }
+    }, {
+      'selector': '.error',
+      'style': {
+        'background-color': 'hsl(348, 100%, 61%)',
+        'text-outline-color': 'hsl(348, 100%, 61%)'
+      }
+    }];
 
   /**
    * Graph Sorter.

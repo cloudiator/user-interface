@@ -17,7 +17,7 @@ export class YamlGraphComponent implements OnInit {
   /**
    * Graph Style.
    */
-  readonly style = [{
+  readonly style: any = [{
     'selector': 'node',
     'style': {
       'width': '50%',
@@ -35,15 +35,13 @@ export class YamlGraphComponent implements OnInit {
   }, {
     'selector': 'edge',
     'style': {
+      'curve-style': 'bezier',
       'opacity': '0.9',
       'line-color': '#92acbe',
       'width': '5px',
-      'overlay-padding': '3px'
-    }
-  }, {
-    'selector': 'edge.unhighlighted',
-    'style': {
-      'opacity': '0.05'
+      'overlay-opacity': '0',
+      'source-arrow-shape': 'triangle-backcurve',
+      'source-arrow-color': '#92acbe'
     }
   }];
 
