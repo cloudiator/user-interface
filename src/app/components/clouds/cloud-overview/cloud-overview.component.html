@@ -7,27 +7,28 @@
     </div>
   </div>
 
-  <section class="section">
-    <div class="is-flowing is-gaping">
+<!--  <section class="section">-->
+    <div class="container is-flowing is-gaping">
 
       <ng-container *ngIf="!(cloudIsLoading$ | async); else cloudLoader">
         <app-cloud-card *ngFor="let cloud of clouds" [cloud]="cloud"></app-cloud-card>
       </ng-container>
       <ng-template #cloudLoader>
-        <div class="card button is-secondary is-hoverable"
+        <div class="card button is-hoverable"
              style="min-width: 15em; min-height: 5em; padding: 0 0; display: flex; flex-direction: column; ">
-          <div class="text-loading-animation" style="border-radius: 3rem; width: 11em; margin-bottom: 0.5em">&#8205;</div>
+          <div class="text-loading-animation" style="border-radius: 3rem; width: 11em; margin-bottom: 0.5em">&#8205;
+          </div>
           <div class="text-loading-animation" style="border-radius: 3rem; width: 10em; height: 1em">&#8205;</div>
         </div>
       </ng-template>
 
       <!-- Add new cloud button -->
-      <a class="card button has-background-grey-lighter is-hoverable" routerLink="/new-cloud" routerLinkActive="active"
-         style="min-width: 15em; min-height: 5em">
+      <a class="add-button card button is-hoverable" routerLink="/new-cloud"
+         routerLinkActive="active">
     <span class="icon is-large" style="width: 100%; height: 100%;">
     <i class="fas fa-plus fa-3x"></i>
     </span>
       </a>
     </div>
-  </section>
+<!--  </section>-->
 </div>

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Cloud, CloudService, Hardware, Image, NewCloud, Location} from 'cloudiator-rest-api';
-import {Observable, of, pipe} from 'rxjs';
+import {Observable, of, pipe, throwError} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {catchError, finalize, map, take, timeout} from 'rxjs/operators';
 import {HttpResponse} from '@angular/common/http';
@@ -55,15 +55,15 @@ export class CloudDataService {
    * Send a delete cloud request for the given id
    * @param id {string} id of cloud to be deleted
    */
-  public deleteCloud(id: string) {
-    this.cloudApiService.deleteCloud(id).subscribe(
-      () => {
-      },
-      err => {
-        console.error('could not delete Cloud');
-        this.toastService.show({text: 'could not delete Cloud', type: ToastType.DANGER}, true);
-      }
-    );
+  public deleteCloud(id: string): Observable<any> {
+    return this.cloudApiService.deleteCloud(id)
+      .pipe(
+        catchError(err => {
+          console.error('could not delete Cloud');
+          this.toastService.show({text: 'could not delete Cloud', type: ToastType.DANGER}, true);
+          return throwError(err);
+        })
+      );
   }
 
   public cloudIsLoading(): Observable<boolean> {

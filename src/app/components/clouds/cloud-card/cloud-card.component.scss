@@ -1,0 +1,66 @@
+@import "~bulma/sass/utilities/mixins";
+
+.cloud-card {
+  display: table;
+  min-width: 15em;
+  min-height: 5em;
+  clear: both;
+  overflow: hidden;
+}
+
+.hero-body {
+  z-index: 3;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center
+}
+
+.api-text {
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
+
+.username-text {
+  white-space: normal;
+}
+
+
+@include mobile {
+  .cloud-card {
+    width: 95vw;
+  }
+}
+
+.public-icon {
+  position: absolute;
+  top: 0.5em;
+  left: 0.5em;
+}
+
+.background-logo {
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
+  z-index: 0;
+  width: 100px;
+  opacity: 0.3;
+}
+
+.background-aws-logo {
+  position: absolute;
+  right: -20px;
+  bottom: 5px;
+  z-index: 0;
+  width: 100px;
+  opacity: 0.3;
+}
+
+.background-default-logo {
+  position: absolute;
+  right: -20px;
+  bottom: -10px;
+  z-index: 0;
+  width: 100px;
+  opacity: 0.3;
+}

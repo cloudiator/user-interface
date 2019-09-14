@@ -3,7 +3,7 @@
 
   <div class="navbar-brand">
     <a class="navbar-item" routerLink="/" routerLinkActive="active">
-      <img src="assets/logo_sm.png">
+      <img src="assets/logo_sm.png" class="" alt="Logo">
       <p class="is-size-4 has-text-secondary">Cloudiator</p>
     </a>
 
@@ -20,22 +20,30 @@
 
     <!-- navbar entries -->
     <div class="navbar-start">
-      <a class="navbar-item" routerLink="/clouds" routerLinkActive="active">
+      <a class="navbar-item" routerLink="/clouds" routerLinkActive="is-active">
         Clouds
       </a>
-      <a class="navbar-item" routerLink="/hardware" routerLinkActive="active">
-        Hardware
-      </a>
-      <a class="navbar-item" routerLink="/images" routerLinkActive="active">
-        Images
-      </a>
-      <a class="navbar-item" routerLink="/locations" routerLinkActive="active">
-        Locations
-      </a>
-      <a class="navbar-item" routerLink="/schedules" routerLinkActive="active">
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          Resources
+          <!--          <span class="icon"><i class="fas fa-chevron-down"></i></span>-->
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" routerLink="/hardware" routerLinkActive="is-active">
+            Hardware
+          </a>
+          <a class="navbar-item" routerLink="/images" routerLinkActive="is-active">
+            Images
+          </a>
+          <a class="navbar-item" routerLink="/locations" routerLinkActive="is-active">
+            Locations
+          </a>
+        </div>
+      </div>
+      <a class="navbar-item" routerLink="/schedules" routerLinkActive="is-active">
         Schedules
       </a>
-      <a class="navbar-item" routerLink="/editor" routerLinkActive="active">
+      <a class="navbar-item" routerLink="/editor" routerLinkActive="is-active">
         <span class="is-badge-secondary  is-badge-small" data-badge="" [class.badge]="editorHasUnsavedChanges">
           Editor
         </span>
@@ -47,8 +55,8 @@
         <div class="has-text-secondary">{{user$ | async}}</div>
         <div class="field is-grouped">
           <p class="control">
-            <a class="button is-secondary is-inverted" (click)="authservice.logOut()">
-              <span class="icon">
+            <a class="is-inverted" (click)="authservice.logOut()" style="margin-left: 0.5em">
+              <span class="icon has-text-secondary">
                 <i class="fas fa-sign-out-alt"></i>
               </span>
             </a>
@@ -61,6 +69,6 @@
 
 </nav>
 
-<div class="app-container" [class.no-nav-app-container]="!showNav">
+<div class="app-container has-background-light" [class.no-nav-app-container]="!showNav">
   <router-outlet></router-outlet>
 </div>

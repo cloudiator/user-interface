@@ -1,12 +1,18 @@
 <!--<div class="container">-->
-<div class="level is-mobile">
-  <div class="level-left">
-    <div class="hero" *ngIf="cloud">
+<div class="header-level level is-mobile">
+  <div class="level-left" style="max-width: 90%">
+    <div class="hero is-small" *ngIf="cloud">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title">
-            {{cloud.api.providerName}}
-          </h1>
+                    <h1 class="title">
+          <div class="is-flex" style="align-items: center">
+            <div class="">{{cloud.api.providerName}}</div>
+            <span class="public-icon icon is-small"
+                  [class.is-invisible]="cloud.cloudType === 'PUBLIC'">
+              <i class="fas fa-lock has-text-grey-light"></i>
+             </span>
+          </div>
+                    </h1>
           <h2 class="subtitle">
             {{cloud.credential.user}}
           </h2>
@@ -22,100 +28,161 @@
       </span>
     </div>
   </div>
+
+  <img *ngIf="backgroundSelector('openstack')"
+       class="background-logo" src="assets/OpenStack-Logo.svg">
+  <img *ngIf="backgroundSelector('aws')"
+       class="background-aws-logo" src="assets/AWS-Logo.svg">
+  <img *ngIf="backgroundSelector('gcp')"
+       class="background-logo" src="assets/GCP-Logo.svg">
 </div>
 
-<div class="is-divider"></div>
-
-<section class="section">
-  <div class="columns">
+<section class="section" style="padding-top: 0">
+  <div class="columns is-multiline">
     <!-- hardware table -->
-    <div class="column">
+    <div class="column is-half-tablet is-one-third-fullhd">
       <div class="title is-4"
            [routerLink]="['/hardware']"
            [queryParams]="{ cloud: cloud? cloud.id: null}">
         Hardware
       </div>
       <div class="table-container card">
-        <table cdk-table class="table is-fullwidth is-striped is-hoverable" *ngIf="hardwareDataSource"
-               [dataSource]="hardwareDataSource.value">
+        <ng-container *ngIf="!(hardwareIsLoading$ | async); else loader">
+          <table cdk-table class="table is-fullwidth is-striped is-hoverable" *ngIf="hardwareDataSource"
+                 [dataSource]="hardwareDataSource.value">
 
-          <!-- Name Definition -->
-          <ng-container cdkColumnDef="name">
-            <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable">
-              Name
-            </th>
-            <td cdk-cell *cdkCellDef="let row"> {{row.name}}</td>
-          </ng-container>
+            <!-- Name Definition -->
+            <ng-container cdkColumnDef="name">
+              <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable">
+                Name
+              </th>
+              <td cdk-cell *cdkCellDef="let row"> {{row.name}}</td>
+            </ng-container>
 
-          <!-- Ram Definition -->
-          <ng-container cdkColumnDef="ram">
-            <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable">
-              Ram
-            </th>
-            <td cdk-cell *cdkCellDef="let row"> {{row.ram}}</td>
-          </ng-container>
+            <!-- Ram Definition -->
+            <ng-container cdkColumnDef="ram">
+              <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable">
+                Ram
+              </th>
+              <td cdk-cell *cdkCellDef="let row"> {{row.ram}}</td>
+            </ng-container>
 
-          <!-- Cores Definition -->
-          <ng-container cdkColumnDef="cores">
-            <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable">
-              Cores
-            </th>
-            <td cdk-cell *cdkCellDef="let row"> {{row.cores}}</td>
-          </ng-container>
+            <!-- Cores Definition -->
+            <ng-container cdkColumnDef="cores">
+              <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable">
+                Cores
+              </th>
+              <td cdk-cell *cdkCellDef="let row"> {{row.cores}}</td>
+            </ng-container>
 
-          <!-- Disk Definition -->
-          <ng-container cdkColumnDef="disk">
-            <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable">
-              Disk
-            </th>
-            <td cdk-cell *cdkCellDef="let row"> {{row.disk}}</td>
-          </ng-container>
+            <!-- Disk Definition -->
+            <ng-container cdkColumnDef="disk">
+              <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable">
+                Disk
+              </th>
+              <td cdk-cell *cdkCellDef="let row"> {{row.disk}}</td>
+            </ng-container>
 
-          <!-- Header and Row Declarations -->
-          <tr cdk-header-row *cdkHeaderRowDef="['name', 'cores', 'ram', 'disk']; sticky: true"></tr>
-          <tr cdk-row *cdkRowDef="let row; columns: ['name', 'cores', 'ram', 'disk']"
-              [routerLink]="['/hardware']"
-              [queryParams]="{ id: row.id }"></tr>
-        </table>
+            <!-- Header and Row Declarations -->
+            <tr cdk-header-row *cdkHeaderRowDef="['name', 'cores', 'ram', 'disk']; sticky: true"></tr>
+            <tr cdk-row *cdkRowDef="let row; columns: ['name', 'cores', 'ram', 'disk']"
+                [routerLink]="['/hardware']"
+                [queryParams]="{ id: row.id }"></tr>
+          </table>
+        </ng-container>
       </div>
     </div>
 
     <!-- Images table -->
-    <div class="column">
+    <div class="column is-half-tablet is-one-third-fullhd">
       <div class="title is-4"
            [routerLink]="['/images']"
            [queryParams]="{ cloud: cloud? cloud.id: null}">Images
       </div>
       <div class="table-container card">
-        <table cdk-table class="table is-fullwidth is-striped is-hoverable" *ngIf="imagesDataSource"
-               [dataSource]="imagesDataSource.value">
+        <ng-container *ngIf="!(imageIsLoading$ | async); else loader">
+          <table cdk-table class="table is-fullwidth is-striped is-hoverable" *ngIf="imagesDataSource"
+                 [dataSource]="imagesDataSource.value">
 
-          <!-- Name Definition -->
-          <ng-container cdkColumnDef="name">
-            <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable">
-              Name
-            </th>
-            <td cdk-cell *cdkCellDef="let row"> {{row.name}}</td>
-          </ng-container>
+            <!-- Name Definition -->
+            <ng-container cdkColumnDef="name">
+              <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable">
+                Name
+              </th>
+              <td cdk-cell *cdkCellDef="let row"> {{row.name}}</td>
+            </ng-container>
 
-          <!-- OS Definition -->
-          <ng-container cdkColumnDef="os">
-            <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable">
-              OS
-            </th>
-            <td cdk-cell *cdkCellDef="let row"> {{row.operatingSystem ? row.operatingSystem.operatingSystemFamily :
-              ''}}
-            </td>
-          </ng-container>
+            <!-- OS Definition -->
+            <ng-container cdkColumnDef="os">
+              <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable">
+                OS
+              </th>
+              <td cdk-cell *cdkCellDef="let row"> {{row.operatingSystem ? row.operatingSystem.operatingSystemFamily :
+                  ''}}
+              </td>
+            </ng-container>
 
-          <!-- Header and Row Declarations -->
-          <tr cdk-header-row *cdkHeaderRowDef="['name', 'os']; sticky: true"></tr>
-          <tr cdk-row *cdkRowDef="let row; columns: ['name', 'os']"
-              [routerLink]="['/images']"
-              [queryParams]="{ id: row.id }"></tr>
-        </table>
+            <!-- Header and Row Declarations -->
+            <tr cdk-header-row *cdkHeaderRowDef="['name', 'os']; sticky: true"></tr>
+            <tr cdk-row *cdkRowDef="let row; columns: ['name', 'os']"
+                [routerLink]="['/images']"
+                [queryParams]="{ id: row.id }"></tr>
+          </table>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- Locations table-->
+    <div class="column is-half-tablet is-one-third-fullhd">
+      <div class="title is-4"
+           [routerLink]="['/locations']"
+           [queryParams]="{ cloud: cloud? cloud.id: null}">Locations
+      </div>
+      <div class="table-container card">
+        <ng-container *ngIf="!(locationIsLoading$ | async); else loader">
+          <table cdk-table class="table is-fullwidth is-striped is-hoverable" *ngIf="locationDataSource"
+                 [dataSource]="locationDataSource.value">
+
+            <!-- Name Definition -->
+            <ng-container cdkColumnDef="name">
+              <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable">
+                Name
+              </th>
+              <td cdk-cell *cdkCellDef="let row"> {{row.name}}</td>
+            </ng-container>
+
+            <!-- Country Definition -->
+            <ng-container cdkColumnDef="country">
+              <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable">
+                Country
+              </th>
+              <td cdk-cell *cdkCellDef="let row"> {{row.geoLocation ? row.geoLocation.country : ''}}
+              </td>
+            </ng-container>
+
+            <!-- City Definition -->
+            <ng-container cdkColumnDef="city">
+              <th cdk-header-cell *cdkHeaderCellDef class="is-unselectable">
+                City
+              </th>
+              <td cdk-cell *cdkCellDef="let row"> {{row.geoLocation ? row.geoLocation.city : ''}}
+              </td>
+            </ng-container>
+
+            <!-- Header and Row Declarations -->
+            <tr cdk-header-row *cdkHeaderRowDef="['name', 'country', 'city']; sticky: true"></tr>
+            <tr cdk-row *cdkRowDef="let row; columns: ['name', 'country', 'city']"
+                [routerLink]="['/images']"
+                [queryParams]="{ id: row.id }"></tr>
+          </table>
+        </ng-container>
       </div>
     </div>
   </div>
 </section>
 <!--</div>-->
+<ng-template #loader>
+  <div class="loading-placeholder has-background-secondary">
+    <div class="big-loading-animation">&#8205;</div>
+  </div>
+</ng-template>
