@@ -50,6 +50,7 @@
     "@angular/compiler-cli": "^8.1.1",
     "@angular/language-service": "^8.1.1",
     "@compodoc/compodoc": "^1.1.10",
+    "@types/cytoscape": "^3.8.1",
     "@types/jasmine": "^2.8.16",
     "@types/jasminewd2": "^2.0.6",
     "@types/node": "^10.14.12",

@@ -96,6 +96,8 @@ export class EditorService {
   setEditorQueue(queue: Queue) {
     if (queue) {
       this.queueDataService.listenToQueueTaskStatus(queue.id);
+    } else {
+      this.queueDataService.listenToQueueTaskStatus(null);
     }
     this.store.dispatch(new EditorActions.SetEditorQueueAction(queue));
   }
