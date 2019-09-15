@@ -79,11 +79,11 @@ describe('HttpErrorInterceptor', () => {
       return new Promise(async resolve => {
         http.get('/').subscribe(
           () => fail('request should fail'),
-          () => fail('error should have been handled earlier'),
           () => {
             httpMock.verify();
             resolve();
-          }
+          },
+          () => fail('request should error')
         );
 
         const httpRequest = httpMock.expectOne('/');

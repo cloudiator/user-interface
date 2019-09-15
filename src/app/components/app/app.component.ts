@@ -1,5 +1,5 @@
 import {Component, HostListener, OnChanges, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, NavigationStart, Router} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, NavigationStart, Router} from '@angular/router';
 import {Observable, Subscription} from 'rxjs';
 import {EditorService} from '../../services/editor.service';
 import {AuthService} from '../../services/auth.service';
@@ -11,7 +11,7 @@ import {AuthService} from '../../services/auth.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
 
@@ -32,7 +32,7 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   editorHasUnsavedChanges: boolean;
 
-public user$: Observable<string>;
+  public user$: Observable<string>;
 
   /**
    * All Subscriptions of this Component.

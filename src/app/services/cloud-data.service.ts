@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Cloud, CloudService, Hardware, Image, NewCloud, Location} from 'cloudiator-rest-api';
-import {Observable, of, pipe} from 'rxjs';
+import {combineLatest, forkJoin, interval, Observable, of, pipe, Subscription, throwError} from 'rxjs';
 import {select, Store} from '@ngrx/store';
-import {catchError, finalize, map, take, timeout} from 'rxjs/operators';
+import {catchError, filter, finalize, map, sequenceEqual, switchMap, switchMapTo, take, tap, timeout, zipAll} from 'rxjs/operators';
 import {HttpResponse} from '@angular/common/http';
 import {RuntimeConfigService} from './runtime-config.service';
 import {ToastService} from '../app-dialog/services/toast.service';
 import {ToastType} from '../app-dialog/model/toast';
 import {CloudDataActions, CloudDataSelectors, RootStoreState, RuntimeConfigSelectors} from '../root-store';
+import {zip} from 'lodash';
 
 /**
  * Local layer between the cloud swagger service and Components, handles the redux store management of clouds.
@@ -16,6 +17,8 @@ import {CloudDataActions, CloudDataSelectors, RootStoreState, RuntimeConfigSelec
   providedIn: 'root'
 })
 export class CloudDataService {
+
+  private cloudFetcher: Subscription;
 
   /** @ignore **/
   constructor(private cloudApiService: CloudService,
@@ -55,15 +58,15 @@ export class CloudDataService {
    * Send a delete cloud request for the given id
    * @param id {string} id of cloud to be deleted
    */
-  public deleteCloud(id: string) {
-    this.cloudApiService.deleteCloud(id).subscribe(
-      () => {
-      },
-      err => {
-        console.error('could not delete Cloud');
-        this.toastService.show({text: 'could not delete Cloud', type: ToastType.DANGER}, true);
-      }
-    );
+  public deleteCloud(id: string): Observable<any> {
+    return this.cloudApiService.deleteCloud(id)
+      .pipe(
+        catchError(err => {
+          console.error('could not delete Cloud');
+          this.toastService.show({text: 'could not delete Cloud', type: ToastType.DANGER}, true);
+          return throwError(err);
+        })
+      );
   }
 
   public cloudIsLoading(): Observable<boolean> {
@@ -152,7 +155,11 @@ export class CloudDataService {
    * Fetches all clouds from the Server and saves them in the Redux store.
    * before sending the request, the config file must be loaded to grant the correct api url
    */
-  private fetchClouds() {
+  public fetchClouds() {
+
+    if (this.cloudFetcher) {
+      this.cloudFetcher.unsubscribe();
+    }
 
     // fetch Clouds
     this.store.dispatch(new CloudDataActions.SetCloudIsLoading(true));
@@ -160,6 +167,7 @@ export class CloudDataService {
       .subscribe(
         clouds => {
           this.store.dispatch(new CloudDataActions.SetCloudsAction(clouds));
+          this.store.dispatch(new CloudDataActions.SetCloudIsLoading(false));
         },
         err => {
           this.store.dispatch(new CloudDataActions.SetCloudIsLoading(false));
@@ -167,7 +175,6 @@ export class CloudDataService {
           this.toastService.show({text: 'could not fetch clouds', type: ToastType.DANGER}, false);
         },
         () => {
-          this.store.dispatch(new CloudDataActions.SetCloudIsLoading(false));
         }
       );
   }
@@ -175,7 +182,7 @@ export class CloudDataService {
   /**
    * Fetches Hardware from server and puts it into the Redux store.
    */
-  private fetchHardware() {
+  public fetchHardware() {
     // fetch Hardware
     this.store.dispatch(new CloudDataActions.SetHardwareIsLoading(true));
     this.cloudApiService.findHardware()
@@ -196,7 +203,7 @@ export class CloudDataService {
   /**
    * Feteches Images from the server and puts them into the Redux store.
    */
-  private fetchImages() {
+  public fetchImages() {
     // fetch Images
     this.store.dispatch(new CloudDataActions.SetImageIsLoading(true));
     this.cloudApiService.findImages()
@@ -217,7 +224,7 @@ export class CloudDataService {
   /**
    * Fetches Locations form the server and puts them into the Redux store.
    */
-  private fetchLocations() {
+  public fetchLocations() {
     // fetch Images
     this.store.dispatch(new CloudDataActions.SetLocationIsLoading(true));
     this.cloudApiService.findLocations()

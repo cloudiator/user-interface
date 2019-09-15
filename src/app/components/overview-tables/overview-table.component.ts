@@ -5,6 +5,7 @@ import {FormControl} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {CloudDataService} from '../../services/cloud-data.service';
 import {TableColumns} from '../../model/TableColumns';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-overview-table',
@@ -24,6 +25,8 @@ export class OverviewTableComponent<T> implements OnInit, OnDestroy {
   filter: (data: T[], searchTerm: string) => T[];
 
   data: Observable<T[]> = of([]);
+
+  fetchFn: () => void;
 
   /**
    * Datasource for table.
@@ -125,6 +128,10 @@ export class OverviewTableComponent<T> implements OnInit, OnDestroy {
 
     this.sortKey.next(key);
     this.sortDirection.next('asc');
+  }
+
+  fetchData() {
+    this.fetchFn();
   }
 
 }

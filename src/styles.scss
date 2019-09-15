@@ -20,7 +20,8 @@ $primary-invert: $blue-invert;
 $secondary: $light-blue;
 $secondary-invert: $light-blue-invert;
 
-$navbar-dropdown-background-color: $secondary;
+//$navbar-dropdown-background-color: $secondary;
+$navbar-item-active-color: $primary;
 
 $custom-colors: ("secondary": ($secondary, $secondary-invert));
 
@@ -32,6 +33,8 @@ $tabs-link-active-border-bottom-color: $secondary;
 //$link: $black;
 $list-item-active-background-color: $secondary;
 $list-radius: 0px;
+
+$navbar-breakpoint: $tablet;
 
 @import "../node_modules/bulma/bulma";
 @import "../node_modules/bulma/sass/utilities/mixins";
@@ -148,7 +151,7 @@ $app-container-height: calc(100% - #{$navbar-height});
   animation-name: placeHolderShimmer;
   animation-timing-function: linear;
   background: $secondary;
-  background: linear-gradient(to right, rgba(238,238,238,0.3) 8%, rgba(255,255,255,0.1) 18%, rgba(238,238,238,0.3) 33%);
+  background: linear-gradient(to right, rgba(238,238,238,0.7) 8%, rgba(255,255,255,0.4) 18%, rgba(238,238,238,0.7) 33%);
   background-size: 800px 104px;
   border-radius: 3rem;
   //height: 96px;

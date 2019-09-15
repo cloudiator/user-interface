@@ -7,7 +7,7 @@
 <!--</div>-->
 <div class="columns fullsize-container is-gapless is-mobile is-clipped" style="height:100%; width: 100%;">
   <!-- Editor Side -->
-  <div class="column is-half-desktop" [class.is-hidden-touch]="(showGraphs|async)">
+  <div class="column is-half-tablet" [class.is-hidden-touch]="(showGraphs|async)">
     <div class="editor-container">
       <div class="editor-header ace-{{theme}}">
         <!-- Editor Header -->
@@ -58,7 +58,7 @@
       </div>
     </div>
     <!--  Graphs Button Mobile view  -->
-    <a *ngIf="isValid" class="graph-button card title is-6 is-hidden-desktop"
+    <a *ngIf="isValid" class="graph-button card title is-6 is-hidden-tablet"
        routerLink="/editor/graphs">
       Graphs
       <span class="icon">
@@ -67,7 +67,7 @@
     </a>
   </div>
   <!-- Right Side -->
-  <div class="column " [class.is-hidden-touch]="!(showGraphs|async)">
+  <div class="column " [class.is-hidden-mobile]="!(showGraphs|async)">
     <app-editor-graph-view></app-editor-graph-view>
   </div>
 </div>

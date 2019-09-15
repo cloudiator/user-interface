@@ -9,13 +9,13 @@
             [class.is-active]="isTab(tab.JOB)"
             (click)="switchTab(tab.JOB)"
             [@tabEnterAnimation]
-            style="overflow-x: hidden; flex-basis: 0">
+            style="overflow: hidden; flex-basis: 0">
           <a>Job</a></li>
         <li *ngIf="queueStatus !== ''"
             [class.is-active]="isTab(tab.NODE)"
             (click)="switchTab(tab.NODE)"
             [@tabEnterAnimation]
-            style="overflow-x: hidden; flex-basis: 0">
+            style="overflow: hidden; flex-basis: 0">
           <a>
             Schedule
             <span *ngIf="queueStatus === 'RUNNING' || queueStatus === 'SCHEDULED'" class="icon is-medium">
@@ -39,7 +39,7 @@
   <ng-template #noValidation>
     <div class="no-validation-container is-flex">Nothing to show</div>
   </ng-template>
-  <a class="editor-button card title is-6 is-hidden-desktop"
+  <a class="editor-button card title is-6 is-hidden-tablet"
      routerLink="/editor">
     <span class="icon">
     <i class="fas fa-arrow-left"></i>

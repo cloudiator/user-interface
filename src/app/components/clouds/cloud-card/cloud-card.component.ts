@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Cloud} from 'cloudiator-rest-api';
+import {animate, style, transition, trigger} from '@angular/animations';
 
 /**
  * A card that represents a single cloud in the CloudOverviewComponent.
@@ -22,5 +23,19 @@ export class CloudCardComponent implements OnInit {
 
   /** @ignore */
   ngOnInit() {
+  }
+
+  backgroundSelector(name) {
+    switch (this.cloud.api.providerName) {
+      case 'aws-ec2':
+        return name === 'aws';
+      case 'openstack4j':
+      case 'openstack-nove':
+        return name === 'openstack';
+      case 'google-compute-engine':
+        return name === 'gcp';
+      default:
+        return name === 'default';
+    }
   }
 }
