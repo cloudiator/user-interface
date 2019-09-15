@@ -28,6 +28,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                 console.log('access denied: Log Out...');
                 this.toastService.show({text: 'Session timeout', type: ToastType.WARNING});
                 this.authService.logOut();
+                return of(null);
                 break;
               case 504:
                 this.toastService.show({text: 'Gateway timeout', type: ToastType.DANGER});
@@ -38,7 +39,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               default:
                 return throwError(err);
             }
-            return of(null);
+            return throwError(err);
           }
 
           console.log('error status')

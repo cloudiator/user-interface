@@ -1,10 +1,10 @@
-<nav *ngIf="showNav" class="navbar is-fixed-top has-shadow" role="navigation" aria-label="main navigation"
+<nav *ngIf="showNav" class="navbar card is-secondary is-fixed-top" role="navigation" aria-label="main navigation"
      [class.has-low-opacity]="!showBurgerMenu">
 
   <div class="navbar-brand">
-    <a class="navbar-item" routerLink="/" routerLinkActive="active">
-      <img src="assets/logo_sm.png" class="" alt="Logo">
-      <p class="is-size-4 has-text-secondary">Cloudiator</p>
+    <a class="navbar-item" routerLink="/clouds">
+      <img src="assets/logo.svg" width="40px" class="" alt="Logo">
+      <p class="is-size-4 has-text-white">Cloudiator</p>
     </a>
 
 
@@ -52,11 +52,11 @@
 
     <div class="navbar-end">
       <div class="navbar-item">
-        <div class="has-text-secondary">{{user$ | async}}</div>
+        <div class="has-text-grey-lighter">{{user$ | async}}</div>
         <div class="field is-grouped">
           <p class="control">
             <a class="is-inverted" (click)="authservice.logOut()" style="margin-left: 0.5em">
-              <span class="icon has-text-secondary">
+              <span class="icon has-text-grey-lighter">
                 <i class="fas fa-sign-out-alt"></i>
               </span>
             </a>

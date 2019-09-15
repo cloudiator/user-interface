@@ -5,7 +5,7 @@ import {Cloud, Hardware, Image, Location} from 'cloudiator-rest-api';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {DialogService} from '../../../app-dialog/services/dialog.service';
 import {DeleteCloudDialogComponent} from '../../../app-dialog/dialogs';
-import {filter, map, take} from 'rxjs/operators';
+import {distinctUntilChanged, filter, map, take} from 'rxjs/operators';
 
 /**
  * Represents the View of a Single Cloud
@@ -65,6 +65,7 @@ export class CloudViewComponent implements OnInit, OnDestroy {
       .subscribe(id =>
         this.subscriptions
           .push(this.cloudDataService.findCloud(id)
+            .pipe(distinctUntilChanged())
             .subscribe(cloud => {
               this.cloud = cloud;
               if (cloud) {

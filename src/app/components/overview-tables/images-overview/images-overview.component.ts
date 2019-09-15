@@ -29,5 +29,7 @@ export class ImagesOverviewComponent extends OverviewTableComponent<Image> imple
     this.isLoading$ = cloudDataService.imageIsLoading();
     this.filter = (v, t) => cloudDataService.filterImages(v, t);
     this.data = cloudDataService.findImages();
+
+    this.fetchFn = () => cloudDataService.fetchImages();
   }
 }

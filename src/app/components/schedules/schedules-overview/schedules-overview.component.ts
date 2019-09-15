@@ -1,12 +1,10 @@
-import {Component, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ProcessDataService} from '../../../services/process-data.service';
-import {merge, Observable, of, Subscription, zip} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {ScheduleView} from '../../../model/ScheduleView';
 import {JobDataService} from '../../../services/job-data.service';
-import {delay, flatMap, map, mergeAll, mergeMap, repeat, repeatWhen, take, tap, zipAll} from 'rxjs/operators';
-import {ActivatedRoute, Router} from '@angular/router';
-import * as testData from 'testing/test-data';
-import {flatten} from '@angular/compiler';
+import {map} from 'rxjs/operators';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 
 /**
  * Overview of Schedules. Hosts a list containing all Schedules and the SchedulesView.
@@ -74,6 +72,22 @@ export class SchedulesOverviewComponent implements OnInit, OnDestroy {
           this.activeViewId = id;
           this.updateActiveScheduleView();
         })
+    );
+
+
+    this.subscriptions.push(
+      this.router.events.subscribe((e: any) => {
+        if (e instanceof NavigationEnd) {
+          this.route.queryParamMap
+            .pipe(
+              map(paramsMap => paramsMap.get('id') || undefined)
+            )
+            .subscribe(id => {
+              this.activeViewId = id;
+              this.updateActiveScheduleView();
+            });
+        }
+      })
     );
 
     // composing scheduleViews

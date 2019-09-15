@@ -1,5 +1,5 @@
 <div style="height: 100%;">
-  <div class="hero">
+  <div class="card hero is-secondary">
     <div class="hero-body">
       <div class="container">
         <h1 class="title">Clouds</h1>
@@ -8,7 +8,7 @@
   </div>
 
 <!--  <section class="section">-->
-    <div class="container is-flowing is-gaping">
+    <div class="container is-flowing is-gaping" >
 
       <ng-container *ngIf="!(cloudIsLoading$ | async); else cloudLoader">
         <app-cloud-card *ngFor="let cloud of clouds" [cloud]="cloud"></app-cloud-card>

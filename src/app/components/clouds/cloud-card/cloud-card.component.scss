@@ -1,11 +1,16 @@
 @import "~bulma/sass/utilities/mixins";
 
+:host {
+  // firefox fix
+  //overflow: hidden;
+}
+
 .cloud-card {
-  display: table;
+  display: block;
   min-width: 15em;
   min-height: 5em;
   clear: both;
-  overflow: hidden;
+  overflow: hidden !important;
 }
 
 .hero-body {
@@ -63,4 +68,13 @@
   z-index: 0;
   width: 100px;
   opacity: 0.3;
+}
+
+.logo-crop-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden
 }

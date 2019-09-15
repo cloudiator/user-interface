@@ -98,7 +98,6 @@ export class SchedulesBottomSheetComponent implements OnInit {
    * @param {Selected} value
    */
   @Input() set selected(value: Selected) {
-    console.log(value);
     this._selected = value;
     // open/hide bottomsheet depending if something is selected
     if (value) {

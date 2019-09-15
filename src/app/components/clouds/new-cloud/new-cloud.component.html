@@ -43,7 +43,7 @@
             <div class="field">
               <div class="control is-expanded">
                 <input class="input" type="text" placeholder="user" required [(ngModel)]="cloud.credential.user"
-                       name="user">
+                       name="cloud-user">
               </div>
             </div>
           </div>
@@ -51,7 +51,8 @@
 
         <span #secret class="control">
       <input class="input" type="password" placeholder="secret" required [(ngModel)]="cloud.credential.secret"
-             name="secret">
+             name="cloud-secret"
+             autocomplete="new-password">
     </span>
       </div>
 

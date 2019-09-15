@@ -1,5 +1,5 @@
 <div class="view">
-  <div class="hero is-secondary">
+  <div class="card hero is-secondary">
     <div class="hero-body">
       <div class="container">
         <h1 class="title">{{title}}</h1>
@@ -14,12 +14,18 @@
     <ng-container *ngIf="!(isLoading$ | async); else loader">
 
       <!-- Search bar -->
-      <p class="searchbar is-fullwidth control has-icons-left is-secondary">
-        <input class="input" type="search" placeholder="Search" [formControl]="searchFormControl">
-        <span class="icon is-left">
+      <div class="level is-mobile is-marginless">
+        <p class="level-left searchbar control has-icons-left is-secondary">
+          <input class="input" type="search" placeholder="Search" [formControl]="searchFormControl">
+          <span class="icon is-left">
         <i class="fas fa-search"></i>
       </span>
-      </p>
+        </p>
+        <span class="fetch-button level-right icon"
+              (click)="fetchData()">
+          <i class="fas fa-sync"></i>
+        </span>
+      </div>
       <cdk-virtual-scroll-viewport class="table-viewport" itemSize="0">
         <table cdk-table class="table is-striped is-hoverable is-clickable"
                [dataSource]="dataSource.value">
@@ -34,8 +40,8 @@
             </th>
             <td cdk-cell *cdkCellDef="let row">
               {{columns[field].selectionFn
-              ? columns[field].selectionFn(row)
-              : row[field]}}
+                ? columns[field].selectionFn(row)
+                : row[field]}}
             </td>
           </ng-container>
 

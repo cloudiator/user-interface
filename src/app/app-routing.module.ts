@@ -29,19 +29,18 @@ const routes: Routes = [
   {path: 'editor', component: YamlEditorComponent, data: {graphs: false}, canActivate: [AuthGuard]},
   {path: 'editor/graphs', component: YamlEditorComponent, data: {graphs: true}, canActivate: [AuthGuard]},
 
-  {path: 'schedules', component: SchedulesOverviewComponent},
+  {path: 'schedules', component: SchedulesOverviewComponent, runGuardsAndResolvers: 'always'},
 
   {path: 'clouds', component: CloudOverviewComponent, canActivate: [AuthGuard]},
   {path: '', component: CloudOverviewComponent, canActivate: [AuthGuard]},
 
   {path: 'clouds', component: CloudOverviewComponent, canActivate: [AuthGuard]},
-  {path: '', component: CloudOverviewComponent, canActivate: [AuthGuard]},
 
-  {path: '**', redirectTo: '/', canActivate: [AuthGuard]},
+  {path: '**', redirectTo: 'clouds', canActivate: [AuthGuard]},
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {useHash: true})],
+  imports: [RouterModule.forRoot(routes, {useHash: true, onSameUrlNavigation: 'reload'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

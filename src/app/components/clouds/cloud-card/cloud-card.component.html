@@ -8,12 +8,14 @@
     </div>
   </div>
 
+  <div class="logo-crop-container">
   <img *ngIf="backgroundSelector('openstack')"
        class="background-logo" src="assets/OpenStack-Logo.svg">
   <img *ngIf="backgroundSelector('aws')"
        class="background-aws-logo" src="assets/AWS-Logo.svg">
   <img *ngIf="backgroundSelector('gcp')"
        class="background-logo" src="assets/GCP-Logo.svg">
+  </div>
 <!--  <img *ngIf="backgroundSelector('default')"-->
 <!--       class="background-default-logo" src="assets/default-cloud-logo.svg">-->
 

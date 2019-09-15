@@ -29,6 +29,8 @@ export class HardwareOverviewComponent extends OverviewTableComponent<Hardware> 
     this.filter = (v, t) => cloudDataService.filterHardware(v, t);
 
     this.data = cloudDataService.findHardware();
+
+    this.fetchFn = () => cloudDataService.fetchHardware();
   }
 }
 

@@ -1,5 +1,5 @@
 <!--<div class="container">-->
-<div class="header-level level is-mobile">
+<div class="header-level card level is-mobile">
   <div class="level-left" style="max-width: 90%">
     <div class="hero is-small" *ngIf="cloud">
       <div class="hero-body">
@@ -47,7 +47,7 @@
         Hardware
       </div>
       <div class="table-container card">
-        <ng-container *ngIf="!(hardwareIsLoading$ | async); else loader">
+        <ng-container *ngIf="!(hardwareIsLoading$ | async) || hardwareDataSource.value !== []; else loader">
           <table cdk-table class="table is-fullwidth is-striped is-hoverable" *ngIf="hardwareDataSource"
                  [dataSource]="hardwareDataSource.value">
 

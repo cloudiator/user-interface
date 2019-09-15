@@ -5,7 +5,7 @@ import {ProcessDataService} from '../../../services/process-data.service';
 import {DialogService} from '../../../app-dialog/services/dialog.service';
 import {ToastService} from '../../../app-dialog/services/toast.service';
 import {ToastType} from '../../../app-dialog/model/toast';
-import {Router} from '@angular/router';
+import {NavigationEnd, Router} from '@angular/router';
 import {DeleteScheduleDialogComponent} from '../../../app-dialog/dialogs/delete-schedule-dialog/delete-schedule-dialog.component';
 import {CloudiatorProcess} from 'cloudiator-rest-api/model/cloudiatorProcess';
 import {Stylesheet} from 'cytoscape';
@@ -182,7 +182,6 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
 
   /** @ignore */
   ngOnChanges(changes: SimpleChanges) {
-    console.log(this.scheduleView);
     // make sure that graph is clear when no schedule view is selected, to prevent flickering on selection
     if (!this.scheduleView && this._cy) {
       this._cy.remove(this.cy.$(() => true));
@@ -270,5 +269,12 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
               });
         }
       });
+  }
+
+  updateGraph(id: string) {
+    if (this.scheduleView && this.scheduleView.schedule.id === id) {
+      this.selected = null;
+      this.updategraph();
+    }
   }
 }

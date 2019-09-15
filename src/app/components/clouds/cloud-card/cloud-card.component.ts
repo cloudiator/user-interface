@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Cloud} from 'cloudiator-rest-api';
+import {animate, style, transition, trigger} from '@angular/animations';
 
 /**
  * A card that represents a single cloud in the CloudOverviewComponent.

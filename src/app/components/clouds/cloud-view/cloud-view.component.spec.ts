@@ -26,7 +26,11 @@ describe('CloudViewComponent', () => {
       id: '1',
     }),
     'findHardware': of([]),
-    'findImages': of([[]])
+    'findImages': of([]),
+    'findLocations': of([]),
+    'hardwareIsLoading': of(false),
+    'imageIsLoading': of(false),
+    'locationIsLoading': of(false),
   });
 
   beforeEach(async(() => {

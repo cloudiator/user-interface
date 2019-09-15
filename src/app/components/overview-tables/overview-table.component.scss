@@ -15,7 +15,7 @@
 }
 
 .searchbar {
-  max-width: 500px
+  width: 500px
 }
 
 .table-viewport {
@@ -59,6 +59,10 @@ tr {
   }
 }
 
+.fetch-button {
+  margin-right: 0.5rem
+}
+
 @include mobile {
   .section {
     padding: 0;
@@ -66,7 +70,14 @@ tr {
 
   .searchbar {
     width: 100%;
-    max-width: none;
+    max-width: calc(100vw - 2rem) !important;
+  }
+
+  .fetch-button {
+    position: absolute;
+    right: 0;
+    //top: 2.8rem;
+    z-index: 2;
   }
 
   .table-viewport {
@@ -78,4 +89,3 @@ tr {
     border-radius: 0;
   }
 }
-
