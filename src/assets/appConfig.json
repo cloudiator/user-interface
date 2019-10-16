@@ -1,5 +1,6 @@
 {
   "apiPath": "${API_URL}",
   "authMode": "${AUTH_MODE}",
-  "xApiKey": "${AUTH_TOKEN}"
+  "xApiKey": "${AUTH_TOKEN}",
+  "sshTunnelPath": "${SSH_TUNNEL_PATH}"
 }

@@ -33,12 +33,7 @@ export class RuntimeConfigService {
     if (environment.useRuntimeConfig) {
       this.fetchConfig();
     } else {
-      this.store.dispatch(
-        new RuntimeConfigActions.SetRuntimeConfigAction(<RuntimeConfig>{
-          apiPath: environment.apiPath,
-          authMode: environment.authMode,
-          xApiKey: environment.xApiKey
-        }));
+      this.dispatchDefaultConfig();
     }
   }
 
@@ -50,14 +45,17 @@ export class RuntimeConfigService {
       .subscribe(value => {
           this.store.dispatch(new RuntimeConfigActions.SetRuntimeConfigAction(<RuntimeConfig>value));
         },
-        () => {
-          this.store.dispatch(new RuntimeConfigActions.SetRuntimeConfigAction(<RuntimeConfig>{
-            apiPath: environment.apiPath,
-            authMode: environment.authMode,
-            xApiKey: environment.xApiKey
-          }));
-        }
+        () => this.dispatchDefaultConfig()
       );
+  }
+
+  private dispatchDefaultConfig() {
+    this.store.dispatch(new RuntimeConfigActions.SetRuntimeConfigAction(<RuntimeConfig>{
+      apiPath: environment.apiPath,
+      authMode: environment.authMode,
+      xApiKey: environment.xApiKey,
+      sshTunnelPath: environment.sshTunnelPath
+    }));
   }
 
   /**
@@ -88,6 +86,10 @@ export class RuntimeConfigService {
    */
   getXApiKey(): Observable<String> {
     return this.store.pipe(select(RuntimeConfigSelectors.selectXApiKey));
+  }
+
+  getSshTunnelPath(): Observable<string | null> {
+    return this.store.pipe(select(RuntimeConfigSelectors.selectSshTunnelPath));
   }
 
   /**

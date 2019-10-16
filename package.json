@@ -43,6 +43,9 @@
     "rxjs": "^6.4.0",
     "sass-loader": "^7.1.0",
     "webpack": "^4.35.3",
+    "xterm": "^4.1.0",
+    "xterm-addon-attach": "^0.3.0",
+    "xterm-addon-fit": "^0.2.1",
     "zone.js": "^0.8.29"
   },
   "devDependencies": {

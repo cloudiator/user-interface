@@ -9,6 +9,7 @@ import {
 } from './dialogs';
 import {DialogService} from './services/dialog.service';
 import {ToastService} from './services/toast.service';
+import { SshConsoleDialogComponent } from './dialogs/ssh-console-dialog/ssh-console-dialog.component';
 
 /**
  * Main Module handling App DIalogs and Toasts.
@@ -19,7 +20,8 @@ import {ToastService} from './services/toast.service';
     ConfirmNewCloudDialogComponent,
     DeleteCloudDialogComponent,
     DeleteScheduleDialogComponent,
-    ScheduleDiagnosticDialogComponent
+    ScheduleDiagnosticDialogComponent,
+    SshConsoleDialogComponent
   ],
   imports: [
     OverlayModule
@@ -33,7 +35,8 @@ import {ToastService} from './services/toast.service';
     ConfirmNewCloudDialogComponent,
     DeleteCloudDialogComponent,
     DeleteScheduleDialogComponent,
-    ScheduleDiagnosticDialogComponent
+    ScheduleDiagnosticDialogComponent,
+    SshConsoleDialogComponent
   ]
 })
 export class AppDialogModule {

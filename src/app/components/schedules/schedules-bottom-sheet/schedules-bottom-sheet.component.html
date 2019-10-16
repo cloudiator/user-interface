@@ -2,8 +2,8 @@
      [@sheetOpenClose]="sheetOpenClose"
      (swipedown)="sheetOpenClose = 'closed'"
      (swipeup)="sheetOpenClose = 'open'"
+     content="yes"
      (click)="onSheetClick()">
-
   <a class="bottom-sheet-button"
      (click)="switchOpenState()">
         <span class="icon" [@buttonOpenClose]="sheetOpenClose">
@@ -41,17 +41,29 @@
           <td><u>process id</u>:</td>
           <td>{{selected?.data.id}}</td>
         </tr>
-        <ng-container *ngIf="selected?.data?.ipAddresses?.length !== 0">
-          <tr>
-            <td>
-              <div style="margin-right: 0.25em"><u>ip addresses</u>:</div>
-            </td>
-            <td>
-              <div>
-                <div *ngFor="let ip of selected?.data.ipAddresses">{{ip}}<br></div>
-              </div>
-            </td>
-          </tr>
+        <ng-container *ngFor="let node of node$ | async">
+          <ng-container *ngIf="node.ipAddresses?.length !== 0">
+            <tr>
+              <td>
+                <div style="margin-right: 0.25em"><u>ip addresses</u>:</div>
+              </td>
+              <td>
+                <div>
+                  <div *ngFor="let ip of node.ipAddresses">
+                    {{ip.value}}
+                    <span *ngIf="!isPublicIp(ip)" class="icon">
+                      <i class="fas fa-lock"></i>
+                    </span>
+                    <span *ngIf="(sshIsAvailable$ | async) && isPublicIp(ip)" class="icon"
+                          (click)="onConnect(node.name, ip, node.loginCredential)">
+                      <i class="fas fa-laptop"></i>
+                    </span>
+                    <br>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
         </ng-container>
         <tr>
           <td>

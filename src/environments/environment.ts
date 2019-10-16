@@ -12,7 +12,8 @@ export const environment = {
   skipAuth: false,
   authMode: AuthMode.SINGLE,
   xApiKey: 'secure',
-  notificationDuration: 10000
+  notificationDuration: 10000,
+  sshTunnelPath: 'ws://134.60.152.98:4341'
 };
 
 /*
