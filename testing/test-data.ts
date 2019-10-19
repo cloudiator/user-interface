@@ -32,7 +32,8 @@ export function testApiFactory(): Configuration {
 export const runtimeConfigOne: RuntimeConfig = {
   apiPath: 'testpath',
   xApiKey: 'testKey',
-  authMode: AuthMode.SINGLE
+  authMode: AuthMode.SINGLE,
+  sshTunnelPath: ''
 };
 
 /* CLOUDS */
