@@ -29,7 +29,7 @@ const routes: Routes = [
   {path: 'editor', component: YamlEditorComponent, data: {graphs: false}, canActivate: [AuthGuard]},
   {path: 'editor/graphs', component: YamlEditorComponent, data: {graphs: true}, canActivate: [AuthGuard]},
 
-  {path: 'schedules', component: SchedulesOverviewComponent, runGuardsAndResolvers: 'always'},
+  {path: 'schedules', component: SchedulesOverviewComponent, canActivate: [AuthGuard], runGuardsAndResolvers: 'always'},
 
   {path: 'clouds', component: CloudOverviewComponent, canActivate: [AuthGuard]},
   {path: '', component: CloudOverviewComponent, canActivate: [AuthGuard]},

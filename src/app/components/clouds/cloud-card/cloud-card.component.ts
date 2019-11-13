@@ -30,7 +30,7 @@ export class CloudCardComponent implements OnInit {
       case 'aws-ec2':
         return name === 'aws';
       case 'openstack4j':
-      case 'openstack-nove':
+      case 'openstack-nova':
         return name === 'openstack';
       case 'google-compute-engine':
         return name === 'gcp';

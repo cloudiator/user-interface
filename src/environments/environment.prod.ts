@@ -7,5 +7,6 @@ export const environment = {
   skipAuth: false,
   authMode: null,
   xApiKey: '',
-  notificationDuration: 10000
+  notificationDuration: 10000,
+  sshTunnelPath: null
 };
