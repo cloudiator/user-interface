@@ -3,11 +3,13 @@ import {DeleteCloudDialogComponent} from './delete-cloud-dialog/delete-cloud-dia
 import {DeleteScheduleDialogComponent} from './delete-schedule-dialog/delete-schedule-dialog.component';
 import {ScheduleDiagnosticDialogComponent} from './schedule-diagnostic-dialog/schedule-diagnostic-dialog.component';
 import {ToastComponent} from './toast/toast.component';
+import {SshConsoleDialogComponent} from './ssh-console-dialog/ssh-console-dialog.component';
 
 export {
   ConfirmNewCloudDialogComponent,
   DeleteScheduleDialogComponent,
   DeleteCloudDialogComponent,
   ScheduleDiagnosticDialogComponent,
-  ToastComponent
+  ToastComponent,
+  SshConsoleDialogComponent
 };

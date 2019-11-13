@@ -1,8 +1,12 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {animate, animateChild, group, query, state, style, transition, trigger} from '@angular/animations';
-import {CloudiatorProcess} from 'cloudiator-rest-api';
+import {CloudiatorProcess, ClusterProcess, IpAddress, IpAddressType, LoginCredential, Node, SingleProcess} from 'cloudiator-rest-api';
 import {DialogService} from '../../../app-dialog/services/dialog.service';
-import {ScheduleDiagnosticDialogComponent} from '../../../app-dialog/dialogs';
+import {ScheduleDiagnosticDialogComponent, SshConsoleDialogComponent} from '../../../app-dialog/dialogs';
+import {NodeDataService} from '../../../services/node-data.service';
+import {Observable} from 'rxjs';
+import {map, tap} from 'rxjs/operators';
+import {SshService} from '../../../services/ssh.service';
 
 /**
  * Bottomsheet component of the ScheduleView.
@@ -33,19 +37,19 @@ import {ScheduleDiagnosticDialogComponent} from '../../../app-dialog/dialogs';
         group([
           query('@buttonOpenClose', animateChild()),
           query('@headerOpenClose', animateChild()),
-          animate('0.2s')])
+          animate('0.2s ease-out')])
       ]),
       transition('* => open', [
         group([
           query('@buttonOpenClose', animateChild()),
           query('@headerOpenClose', animateChild()),
-          animate('0.25s')])
+          animate('0.25s ease-out')])
       ]),
       transition('open => hidden', [
         group([
           query('@buttonOpenClose', animateChild()),
           query('@headerOpenClose', animateChild()),
-          animate('0.2s')])
+          animate('0.2s ease-out')])
       ])
     ]),
     trigger('buttonOpenClose', [
@@ -99,13 +103,29 @@ export class SchedulesBottomSheetComponent implements OnInit {
    */
   @Input() set selected(value: Selected) {
     this._selected = value;
+    console.log(this._selected);
     // open/hide bottomsheet depending if something is selected
     if (value) {
       this.sheetOpenClose = 'open';
+
+      if (value.process) {
+        if (isSingleProcess(value.process)) {
+          this.node$ = this.nodeDataService.getNode(value.process.node)
+            .pipe(map(n => [n]), tap(console.log));
+          // this.dialogService.open(SshConsoleDialogComponent, { data: node});
+        } else {
+          // TODO: Cluster process implementation
+        }
+      }
     } else {
       this.sheetOpenClose = 'hidden';
+      this.node$ = null;
     }
   }
+
+  public node$: Observable<Node[]>;
+
+  public sshIsAvailable$ = this.sshService.sshIsAvailable();
 
   /**
    * containes visibility state of bottom scheet
@@ -114,7 +134,9 @@ export class SchedulesBottomSheetComponent implements OnInit {
   sheetOpenClose: 'open' | 'closed' | 'hidden' = this.selected ? 'open' : 'hidden';
 
   /** @ignore */
-  constructor(private dialogService: DialogService) {
+  constructor(private dialogService: DialogService,
+              private nodeDataService: NodeDataService,
+              private sshService: SshService) {
   }
 
   /** @ignore */
@@ -136,6 +158,19 @@ export class SchedulesBottomSheetComponent implements OnInit {
     this.dialogService.open(ScheduleDiagnosticDialogComponent, {data: this.selected.process});
   }
 
+  isPublicIp(ip: IpAddress) {
+    return ip.ipAddressType === IpAddressType.PUBLICIP;
+  }
+
+  onConnect(name: string, ip: IpAddress, credentials: LoginCredential) {
+    this.dialogService.open(SshConsoleDialogComponent, {
+      data: {
+        name: name,
+        ipAddress: ip,
+        loginCredential: credentials
+      }
+    });
+  }
 }
 
 /**
@@ -153,4 +188,8 @@ export interface Selected {
    * type of Object
    */
   group: 'nodes' | 'edges';
+}
+
+export function isSingleProcess(process: SingleProcess | ClusterProcess): process is SingleProcess {
+  return (<SingleProcess>process).node !== undefined;
 }

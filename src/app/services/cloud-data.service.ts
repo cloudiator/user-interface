@@ -247,7 +247,6 @@ export class CloudDataService {
    * @returns {string}
    */
   public findCloudId(id: string): string {
-    // ToDo: unsafe, not sure if cloud id always ends with ~.
     return id.split('~')[0];
   }
 

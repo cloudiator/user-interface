@@ -154,7 +154,7 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
           this.scheduleView.schedule.processes.find(p => p.id === data.id)
           : null;
 
-        this.selected = {
+      this.selected = {
           group: 'nodes',
           process: process,
           data: data
