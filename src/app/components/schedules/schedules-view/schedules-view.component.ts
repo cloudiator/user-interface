@@ -1,15 +1,15 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges
-} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ScheduleView} from '../../../model/ScheduleView';
 import * as cytoscape from 'cytoscape';
 import {ProcessDataService} from '../../../services/process-data.service';
-import {map, take} from 'rxjs/operators';
-import * as testData from 'testing/test-data';
+import {DialogService} from '../../../app-dialog/services/dialog.service';
+import {ToastService} from '../../../app-dialog/services/toast.service';
+import {ToastType} from '../../../app-dialog/model/toast';
+import {NavigationEnd, Router} from '@angular/router';
+import {DeleteScheduleDialogComponent} from '../../../app-dialog/dialogs/delete-schedule-dialog/delete-schedule-dialog.component';
+import {CloudiatorProcess} from 'cloudiator-rest-api/model/cloudiatorProcess';
+import {Stylesheet} from 'cytoscape';
+import Edge = cytoscape.Css.Edge;
 
 /**
  * View of a selected Schedule, containing a Cytoscape and a bottomsheet for further information
@@ -45,48 +45,59 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
   /**
    * Style of graph.
    */
-  readonly style = [{
-    'selector': 'node',
-    'style': {
-      'width': '50%',
-      'height': '50%',
-      'content': 'data(task)',
-      'font-size': '12px',
-      'text-valign': 'center',
-      'text-halign': 'center',
-      'background-color': '#00447a',
-      'text-outline-color': '#00447a',
-      'text-outline-width': '1px',
-      'text-wrap': 'wrap',
-      'color': '#fff',
-      'z-index': '10'
-    }
-  }, {
-    'selector': 'node:selected',
-    'style': {
-      'background-color': 'lightgray',
-      'text-outline-color': 'gray'
-    }
-  }, {
-    'selector': 'edge',
-    'style': {
-      'opacity': '0.9',
-      'line-color': '#92acbe',
-      'width': '5px',
-      'overlay-padding': '3px'
-    }
-  }, {
-    'selector': 'edge:active',
-    'style': {
-      // 'line-color': 'white',
-      // 'border-color': 'transparent'
-    }
-  }, {
-    'selector': 'edge:selected',
-    'style': {
-      'line-color': 'lightgray'
-    }
-  }];
+  readonly style: any = [
+    {
+      'selector': 'node',
+      'style': {
+        'shape': 'ellipse',
+        'width': '50',
+        'height': '50',
+        'content': 'data(task)',
+        'font-size': '12px',
+        'text-valign': 'center',
+        'text-halign': 'center',
+        'background-color': '#00447a',
+        'text-outline-color': '#00447a',
+        'text-outline-width': '1px',
+        'text-wrap': 'wrap',
+        'color': '#fff',
+        'z-index': '10'
+      }
+    }, {
+      'selector': 'node:selected',
+      'style': {
+        'background-blacken': '-0.2'
+      }
+    }, {
+      'selector': 'edge',
+      'style': {
+        'curve-style': 'bezier',
+        'opacity': '0.9',
+        'line-color': '#92acbe',
+        'width': '5px',
+        'overlay-opacity': '0',
+        'source-arrow-shape': 'triangle-backcurve',
+        'source-arrow-color': '#92acbe'
+      }
+    }, {
+      'selector': '.running',
+      'style': {
+        'background-color': 'hsl(141, 71%,  48%)',
+        'text-outline-color': 'hsl(141, 71%,  48%)',
+      }
+    }, {
+      'selector': '.pending',
+      'style': {
+        'background-color': 'hsl(48,  100%, 67%)',
+        'text-outline-color': 'hsl(48,  100%, 67%)',
+      }
+    }, {
+      'selector': '.error',
+      'style': {
+        'background-color': 'hsl(348, 100%, 61%)',
+        'text-outline-color': 'hsl(348, 100%, 61%)'
+      }
+    }];
 
   /**
    * Graph Sorter.
@@ -114,6 +125,8 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
    */
   readonly minZoom = 0.5;
 
+  noData = true;
+
   /**
    * Cytoscape object
    */
@@ -134,21 +147,17 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
         this.cy.center();
         this.cy.panBy({x: 0, y: -100});
       });
-      this.cy.on('select', 'edge', event => {
-        const target = event.target._private;
-        this.selected = {
-          group: 'edges',
-          data: {
-            id: target.data.id,
-            source: target.source._private.data,
-            target: target.target._private.data
-          }
-        };
-      });
       this.cy.on('select', 'node', event => {
-        this.selected = {
+        const data = event.target._private.data;
+        // find corresponding process of data
+        const process = this.scheduleView.schedule.processes ?
+          this.scheduleView.schedule.processes.find(p => p.id === data.id)
+          : null;
+
+      this.selected = {
           group: 'nodes',
-          data: event.target._private.data
+          process: process,
+          data: data
         };
       });
       this.cy.on('unselect', () => {
@@ -161,7 +170,10 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
   }
 
   /** @ignore */
-  constructor(private processDataService: ProcessDataService) {
+  constructor(private processDataService: ProcessDataService,
+              private dialogSerivce: DialogService,
+              private toastService: ToastService,
+              private router: Router) {
   }
 
   /** @ignore */
@@ -201,16 +213,68 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
       .subscribe(graph => {
           // timeout as hack to fix wrong positioning of graph when data arrives to early in mobile view
           setTimeout(() => {
+            this.noData = graph.nodes.length === 0;
             this.cy.remove(this.cy.$(() => true));
             this.cy.add(graph);
             this.cy.layout(this.circLayout).run();
             this.isLoading = false;
             this.cy.panBy({x: 0, y: -100});
+            this.cy.elements('node').forEach(ele => {
+              const state: CloudiatorProcess.StateEnum = ele._private.data.state;
+              switch (state) {
+                case 'PENDING':
+                  ele.addClass('pending');
+                  break;
+                case 'ERROR':
+                  ele.addClass('error');
+                  break;
+                case 'DELETED':
+                  ele.addClass('deleted');
+                  break;
+                case 'FINISHED':
+                  ele.addClass('finished');
+                  break;
+                case 'RUNNING':
+                  ele.addClass('running');
+                  break;
+                default:
+                  break;
+              }
+            });
           }, 0);
         },
         () => {
           this.isLoading = false;
         }
       );
+  }
+
+  onDelete() {
+    this.dialogSerivce.open(DeleteScheduleDialogComponent, {
+      data: {
+        scheduleName: this.scheduleView.job.name
+      }
+    })
+      .afterClosed()
+      .subscribe(confirmation => {
+        if (confirmation) {
+          this.processDataService.deleteSchedule(this.scheduleView.schedule.id)
+            .subscribe(
+              () => {
+                this.router.navigateByUrl('/schedules');
+              },
+              err => {
+                console.error(err);
+                this.toastService.show({text: 'Could not delete Schedule', type: ToastType.DANGER});
+              });
+        }
+      });
+  }
+
+  updateGraph(id: string) {
+    if (this.scheduleView && this.scheduleView.schedule.id === id) {
+      this.selected = null;
+      this.updategraph();
+    }
   }
 }

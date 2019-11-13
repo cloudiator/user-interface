@@ -46,6 +46,7 @@ export class ProcessDataService {
   public getSchedules(): Observable<Schedule[]> {
     this.fetchSchedules();
     return this.store.pipe(select(ProcessDataSelectors.selectSchedules));
+    // return of(testData.allSchedules)
   }
 
   public getScheduleIsLoading(): Observable<boolean> {
@@ -60,12 +61,18 @@ export class ProcessDataService {
    */
   scheduleGraph(id: string): Observable<any> {
     return this.processApiService.scheduleGraph(id)
+    // return id === '4f1cf465-d420-4d63-a456-88f65981c3cd' ? of(null) :
+    //  return  of(testData.tempTestGraph)
       .pipe(map(graph => {
         return {
           edges: graph.edges,
           nodes: graph.processes
         };
       }));
+  }
+
+  deleteSchedule(id: string): Observable<Queue> {
+    return this.processApiService.deleteSchedule(id);
   }
 
   /**

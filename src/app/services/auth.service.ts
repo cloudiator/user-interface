@@ -102,6 +102,10 @@ export class AuthService {
     return this.store.pipe(select(AuthSelectors.selectToken));
   }
 
+  public getUser(): Observable<string> {
+    return this.store.pipe(select(AuthSelectors.selectUser));
+  }
+
   /**
    * retrieves Login Token from localStorage.
    * @return {Token}

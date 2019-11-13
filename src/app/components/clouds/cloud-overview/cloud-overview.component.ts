@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CloudDataService} from '../../../services/cloud-data.service';
 import {Cloud} from 'cloudiator-rest-api';
 import {Observable, Subscription} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import {map, take, takeUntil, takeWhile, tap} from 'rxjs/operators';
 
 /**
  * Overview of all clouds given as a set of horizontally flowing cards.

@@ -36,5 +36,7 @@ export class LocationsOverviewComponent extends OverviewTableComponent<Location>
     this.isLoading$ = cloudDataService.locationIsLoading();
     this.filter = (v, t) => cloudDataService.filterLocations(v, t);
     this.data = cloudDataService.findLocations();
+
+    this.fetchFn = () => cloudDataService.fetchLocations();
   }
 }

@@ -7,7 +7,7 @@
 <!--</div>-->
 <div class="columns fullsize-container is-gapless is-mobile is-clipped" style="height:100%; width: 100%;">
   <!-- Editor Side -->
-  <div class="column is-half">
+  <div class="column is-half-tablet" [class.is-hidden-touch]="(showGraphs|async)">
     <div class="editor-container">
       <div class="editor-header ace-{{theme}}">
         <!-- Editor Header -->
@@ -43,8 +43,12 @@
                    name="filename">
           </div>
           <div class="level-right buttons">
-            <button class="button is-small is-outlined is-secondary" (click)="onValidate()" [class.is-loading]="isValidating">validate</button>
-            <button class="button is-small is-outlined is-success" (click)="onSubmit()" [class.is-loading]="isSubmitting" [disabled]="!isValid">submit</button>
+            <button class="button is-small is-outlined is-secondary" (click)="onValidate()"
+                    [class.is-loading]="isValidating">validate
+            </button>
+            <button class="button is-small is-outlined is-success" (click)="onSubmit()"
+                    [class.is-loading]="isSubmitting" [disabled]="!isValid">submit
+            </button>
           </div>
         </div>
       </div>
@@ -53,9 +57,17 @@
            style="height:100%;">
       </div>
     </div>
+    <!--  Graphs Button Mobile view  -->
+    <a *ngIf="isValid" class="graph-button card title is-6 is-hidden-tablet"
+       routerLink="/editor/graphs">
+      Graphs
+      <span class="icon">
+        <i class="fas fa-arrow-right"></i>
+      </span>
+    </a>
   </div>
   <!-- Right Side -->
-  <div class="column">
+  <div class="column " [class.is-hidden-mobile]="!(showGraphs|async)">
     <app-editor-graph-view></app-editor-graph-view>
-    </div>
+  </div>
 </div>

@@ -49,13 +49,22 @@ export class LoginComponent implements OnInit {
   onLogin() {
     this.isLoggingIn = true;
     this.authService.logIn(this.login).subscribe(success => {
-      this.isLoggingIn = false;
-      if (success) {
-        this.router.navigate(['/']);
-      } else {
+        this.isLoggingIn = false;
+        if (success) {
+          this.router.navigate(['/']);
+        } else {
+          this.logInError = true;
+        }
+      },
+      () => {
+        this.isLoggingIn = false;
+        this.logInError = true;
+      },
+      () => {
+        this.isLoggingIn = false;
         this.logInError = true;
       }
-    });
+    );
   }
 
 }

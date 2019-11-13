@@ -10,10 +10,10 @@ import {
   Location,
   Login,
   OclRequirement,
-  OperatingSystem,
+  OperatingSystem, Port, PortProvided,
   PortRequired,
   Queue,
-  Schedule,
+  Schedule, ServiceBehaviour,
   SingleProcess,
   Token
 } from 'cloudiator-rest-api';
@@ -32,7 +32,8 @@ export function testApiFactory(): Configuration {
 export const runtimeConfigOne: RuntimeConfig = {
   apiPath: 'testpath',
   xApiKey: 'testKey',
-  authMode: AuthMode.SINGLE
+  authMode: AuthMode.SINGLE,
+  sshTunnelPath: ''
 };
 
 /* CLOUDS */
@@ -306,7 +307,7 @@ export const jobTwo: Job = {
     {
       name: 'wiki',
       ports: [
-        {
+        <PortProvided>{
           type: 'PortProvided',
           name: 'WIKIPROV',
           port: 80
@@ -357,12 +358,15 @@ export const jobTwo: Job = {
           constraint: 'nodes->forAll(image.providerId = \'f688f98d-7e62-4404-a672-1fc054fcfa6c\')'
         }
       ],
-      taskType: 'BATCH'
+      behaviour: <ServiceBehaviour>{
+        type: 'ServiceBehaviour',
+        restart: true
+      }
     },
     {
       name: 'database',
       ports: [
-        {
+        <PortProvided>{
           type: 'PortProvided',
           name: 'MARIADBPROV',
           port: 3306
@@ -407,7 +411,10 @@ export const jobTwo: Job = {
           constraint: 'nodes->forAll(image.providerId = \'f688f98d-7e62-4404-a672-1fc054fcfa6c\')'
         }
       ],
-      taskType: 'BATCH'
+      behaviour: <ServiceBehaviour>{
+        type: 'ServiceBehaviour',
+        restart: true
+      }
     },
     {
       name: 'loadbalancer',
@@ -418,7 +425,7 @@ export const jobTwo: Job = {
           updateAction: './mediawiki-tutorial/scripts/lance/nginx.sh configure',
           isMandatory: false
         },
-        {
+        <PortProvided>{
           type: 'PortProvided',
           name: 'LBPROV',
           port: 80
@@ -463,7 +470,10 @@ export const jobTwo: Job = {
           constraint: 'nodes->forAll(image.providerId = \'f688f98d-7e62-4404-a672-1fc054fcfa6c\')'
         }
       ],
-      taskType: 'BATCH'
+      behaviour: <ServiceBehaviour>{
+        type: 'ServiceBehaviour',
+        restart: true
+      }
     }
   ],
   communications: [
@@ -576,7 +586,7 @@ export const JobOne: Job = <Job>{
     {
       name: 'database',
       ports: [
-        {
+        <PortProvided>{
           type: 'PortProvided',
           name: 'MARIADBPROV',
           port: 3306
@@ -617,7 +627,10 @@ export const JobOne: Job = <Job>{
           constraint: 'nodes->forAll(image.providerId = \'ami-0bb24d586ad9956e7\')'
         }
       ],
-      taskType: 'BATCH'
+      behaviour: <ServiceBehaviour>{
+        type: 'ServiceBehaviour',
+        restart: true
+      }
     }
   ],
   communications: null,
@@ -632,7 +645,7 @@ export const JobTwo: Job = <Job>{
     {
       name: 'database',
       ports: [
-        {
+        <PortProvided>{
           type: 'PortProvided',
           name: 'MARIADBPROV',
           port: 3306
@@ -673,7 +686,10 @@ export const JobTwo: Job = <Job>{
           constraint: 'nodes->forAll(image.providerId = \'ami-0bb24d586ad9956e7\')'
         }
       ],
-      taskType: 'BATCH'
+      behaviour: <ServiceBehaviour>{
+        type: 'ServiceBehaviour',
+        restart: true
+      }
     }
   ],
   communications: null,
@@ -694,7 +710,7 @@ export const JobThree: Job = <Job>{
           updateAction: './mediawiki-tutorial/scripts/lance/nginx.sh configure',
           isMandatory: false
         },
-        {
+        <PortProvided>{
           type: 'PortProvided',
           name: 'LBPROV',
           port: 80
@@ -735,7 +751,10 @@ export const JobThree: Job = <Job>{
           constraint: 'nodes->forAll(image.providerId = \'ami-0bb24d586ad9956e7\')'
         }
       ],
-      taskType: 'BATCH'
+      behaviour: <ServiceBehaviour>{
+        type: 'ServiceBehaviour',
+        restart: true
+      }
     },
     {
       name: 'wiki',
@@ -1017,4 +1036,50 @@ export const tokenOne: Token = {
   owner: 'testuser@example.com',
   issuedTime: Number.MIN_VALUE,
   expireTime: Number.MAX_VALUE
+};
+
+
+export const tempTestGraph = {
+  processes: [
+    {
+      data: {
+        id: 'b28c30e3-82a8-409d-9979-d8a02ffa1294',
+        task: 'database',
+        state: 'RUNNING',
+        ipAddresses: []
+      }
+    },
+    {
+      data: {
+        id: '57167670-15d1-4ffd-9c02-39155ac75484',
+        task: 'wiki',
+        state: 'PENDING',
+        ipAddresses: []
+      }
+    },
+    {
+      data: {
+        id: 'c0565cd7-d87d-4fa8-bf87-b7836ef30f22',
+        task: 'loadbalancer',
+        state: 'ERROR',
+        ipAddresses: []
+      }
+    }
+  ],
+  edges: [
+    {
+      data: {
+        id: '609bfed46324322f7faa9c298bccaff1',
+        source: 'b28c30e3-82a8-409d-9979-d8a02ffa1294',
+        target: '57167670-15d1-4ffd-9c02-39155ac75484'
+      }
+    },
+    {
+      data: {
+        id: '81240b9fdb5ae1fc37a1402450fe339c',
+        source: '57167670-15d1-4ffd-9c02-39155ac75484',
+        target: 'c0565cd7-d87d-4fa8-bf87-b7836ef30f22'
+      }
+    }
+  ]
 };

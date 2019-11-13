@@ -14,6 +14,8 @@ export interface RuntimeConfig {
    * auth key of the api if single AuthMode is used.
    */
   xApiKey: string;
+
+  sshTunnelPath: string | null;
 }
 
 /**

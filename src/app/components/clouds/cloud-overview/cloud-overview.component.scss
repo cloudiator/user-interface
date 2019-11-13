@@ -1,0 +1,12 @@
+@import "~bulma/sass/utilities/mixins";
+
+.add-button {
+  min-width: 15em;
+  min-height: 5em
+}
+
+@include mobile {
+  .add-button {
+    width: 95%;
+  }
+}

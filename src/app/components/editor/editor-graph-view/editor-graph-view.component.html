@@ -1,34 +1,51 @@
-<div style="width: 100%; height: 100%">
-  <div class="tabs is-centered is-large is-fullwidth is-toggle is-toggle-rounded" style="padding: 1em 2em 0 2em">
-    <ul>
-      <li *ngIf="isValid"
-          [class.is-active]="isTab(tab.JOB)"
-          (click)="switchTab(tab.JOB)"
-          [@tabEnterAnimation]
-      style="overflow-x: hidden; flex-basis: 0">
-        <a>Job</a></li>
-      <li *ngIf="queueStatus !== ''"
-          [class.is-active]="isTab(tab.NODE)"
-          (click)="switchTab(tab.NODE)"
-          [@tabEnterAnimation]
-      style="overflow-x: hidden; flex-basis: 0">
-        <a>
-          Nodes
-          <span *ngIf="queueStatus === 'RUNNING' || queueStatus === 'SCHEDULED'" class="icon is-medium">
+<div class="view-container is-flex">
+  <ng-container *ngIf="isValid; else noValidation">
+    <div class="view-header title is-5 is-centered has-text-centered">
+      {{job?.name}}
+    </div>
+    <div class="tabs is-centered  is-medium is-fullwidth">
+      <ul>
+        <li *ngIf="isValid"
+            [class.is-active]="isTab(tab.JOB)"
+            (click)="switchTab(tab.JOB)"
+            [@tabEnterAnimation]
+            style="overflow: hidden; flex-basis: 0">
+          <a>Job</a></li>
+        <li *ngIf="queueStatus !== ''"
+            [class.is-active]="isTab(tab.NODE)"
+            (click)="switchTab(tab.NODE)"
+            [@tabEnterAnimation]
+            style="overflow: hidden; flex-basis: 0">
+          <a>
+            Schedule
+            <span *ngIf="queueStatus === 'RUNNING' || queueStatus === 'SCHEDULED'" class="icon is-medium">
             <i class="fas fa-spinner fa-pulse"></i>
           </span>
-        </a>
-      </li>
-    </ul>
-  </div>
-  <div class="tab-container is-clipped">
-    <div class="tab" [@slide]="tabAnimationState(tab.JOB)">
-      <app-yaml-graph></app-yaml-graph>
+          </a>
+        </li>
+      </ul>
     </div>
-    <div class="tab" [@slide]="tabAnimationState(tab.NODE)">
-      <app-node-graph></app-node-graph>
+    <div class="tab-container is-clipped">
+      <div class="tab" [@slide]="tabAnimationState(tab.JOB)">
+        <ng-container *ngIf="isValid">
+          <app-yaml-graph></app-yaml-graph>
+        </ng-container>
+      </div>
+      <div class="tab" [@slide]="tabAnimationState(tab.NODE)">
+        <app-node-graph></app-node-graph>
+      </div>
     </div>
-  </div>
+  </ng-container>
+  <ng-template #noValidation>
+    <div class="no-validation-container is-flex">Nothing to show</div>
+  </ng-template>
+  <a class="editor-button card title is-6 is-hidden-tablet"
+     routerLink="/editor">
+    <span class="icon">
+    <i class="fas fa-arrow-left"></i>
+  </span>
+    Editor
+  </a>
 </div>
 
 <!--<button class="button" style="position: absolute; z-index: 99999; right: 10px; bottom: 10px" (click)="isValid = !isValid">valid</button>-->

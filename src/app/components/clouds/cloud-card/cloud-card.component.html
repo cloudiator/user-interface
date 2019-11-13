@@ -1,15 +1,26 @@
-<div class="card button is-secondary is-hoverable" style="min-width: 15em; min-height: 5em; padding: 0 0"
+<div class="cloud-card card button is-hoverable"
      [routerLink]="['/cloud', cloud.id]">
 
-  <div class="hero">
+  <div class="hero" style="max-width: 100%; height: 100%">
     <div class="hero-body">
-      <h3 class="title is-5">{{cloud.api.providerName}}</h3>
-      <h5 class="subtitle is-5">{{cloud.credential.user}}</h5>
+      <h3 class="api-text title is-5">{{cloud.api.providerName}}</h3>
+      <h5 class="username-text subtitle is-5">{{cloud.credential.user}}</h5>
     </div>
   </div>
 
-  <!--<span class="icon" style="width: 100%; height: 100%;"-->
-        <!--[class.is-invisible]="cloud.cloudType === 'PUBLIC'">-->
-    <!--<i class="fas fa-lock has-text-grey"></i>-->
-  <!--</span>-->
+  <div class="logo-crop-container">
+  <img *ngIf="backgroundSelector('openstack')"
+       class="background-logo" src="assets/OpenStack-Logo.svg">
+  <img *ngIf="backgroundSelector('aws')"
+       class="background-aws-logo" src="assets/AWS-Logo.svg">
+  <img *ngIf="backgroundSelector('gcp')"
+       class="background-logo" src="assets/GCP-Logo.svg">
+  </div>
+<!--  <img *ngIf="backgroundSelector('default')"-->
+<!--       class="background-default-logo" src="assets/default-cloud-logo.svg">-->
+
+  <span class="public-icon icon"
+        [class.is-invisible]="cloud.cloudType === 'PUBLIC'">
+    <i class="fas fa-lock has-text-grey-light"></i>
+  </span>
 </div>

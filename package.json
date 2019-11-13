@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test --browsers=Chrome --source-map=false",
-    "travis-test": "ng test --watch=false --environment=prod --browsers=ChromeHeadlessNoSandbox --reporters=progress,kjhtml",
+    "travis-test": "ng test --watch=false --environment=prod --browsers=ChromeHeadlessNoSandbox --reporters=progress,kjhtml --source-map=false",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "compodoc": "npx compodoc",
@@ -22,7 +22,7 @@
     "@angular/core": "^8.1.1",
     "@angular/flex-layout": "^8.0.0-beta.26",
     "@angular/forms": "^8.1.1",
-    "@angular/http": "*",
+    "@angular/http": "7.2.15",
     "@angular/platform-browser": "^8.1.1",
     "@angular/platform-browser-dynamic": "^8.1.1",
     "@angular/pwa": "^0.801.1",
@@ -33,15 +33,19 @@
     "bulma-badge": "^2.0.0",
     "bulma-checkradio": "^2.1.1",
     "bulma-divider": "^2.0.1",
-    "cloudiator-rest-api": "1.4.0",
+    "cloudiator-rest-api": "1.5.0",
     "core-js": "^2.6.5",
     "cytoscape": "^3.8.1",
     "file-saver": "^2.0.1",
     "hammerjs": "^2.0.8",
+    "lodash": "^4.17.15",
     "node-sass": "^4.12.0",
     "rxjs": "^6.4.0",
     "sass-loader": "^7.1.0",
     "webpack": "^4.35.3",
+    "xterm": "^4.1.0",
+    "xterm-addon-attach": "^0.3.0",
+    "xterm-addon-fit": "^0.2.1",
     "zone.js": "^0.8.29"
   },
   "devDependencies": {
@@ -50,8 +54,10 @@
     "@angular/compiler-cli": "^8.1.1",
     "@angular/language-service": "^8.1.1",
     "@compodoc/compodoc": "^1.1.10",
+    "@types/cytoscape": "^3.8.1",
     "@types/jasmine": "^2.8.16",
     "@types/jasminewd2": "^2.0.6",
+    "@types/lodash": "^4.14.138",
     "@types/node": "^10.14.12",
     "bulma": "^0.7.4",
     "codelyzer": "^4.5.0",
@@ -68,6 +74,6 @@
     "protractor": "^5.4.2",
     "ts-node": "^7.0.1",
     "tslint": "^5.18.0",
-    "typescript": "<3.5.0"
+    "typescript": " >=3.4.0 <3.6.0"
   }
 }

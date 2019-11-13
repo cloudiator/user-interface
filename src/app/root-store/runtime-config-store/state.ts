@@ -9,7 +9,8 @@ export const initialState = {
   runtimeConfig: <RuntimeConfig>{
     apiPath: '',
     authMode: AuthMode.SINGLE,
-    xApiKey: ''
+    xApiKey: '',
+    sshTunnelPath: null
   },
   isFetched: false
 };
