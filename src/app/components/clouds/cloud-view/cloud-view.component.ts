@@ -110,11 +110,14 @@ export class CloudViewComponent implements OnInit, OnDestroy {
   }
 
   backgroundSelector(name) {
+    if (!this.cloud) {
+      return 'default';
+    }
     switch (this.cloud.api.providerName) {
       case 'aws-ec2':
         return name === 'aws';
       case 'openstack4j':
-      case 'openstack-nove':
+      case 'openstack-nova':
         return name === 'openstack';
       case 'google-compute-engine':
         return name === 'gcp';
