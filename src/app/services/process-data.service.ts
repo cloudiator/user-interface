@@ -62,7 +62,7 @@ export class ProcessDataService {
   scheduleGraph(id: string): Observable<any> {
     return this.processApiService.scheduleGraph(id)
     // return id === '4f1cf465-d420-4d63-a456-88f65981c3cd' ? of(null) :
-    //   of(testData.SchedulesGraph)
+    //  return  of(testData.tempTestGraph)
       .pipe(map(graph => {
         return {
           edges: graph.edges,

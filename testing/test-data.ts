@@ -1037,3 +1037,49 @@ export const tokenOne: Token = {
   issuedTime: Number.MIN_VALUE,
   expireTime: Number.MAX_VALUE
 };
+
+
+export const tempTestGraph = {
+  processes: [
+    {
+      data: {
+        id: 'b28c30e3-82a8-409d-9979-d8a02ffa1294',
+        task: 'database',
+        state: 'RUNNING',
+        ipAddresses: []
+      }
+    },
+    {
+      data: {
+        id: '57167670-15d1-4ffd-9c02-39155ac75484',
+        task: 'wiki',
+        state: 'PENDING',
+        ipAddresses: []
+      }
+    },
+    {
+      data: {
+        id: 'c0565cd7-d87d-4fa8-bf87-b7836ef30f22',
+        task: 'loadbalancer',
+        state: 'ERROR',
+        ipAddresses: []
+      }
+    }
+  ],
+  edges: [
+    {
+      data: {
+        id: '609bfed46324322f7faa9c298bccaff1',
+        source: 'b28c30e3-82a8-409d-9979-d8a02ffa1294',
+        target: '57167670-15d1-4ffd-9c02-39155ac75484'
+      }
+    },
+    {
+      data: {
+        id: '81240b9fdb5ae1fc37a1402450fe339c',
+        source: '57167670-15d1-4ffd-9c02-39155ac75484',
+        target: 'c0565cd7-d87d-4fa8-bf87-b7836ef30f22'
+      }
+    }
+  ]
+};

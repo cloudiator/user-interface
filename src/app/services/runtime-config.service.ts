@@ -6,7 +6,7 @@ import {RuntimeConfig} from '../model/RuntimeConfig';
 import {Configuration} from 'cloudiator-rest-api';
 import {environment} from '../../environments/environment';
 import {RootStoreState, RuntimeConfigActions, RuntimeConfigSelectors} from '../root-store';
-import {filter, take} from 'rxjs/operators';
+import {filter, map, take} from 'rxjs/operators';
 
 /**
  * Responsible for fetching and setting up run options.
@@ -42,6 +42,12 @@ export class RuntimeConfigService {
    */
   private fetchConfig() {
     this.httpClient.get<RuntimeConfig>(`${environment.href}assets/appConfig.json`)
+      .pipe(map(config => {
+        // replace ssh tunnel placeholder with undefined so it will be handled correctly by the ssh is available method
+        return config.sshTunnelPath === '${SSH_TUNNEL_PATH}'
+          ? Object.assign(config, {sshTunnelPath: undefined})
+          : config;
+      }))
       .subscribe(value => {
           this.store.dispatch(new RuntimeConfigActions.SetRuntimeConfigAction(<RuntimeConfig>value));
         },

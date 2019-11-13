@@ -49,10 +49,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   /**
    * Adds page reload warning if unsaved changes exist.
+   * Not needed anymore as the app caches editor state now
    */
   @HostListener('window:beforeunload')
   unloadNotification() {
-    // ToDo: reactivate
     // return !this.editorHasUnsavedChanges;
   }
 

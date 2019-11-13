@@ -8,6 +8,7 @@ import {ToastService} from '../../services/toast.service';
 import {IpAddress, LoginCredential} from 'cloudiator-rest-api';
 import {SshService} from '../../../services/ssh.service';
 import {take} from 'rxjs/operators';
+import {ToastType} from '../../model/toast';
 
 @Component({
   selector: 'app-ssh-console-dialog',
@@ -29,41 +30,46 @@ export class SshConsoleDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.sshService.connectTo(this.data.ipAddress, this.data.loginCredential)
-      .pipe(take(1))
-      .subscribe(socket => {
-        this.socket = socket;
+    // check if needed values exist
+    if (!this.data.ipAddress || !this.data.loginCredential) {
+      this.toastService.show({text: 'Could not connect to Virtual Machine', type: ToastType.DANGER});
+    } else {
+      this.sshService.connectTo(this.data.ipAddress, this.data.loginCredential)
+        .pipe(take(1))
+        .subscribe(socket => {
+          this.socket = socket;
 
           this.socket.onclose = ev => {
-          console.log(ev);
-          switch (ev.code) {
-            case 4001:
-              term.writeln('Authentication Error');
-              break;
-            case 4002:
-              term.writeln('Machine closed connection');
-              break;
-            case 4003:
-              term.writeln(ev.reason);
-              break;
-            case 4005:
-              term.writeln('SSH Tunnel Error');
-              break;
-            default:
-              term.writeln('Connection closed');
-          }
-        };
+            console.log(ev);
+            switch (ev.code) {
+              case 4001:
+                term.writeln('Authentication Error');
+                break;
+              case 4002:
+                term.writeln('Machine closed connection');
+                break;
+              case 4003:
+                term.writeln(ev.reason);
+                break;
+              case 4005:
+                term.writeln('SSH Tunnel Error');
+                break;
+              default:
+                term.writeln('Connection closed');
+            }
+          };
 
-        const attachAddon = new AttachAddon(this.socket);
+          const attachAddon = new AttachAddon(this.socket);
 
-        const term = new Terminal();
-        term.loadAddon(attachAddon);
-        term.loadAddon(this.fitAddon);
+          const term = new Terminal();
+          term.loadAddon(attachAddon);
+          term.loadAddon(this.fitAddon);
 
-        term.open(this.terminal.nativeElement);
+          term.open(this.terminal.nativeElement);
 
-        this.fitAddon.fit();
-      });
+          this.fitAddon.fit();
+        });
+    }
   }
 
   ngOnDestroy(): void {
