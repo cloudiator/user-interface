@@ -33,6 +33,7 @@
     "bulma-badge": "^2.0.0",
     "bulma-checkradio": "^2.1.1",
     "bulma-divider": "^2.0.1",
+    "bulma-tooltip": "^3.0.2",
     "cloudiator-rest-api": "1.5.0",
     "core-js": "^2.6.5",
     "cytoscape": "^3.8.1",

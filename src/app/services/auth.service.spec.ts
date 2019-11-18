@@ -40,7 +40,7 @@ describe('AuthService', () => {
 
     await service.logIn(testData.loginOne).subscribe();
 
-    expect(service.store.dispatch).toHaveBeenCalledTimes(1);
+    expect(service.store.dispatch).toHaveBeenCalledTimes(2);
     expect(service.store.dispatch).toHaveBeenCalledWith(new AuthActions.LogInAction(testData.tokenOne));
 
     // await service.isLoggedIn().subscribe(bool => expect(bool).toBeFalsy());

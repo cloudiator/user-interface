@@ -87,6 +87,7 @@ export class ProcessDataService {
         },
         () => {
           this.toastService.show({text: 'Could not fetch Schedules', type: ToastType.DANGER});
+          this.store.dispatch(new ProcessDataActions.SetScheduleIsLoading(false));
           console.error('could not fetch Schedules');
         },
         () => {

@@ -66,7 +66,7 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
     }, {
       'selector': 'node:selected',
       'style': {
-        'background-blacken': '-0.2'
+        'background-blacken': '-0.5'
       }
     }, {
       'selector': 'edge',

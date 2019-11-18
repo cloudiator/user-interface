@@ -38,26 +38,28 @@
       <!-- information -->
       <table>
         <tr>
-          <td><u>process id</u>:</td>
+          <td><u>Process ID</u>:</td>
           <td>{{selected?.data.id}}</td>
         </tr>
         <ng-container *ngFor="let node of node$ | async">
           <ng-container *ngIf="node.ipAddresses?.length !== 0">
             <tr>
               <td>
-                <div style="margin-right: 0.25em"><u>ip addresses</u>:</div>
+                <div style="margin-right: 0.25em"><u>IP Addresses</u>:</div>
               </td>
               <td>
                 <div>
-                  <div *ngFor="let ip of node.ipAddresses">
-                    {{ip.value}}
-                    <span *ngIf="!isPublicIp(ip)" class="icon">
+                  <div *ngFor="let ip of node.ipAddresses" style="margin-bottom: 0.3rem">
+                    <span *ngIf="!isPublicIp(ip)" class="icon is-not-clickable" data-tooltip="Private IP">
                       <i class="fas fa-lock"></i>
                     </span>
-                    <span *ngIf="(sshIsAvailable$ | async) && isPublicIp(ip)" class="icon"
-                          (click)="onConnect(node.name, ip, node.loginCredential)">
+                    <span *ngIf="(sshIsAvailable$ | async) && isPublicIp(ip)" class="button icon is-dark is-outlined"
+                          (click)="onConnect(node.name, ip, node.loginCredential)"
+                          data-tooltip="Connect to Node...">
                       <i class="fas fa-laptop"></i>
+                      <!--                      connect...-->
                     </span>
+                    {{ip.value}}
                     <br>
                   </div>
                 </div>
@@ -67,7 +69,7 @@
         </ng-container>
         <tr>
           <td>
-            process type:
+            <u>Process type</u>:
           </td>
           <td>
             {{selected?.process?.type}}
