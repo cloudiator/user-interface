@@ -20,7 +20,7 @@ export class NodeDataService {
    * @param {Node} node
    * @return {Node}
    */
-  private static ipAddressMap(node: Node) {
+  public static ipAddressMap(node: Node) {
     const ips = node.ipAddresses.map(ip => {
       // @ts-ignore
       if (ip.IpAddressType && ip.IpVersion) {
