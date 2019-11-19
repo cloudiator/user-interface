@@ -42,6 +42,7 @@ export class AuthService {
         this.store.dispatch(new AuthActions.LogInAction(storedLogin));
       }
     } else {
+      // set state to logged in with given api key if authMode is set to single
       this.runtimeConfigService.awaitConfigLoad().then(() => {
         this.runtimeConfigService.getRuntimeConfig()
           .pipe(take(1))
@@ -113,6 +114,10 @@ export class AuthService {
     return this.store.pipe(select(AuthSelectors.selectToken));
   }
 
+  /**
+   * Returns Logged in User.
+   * @return {Observable<string>}
+   */
   public getUser(): Observable<string> {
     return this.store.pipe(select(AuthSelectors.selectUser));
   }

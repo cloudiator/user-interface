@@ -123,8 +123,15 @@ export class SchedulesBottomSheetComponent implements OnInit {
     }
   }
 
+  /**
+   * Node Object of the currently displayed Node.
+   */
   public node$: Observable<Node[]>;
 
+  /**
+   * Wether the SSH Terminal feature is available and corresponding button can be shown.
+   * @type {Observable<boolean>}
+   */
   public sshIsAvailable$ = this.sshService.sshIsAvailable();
 
   /**
@@ -154,14 +161,28 @@ export class SchedulesBottomSheetComponent implements OnInit {
   onSheetClick() {
   }
 
+  /**
+   * Opens Diagnostics Modal.
+   */
   openDiagnostic() {
     this.dialogService.open(ScheduleDiagnosticDialogComponent, {data: this.selected.process});
   }
 
+  /**
+   * Checks whether the given ip has set its IpAdressType to Public
+   * @param {IpAddress} ip Ip to be checked
+   * @return {boolean} True if ip is public.
+   */
   isPublicIp(ip: IpAddress) {
     return ip.ipAddressType === IpAddressType.PUBLICIP;
   }
 
+  /**
+   * Opens a new SSH Terminal modal.
+   * @param {string} name Name of Node that is to be connected to.
+   * @param {IpAddress} ip IP to connect to.
+   * @param {LoginCredential} credentials Credentials needed to Authorize SSH connection.
+   */
   onConnect(name: string, ip: IpAddress, credentials: LoginCredential) {
     this.dialogService.open(SshConsoleDialogComponent, {
       data: {
@@ -182,6 +203,9 @@ export interface Selected {
    */
   data: any;
 
+  /**
+   * process of the Node being shown.
+   */
   process: CloudiatorProcess;
 
   /**
@@ -190,6 +214,11 @@ export interface Selected {
   group: 'nodes' | 'edges';
 }
 
+/**
+ * Typechecks CloudiatorProcesses
+ * @param {SingleProcess | ClusterProcess} process
+ * @return {process is SingleProcess}
+ */
 export function isSingleProcess(process: SingleProcess | ClusterProcess): process is SingleProcess {
   return (<SingleProcess>process).node !== undefined;
 }

@@ -12,6 +12,10 @@ import {EditorService} from '../../../services/editor.service';
 })
 export class YamlGraphComponent implements OnInit {
 
+  /**
+   * Whether the Graph is being fetched right now.
+   * @type {boolean}
+   */
   public isLoading = false;
 
   /**

@@ -58,6 +58,10 @@ export class YamlEditorComponent implements OnInit, OnDestroy {
    */
   public isSubmitting = false;
 
+  /**
+   * Whether editor or graph should be shown in mobile view.
+   * @type {Observable<any>}
+   */
   public showGraphs = this.activatedRoute.data.pipe(map(data => data.graphs));
 
   /**

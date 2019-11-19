@@ -15,6 +15,11 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['../overview-table.component.scss']
 })
 export class LocationsOverviewComponent extends OverviewTableComponent<Location> implements OnInit, OnDestroy {
+  /**
+   * configures OverviewTableComponent
+   * @param {ActivatedRoute} activatedRoute
+   * @param {CloudDataService} cloudDataService
+   */
   constructor(activatedRoute: ActivatedRoute,
               cloudDataService: CloudDataService) {
     super(activatedRoute, cloudDataService);

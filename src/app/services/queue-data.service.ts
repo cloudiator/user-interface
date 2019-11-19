@@ -16,6 +16,10 @@ import {ToastType} from '../app-dialog/model/toast';
 })
 export class QueueDataService {
 
+  /**
+   * how often the REST API should be polled when checking a queue status.
+   * @type {number} Interval in milliseconds.
+   */
   private readonly queuePollingInterval = 1000;
 
   /**

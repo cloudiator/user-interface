@@ -22,6 +22,10 @@ export class CloudViewComponent implements OnInit, OnDestroy {
    */
   hardwareDataSource: BehaviorSubject<Hardware[]>;
 
+  /**
+   * Observable saying whether hardware is loading right now.
+   * @type {Observable<boolean>}
+   */
   hardwareIsLoading$ = this.cloudDataService.hardwareIsLoading();
 
   /**
@@ -29,10 +33,21 @@ export class CloudViewComponent implements OnInit, OnDestroy {
    */
   imagesDataSource: BehaviorSubject<Image[]>;
 
+  /**
+   * Observable saying whether images are loading right now.
+   * @type {Observable<boolean>}
+   */
   imageIsLoading$ = this.cloudDataService.imageIsLoading();
 
+  /**
+   * Datasource for Locations Table.
+   */
   locationDataSource: BehaviorSubject<Location[]>;
 
+  /**
+   * Observable saying whether locations are loading right now.
+   * @type {Observable<boolean>}
+   */
   locationIsLoading$ = this.cloudDataService.locationIsLoading();
 
   /**
@@ -109,6 +124,11 @@ export class CloudViewComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Decides which Cloud image is to be shown.
+   * @param name
+   * @return {string | boolean}
+   */
   backgroundSelector(name) {
     if (!this.cloud) {
       return 'default';
