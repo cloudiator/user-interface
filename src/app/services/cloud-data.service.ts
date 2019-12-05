@@ -243,8 +243,8 @@ export class CloudDataService {
         },
         () => {
           this.store.dispatch(new CloudDataActions.SetLocationIsLoading(false));
-          console.error('could not fetch Images');
-          this.toastService.show({text: 'could not fetch Images', type: ToastType.DANGER}, false);
+          console.error('could not fetch Locations');
+          this.toastService.show({text: 'could not fetch Locations', type: ToastType.DANGER}, false);
         },
         () => this.store.dispatch(new CloudDataActions.SetLocationIsLoading(false))
       );

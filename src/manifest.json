@@ -1,8 +1,8 @@
 {
   "name": "Cloudiator",
   "short_name": "Cloudiator",
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "theme_color": "#92acbe",
+  "background_color": "#92acbe",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",

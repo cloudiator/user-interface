@@ -78,9 +78,9 @@ export class AuthService {
         return true;
       }),
       catchError(err => {
-        switch (err.error.status) {
+        switch (err.status) {
           case 400:
-            this.toastService.show({text: err.error.message, type: ToastType.DANGER});
+            this.toastService.show({text: 'Bad Request', type: ToastType.DANGER});
             break;
           case 401:
             this.toastService.show({text: err.error.message, type: ToastType.DANGER});

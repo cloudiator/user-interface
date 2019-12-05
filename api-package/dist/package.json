@@ -1,0 +1,46 @@
+{
+  "name": "cloudiator-rest-api",
+  "version": "1.5.0",
+  "description": "swagger client for cloudiator-rest-api",
+  "author": "Swagger Codegen Contributors",
+  "keywords": [
+    "swagger-client"
+  ],
+  "license": "Unlicense",
+  "peerDependencies": {
+    "@angular/core": "^8.0.0",
+    "@angular/http": "^8.0.0",
+    "@angular/common": "^8.0.0",
+    "@angular/compiler": "^8.0.0",
+    "core-js": "^2.4.0",
+    "reflect-metadata": "^0.1.3",
+    "rxjs": "~6.3.3",
+    "zone.js": "^0.7.6"
+  },
+  "devDependencies": {
+    "@angular/compiler-cli": "^8.0.0",
+    "@angular/core": "^8.0.0",
+    "@angular/http": "7.2.15",
+    "@angular/common": "^8.0.0",
+    "@angular/compiler": "^8.0.0",
+    "@angular/platform-browser": "^8.0.0",
+    "ng-packagr": "5.3.0",
+    "reflect-metadata": "^0.1.3",
+    "rxjs": "~6.3.3",
+    "zone.js": "^0.7.6",
+    "typescript": ">=3.4.0 <3.5.0"
+  },
+  "main": "bundles/cloudiator-rest-api.umd.js",
+  "module": "fesm5/cloudiator-rest-api.js",
+  "es2015": "fesm2015/cloudiator-rest-api.js",
+  "esm5": "esm5/cloudiator-rest-api.js",
+  "esm2015": "esm2015/cloudiator-rest-api.js",
+  "fesm5": "fesm5/cloudiator-rest-api.js",
+  "fesm2015": "fesm2015/cloudiator-rest-api.js",
+  "typings": "cloudiator-rest-api.d.ts",
+  "metadata": "cloudiator-rest-api.metadata.json",
+  "sideEffects": false,
+  "dependencies": {
+    "tslib": "^1.9.0"
+  }
+}
