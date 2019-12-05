@@ -49,6 +49,10 @@ export class ProcessDataService {
     // return of(testData.allSchedules)
   }
 
+  /**
+   * returns an Observable that returns true if Schedules are being fetched right now.
+   * @return {Observable<boolean>}
+   */
   public getScheduleIsLoading(): Observable<boolean> {
     return this.store.pipe(select(ProcessDataSelectors.selectScheduleIsLoading));
   }
@@ -71,6 +75,11 @@ export class ProcessDataService {
       }));
   }
 
+  /**
+   * sends a delete request for the given shedule id to the REST API
+   * @param {string} id
+   * @return {Observable<Queue>}
+   */
   deleteSchedule(id: string): Observable<Queue> {
     return this.processApiService.deleteSchedule(id);
   }
@@ -87,6 +96,7 @@ export class ProcessDataService {
         },
         () => {
           this.toastService.show({text: 'Could not fetch Schedules', type: ToastType.DANGER});
+          this.store.dispatch(new ProcessDataActions.SetScheduleIsLoading(false));
           console.error('could not fetch Schedules');
         },
         () => {

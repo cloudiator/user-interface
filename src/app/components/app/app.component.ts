@@ -32,6 +32,9 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   editorHasUnsavedChanges: boolean;
 
+  /**
+   * Users Object
+   */
   public user$: Observable<string>;
 
   /**

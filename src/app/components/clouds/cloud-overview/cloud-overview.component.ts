@@ -20,6 +20,10 @@ export class CloudOverviewComponent implements OnInit, OnDestroy {
    */
   public clouds: Cloud[] = [];
 
+  /**
+   * Says whether Clouds are being fetched right now.
+   * @type {Observable<boolean>}
+   */
   public cloudIsLoading$: Observable<boolean> = this.cloudDataService.cloudIsLoading();
 
   /**

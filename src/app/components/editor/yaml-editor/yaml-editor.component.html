@@ -18,7 +18,7 @@
                 <input type="file" name="upload" id="upload" #upload class="is-hidden"
                        (change)="onUploadChange($event)">
                 <label for="upload">
-                  <a class="button is-small is-outlined is-secondary">
+                  <a class="button is-small is-outlined is-secondary has-tooltip-right" data-tooltip="Load File...">
                     <span class="icon is-small">
                       <i class="fas fa-upload"></i>
                     </span>
@@ -27,9 +27,10 @@
               </p>
               <!-- Download button -->
               <p class="control">
-                <button class="button is-small is-outlined is-secondary"
+                <button class="button is-small is-outlined is-secondary has-tooltip-right"
                         [disabled]="editor.getValue() === '' || filename === ''"
-                        (click)="onDownload()">
+                        (click)="onDownload()"
+                        data-tooltip="Save File">
                     <span class="icon is-small">
                       <i class="fas fa-download"></i>
                     </span>

@@ -18,8 +18,6 @@ import {zip} from 'lodash';
 })
 export class CloudDataService {
 
-  private cloudFetcher: Subscription;
-
   /** @ignore **/
   constructor(private cloudApiService: CloudService,
               private runtimeConfigService: RuntimeConfigService,
@@ -69,6 +67,10 @@ export class CloudDataService {
       );
   }
 
+  /**
+   * returns if Clouds are being fetched right now.
+   * @return {Observable<boolean>}
+   */
   public cloudIsLoading(): Observable<boolean> {
     return this.store.pipe(select(CloudDataSelectors.selectCloudIsLoading));
   }
@@ -104,6 +106,10 @@ export class CloudDataService {
     //   return of(lst);
   }
 
+  /**
+   * Returns whether Hardware is being fetched right now.
+   * @return {Observable<boolean>}
+   */
   public hardwareIsLoading(): Observable<boolean> {
     return this.store.pipe(select(CloudDataSelectors.selectHardwareIsLoading));
   }
@@ -127,6 +133,10 @@ export class CloudDataService {
       select(CloudDataSelectors.selectImages));
   }
 
+  /**
+   * Returns whether images are being fetched right now.
+   * @return {Observable<boolean>}
+   */
   public imageIsLoading(): Observable<boolean> {
     return this.store.pipe(select(CloudDataSelectors.selectImageIsLoading));
   }
@@ -147,6 +157,10 @@ export class CloudDataService {
     return this.store.pipe(select(CloudDataSelectors.selectLocations));
   }
 
+  /**
+   * Returns whether Locations are being fetched right now.
+   * @return {Observable<boolean>}
+   */
   public locationIsLoading(): Observable<boolean> {
     return this.store.pipe(select(CloudDataSelectors.selectLocationIsLoading));
   }
@@ -156,11 +170,6 @@ export class CloudDataService {
    * before sending the request, the config file must be loaded to grant the correct api url
    */
   public fetchClouds() {
-
-    if (this.cloudFetcher) {
-      this.cloudFetcher.unsubscribe();
-    }
-
     // fetch Clouds
     this.store.dispatch(new CloudDataActions.SetCloudIsLoading(true));
     this.cloudApiService.findClouds()
@@ -234,8 +243,8 @@ export class CloudDataService {
         },
         () => {
           this.store.dispatch(new CloudDataActions.SetLocationIsLoading(false));
-          console.error('could not fetch Images');
-          this.toastService.show({text: 'could not fetch Images', type: ToastType.DANGER}, false);
+          console.error('could not fetch Locations');
+          this.toastService.show({text: 'could not fetch Locations', type: ToastType.DANGER}, false);
         },
         () => this.store.dispatch(new CloudDataActions.SetLocationIsLoading(false))
       );

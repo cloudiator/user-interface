@@ -1,27 +1,21 @@
-# CloudiatorUi
+# CloudiatorUi  [![Build Status](https://travis-ci.org/cloudiator/user-interface.svg?branch=master)](https://travis-ci.org/cloudiator/user-interface)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
+Web Frontend of the Cloudiator Project used for management of Cloud Providers and Deployment of cloud tasks. 
 
-## Development server
+Docker Image: https://hub.docker.com/r/cloudiator/user-interface
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+#### Running local test version
+adjust src/environments/environment.ts as needed
 
-## Code scaffolding
+```
+npm install
+npm run start
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+#### Viewing Documentation
+```
+npm install
+npm run generate-docs
+npm run serve-docs
+```
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).

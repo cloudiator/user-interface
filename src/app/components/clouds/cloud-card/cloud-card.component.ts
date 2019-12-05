@@ -25,6 +25,11 @@ export class CloudCardComponent implements OnInit {
   ngOnInit() {
   }
 
+  /**
+   * Decides which Cloud image is to be shown.
+   * @param name
+   * @return {boolean}
+   */
   backgroundSelector(name) {
     switch (this.cloud.api.providerName) {
       case 'aws-ec2':

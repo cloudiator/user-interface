@@ -8,6 +8,6 @@
     "src/environments/**",
     "src/app/root-store/**",
     "e2e/**",
-    "src/app/app-dialog/dialogs/**",
+    "src/app/app-dialog/dialogs/**"
   ]
 }

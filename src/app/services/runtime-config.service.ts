@@ -18,8 +18,8 @@ export class RuntimeConfigService {
 
   /**
    * custom HttpClient that isn't gated by Interceptors.
-   * The http-auth-inteceptor needs this service,
-   * thus this service has to run befor initializing the interceptors
+   * The http-auth-interceptor needs this service,
+   * thus this service has to run before initializing the interceptors
    */
   private httpClient: HttpClient;
 
@@ -55,6 +55,9 @@ export class RuntimeConfigService {
       );
   }
 
+  /**
+   * Dispatches Config from Environment to the Store.
+   */
   private dispatchDefaultConfig() {
     this.store.dispatch(new RuntimeConfigActions.SetRuntimeConfigAction(<RuntimeConfig>{
       apiPath: environment.apiPath,
@@ -94,6 +97,10 @@ export class RuntimeConfigService {
     return this.store.pipe(select(RuntimeConfigSelectors.selectXApiKey));
   }
 
+  /**
+   * Returns ShhTunnelPath from Store.
+   * @return {Observable<string | null>}
+   */
   getSshTunnelPath(): Observable<string | null> {
     return this.store.pipe(select(RuntimeConfigSelectors.selectSshTunnelPath));
   }

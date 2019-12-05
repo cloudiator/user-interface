@@ -66,7 +66,7 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
     }, {
       'selector': 'node:selected',
       'style': {
-        'background-blacken': '-0.2'
+        'background-blacken': '-0.5'
       }
     }, {
       'selector': 'edge',
@@ -125,6 +125,10 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
    */
   readonly minZoom = 0.5;
 
+  /**
+   * whether to show no data text.
+   * @type {boolean}
+   */
   noData = true;
 
   /**
@@ -249,6 +253,9 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
       );
   }
 
+  /**
+   * triggers delete schedule confirmation dialog and sends delete request to backend if accepted.
+   */
   onDelete() {
     this.dialogSerivce.open(DeleteScheduleDialogComponent, {
       data: {
@@ -271,6 +278,10 @@ export class SchedulesViewComponent implements OnInit, OnChanges {
       });
   }
 
+  /**
+   * checks if given id is currently shown and graph needs to be updated.
+   * @param {string} id
+   */
   updateGraph(id: string) {
     if (this.scheduleView && this.scheduleView.schedule.id === id) {
       this.selected = null;

@@ -6,7 +6,7 @@
         <div class="container">
                     <h1 class="title">
           <div class="is-flex" style="align-items: center">
-            <div class="">{{cloud.api.providerName}}</div>
+            <div class="">{{cloud?.api.providerName}}</div>
             <span class="public-icon icon is-small"
                   [class.is-invisible]="cloud.cloudType === 'PUBLIC'">
               <i class="fas fa-lock has-text-grey-light"></i>
@@ -47,7 +47,8 @@
         Hardware
       </div>
       <div class="table-container card">
-        <ng-container *ngIf="!(hardwareIsLoading$ | async) || hardwareDataSource.value !== []; else loader">
+<!--        @TODO -->
+        <ng-container *ngIf="!(hardwareIsLoading$ | async); else loader">
           <table cdk-table class="table is-fullwidth is-striped is-hoverable" *ngIf="hardwareDataSource"
                  [dataSource]="hardwareDataSource.value">
 

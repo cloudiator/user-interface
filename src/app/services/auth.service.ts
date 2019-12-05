@@ -3,12 +3,13 @@ import {Login, Token, UserService} from 'cloudiator-rest-api';
 import {RuntimeConfigService} from './runtime-config.service';
 import {select, Store} from '@ngrx/store';
 import {AuthActions, AuthSelectors, RootStoreState} from '../root-store';
-import {Observable, of} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
+import {from, Observable, of} from 'rxjs';
+import {catchError, map, mergeMap, take} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {ToastService} from '../app-dialog/services/toast.service';
 import {ToastType} from '../app-dialog/model/toast';
 import {environment} from '../../environments/environment';
+import {AuthMode} from '../model/RuntimeConfig';
 
 /**
  * handles requests concerning Authentication.
@@ -40,6 +41,17 @@ export class AuthService {
       if (storedLogin.expireTime || storedLogin.expireTime > Date.now()) {
         this.store.dispatch(new AuthActions.LogInAction(storedLogin));
       }
+    } else {
+      // set state to logged in with given api key if authMode is set to single
+      this.runtimeConfigService.awaitConfigLoad().then(() => {
+        this.runtimeConfigService.getRuntimeConfig()
+          .pipe(take(1))
+          .subscribe(config => {
+            if (config.authMode === AuthMode.SINGLE) {
+              this.store.dispatch(new AuthActions.LogInAction({token: config.xApiKey}));
+            }
+          });
+      });
     }
   }
 
@@ -66,9 +78,9 @@ export class AuthService {
         return true;
       }),
       catchError(err => {
-        switch (err.error.status) {
+        switch (err.status) {
           case 400:
-            this.toastService.show({text: err.error.message, type: ToastType.DANGER});
+            this.toastService.show({text: 'Bad Request', type: ToastType.DANGER});
             break;
           case 401:
             this.toastService.show({text: err.error.message, type: ToastType.DANGER});
@@ -96,12 +108,16 @@ export class AuthService {
 
   /**
    * Rrturns an Observable containing the current login token string.
-    * @return {Observable<string>}
+   * @return {Observable<string>}
    */
   public getToken(): Observable<string> {
     return this.store.pipe(select(AuthSelectors.selectToken));
   }
 
+  /**
+   * Returns Logged in User.
+   * @return {Observable<string>}
+   */
   public getUser(): Observable<string> {
     return this.store.pipe(select(AuthSelectors.selectUser));
   }

@@ -13,6 +13,12 @@ import {OverviewTableComponent} from '../overview-table.component';
   styleUrls: ['../overview-table.component.scss']
 })
 export class HardwareOverviewComponent extends OverviewTableComponent<Hardware> implements OnInit, OnDestroy {
+
+  /**
+   * configures OverviewTableComponent
+   * @param {ActivatedRoute} activatedRoute
+   * @param {CloudDataService} cloudDataService
+   */
   constructor(activatedRoute: ActivatedRoute,
               cloudDataService: CloudDataService) {
     super(activatedRoute, cloudDataService);

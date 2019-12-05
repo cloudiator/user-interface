@@ -15,6 +15,9 @@ export interface RuntimeConfig {
    */
   xApiKey: string;
 
+  /**
+   * path to ssh tunnel backend.
+   */
   sshTunnelPath: string | null;
 }
 

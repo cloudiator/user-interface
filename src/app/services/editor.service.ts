@@ -17,6 +17,10 @@ import {EditorStorageState} from '../model/EditorStorageState';
 })
 export class EditorService {
 
+  /**
+   * Key the editor state is save under in local storage.
+   * @type {string}
+   */
   public readonly EDITOR_STORE_KEY = 'editor';
 
   /** @ignore */
@@ -202,10 +206,18 @@ export class EditorService {
     }
   }
 
+  /**
+   * stores editor state to local storage.
+   * @param {EditorStorageState} state
+   */
   public saveEditorState(state: EditorStorageState) {
     localStorage.setItem(this.EDITOR_STORE_KEY, JSON.stringify(state));
   }
 
+  /**
+   * loads editor state from local storage.
+   * @return {EditorStorageState}
+   */
   public loadEditorState(): EditorStorageState {
     const parsed: EditorStorageState = JSON.parse(localStorage.getItem(this.EDITOR_STORE_KEY));
     return parsed ?
@@ -217,6 +229,9 @@ export class EditorService {
       } : null;
   }
 
+  /**
+   * removes editor state saved in local storage.
+   */
   private removeEditorState() {
     localStorage.removeItem(this.EDITOR_STORE_KEY);
   }

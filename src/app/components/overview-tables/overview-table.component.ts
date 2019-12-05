@@ -7,25 +7,55 @@ import {CloudDataService} from '../../services/cloud-data.service';
 import {TableColumns} from '../../model/TableColumns';
 import {take} from 'rxjs/operators';
 
+/**
+ * Abstracted resource Overview Component
+ */
 @Component({
   selector: 'app-overview-table',
   templateUrl: './overview-table.component.html',
   styleUrls: ['./overview-table.component.scss']
 })
 export class OverviewTableComponent<T> implements OnInit, OnDestroy {
+  /**
+   * Title of view
+   * @type {string}
+   */
   title = '';
 
+  /**
+   * Description of Columns of view
+   */
   columns: TableColumns;
+  /**
+   * Field names of Columns needed by the CDK Table.
+   */
   columnFields: string[];
 
+  /**
+   * Key that is Sorted by.
+   */
   initialSortKey: string;
 
+  /**
+   * Observable that triggers loading animations.
+   * @type {Observable<boolean>}
+   */
   isLoading$: Observable<boolean> = of(false);
 
+  /**
+   * Filter function for the search bar.
+   */
   filter: (data: T[], searchTerm: string) => T[];
 
+  /**
+   * Data stream containing the Table data.
+   * @type {Observable<any[]>}
+   */
   data: Observable<T[]> = of([]);
 
+  /**
+   * Function that triggers data fetches.
+   */
   fetchFn: () => void;
 
   /**
@@ -130,6 +160,9 @@ export class OverviewTableComponent<T> implements OnInit, OnDestroy {
     this.sortDirection.next('asc');
   }
 
+  /**
+   * calls fetch function.
+   */
   fetchData() {
     this.fetchFn();
   }

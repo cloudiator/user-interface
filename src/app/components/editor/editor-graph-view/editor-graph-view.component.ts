@@ -59,6 +59,9 @@ export class EditorGraphViewComponent implements OnInit, OnDestroy {
    */
   public isValid = false;
 
+  /**
+   * Job being shown.
+   */
   public job: Job;
 
   /**

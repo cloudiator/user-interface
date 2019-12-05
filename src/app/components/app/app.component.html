@@ -20,7 +20,7 @@
 
     <!-- navbar entries -->
     <div class="navbar-start">
-      <a class="navbar-item" routerLink="/clouds" routerLinkActive="is-active">
+      <a class="navbar-item" routerLink="/clouds" href="#" routerLinkActive="is-active">
         Clouds
       </a>
       <div class="navbar-item has-dropdown is-hoverable">
@@ -52,10 +52,17 @@
 
     <div class="navbar-end">
       <div class="navbar-item">
-        <div class="has-text-grey-lighter">{{user$ | async}}</div>
+        <div class="has-text-grey-lighter is-hidden-tablet-only">{{user$ | async}}</div>
+        <!-- truncate to long user names on tablet -->
+        <div class="user-name-field has-text-grey-lighter is-hidden-desktop is-hidden-mobile">
+          {{(user$ | async)?.length > 20
+          ? ((user$ | async) | slice:0:20) + '...'
+          : (user$ | async)
+          }}
+        </div>
         <div class="field is-grouped">
           <p class="control">
-            <a class="is-inverted" (click)="authservice.logOut()" style="margin-left: 0.5em">
+            <a class="is-inverted has-tooltip-left" (click)="authservice.logOut()" style="margin-left: 0.5em" data-tooltip="Logout">
               <span class="icon has-text-grey-lighter">
                 <i class="fas fa-sign-out-alt"></i>
               </span>

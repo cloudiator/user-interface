@@ -1,18 +1,27 @@
 import {Injectable} from '@angular/core';
 import {IpAddress, LoginCredential} from 'cloudiator-rest-api';
-import {environment} from '../../environments/environment';
-import {from, Observable, of} from 'rxjs';
+import {from, Observable} from 'rxjs';
 import {RuntimeConfigService} from './runtime-config.service';
-import {combineAll, map, mergeMap, take, tap} from 'rxjs/operators';
+import {map, mergeMap, take} from 'rxjs/operators';
 
+/**
+ * Service Handling SSH connections tunneled through the SSH Backend.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class SshService {
 
+  /** @ignore **/
   constructor(private runtimeConfig: RuntimeConfigService) {
   }
 
+  /**
+   * Connects to the SSH Tunnel backend via a Websocket.
+   * @param {IpAddress} ip Ip of the ssh machine, the backend should tunnel to
+   * @param {LoginCredential} credential Credentials needed for authentication of ssh machine.
+   * @return {Observable<WebSocket>} ssh connection ready to be attached to Xterm.
+   */
   public connectTo(ip: IpAddress, credential: LoginCredential): Observable<WebSocket> {
 
     // this.data.loginCredential
@@ -37,6 +46,10 @@ export class SshService {
       );
   }
 
+  /**
+   * Returns a stream that Checks, whether requirements for the SSH Terminal feature are met.
+   * @return {Observable<boolean>}
+   */
   public sshIsAvailable(): Observable<boolean> {
     return this.runtimeConfig.getSshTunnelPath().pipe(map(path => path && path !== ''));
   }
