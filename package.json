@@ -42,15 +42,15 @@
     "lodash": "^4.17.15",
     "node-sass": "^4.12.0",
     "rxjs": "^6.4.0",
-    "sass-loader": "^7.1.0",
-    "webpack": "^4.35.3",
+    "sass-loader": "^13.2.0",
+    "webpack": "^5.75.0",
     "xterm": "^4.1.0",
     "xterm-addon-attach": "^0.3.0",
     "xterm-addon-fit": "^0.2.1",
     "zone.js": "^0.8.29"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.801.1",
+    "@angular-devkit/build-angular": "^15.0.4",
     "@angular/cli": "^8.1.1",
     "@angular/compiler-cli": "^8.1.1",
     "@angular/language-service": "^8.1.1",
